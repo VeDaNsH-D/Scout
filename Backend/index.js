@@ -19,6 +19,7 @@ const { initWorker } = require("./workers/jobWorker");
 const requestLogger = require("./middleware/request_logger");
 const { notFound, errorHandler } = require("./middleware/error_middleware");
 const chatbotRoutes = require("./routes/chatbot");
+const { enrollLead } = require("./controllers/lead_controller");
 
 const app = express();
 const server = http.createServer(app);
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 /* Routes */
 app.use("/api/auth", authRoutes);
 app.use("/api/leads", leadRoutes);
+app.post("/api/enroll-lead", enrollLead);
 app.use("/api/workflows", workflowsRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/analytics", analyticsRoutes);

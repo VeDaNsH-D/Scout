@@ -143,9 +143,55 @@ const uploadLeads = async (req, res) => {
     }
 }
 
+/* ENROLL LEAD (from Chrome Extension) */
+const enrollLead = async (req, res) => {
+    try {
+        const { name, role, company, email, profileUrl } = req.body
+
+        if (!name) {
+            return res.status(400).json({ message: "Lead name is required" })
+        }
+
+        // Check for duplicate by LinkedIn URL or email
+        const query = []
+        if (profileUrl) query.push({ linkedin: profileUrl })
+        if (email) query.push({ email: email.toLowerCase() })
+
+        if (query.length > 0) {
+            const existing = await Lead.findOne({ $or: query })
+            if (existing) {
+                return res.json({
+                    message: "Lead already exists",
+                    lead: existing,
+                    duplicate: true
+                })
+            }
+        }
+
+        const lead = await Lead.create({
+            name,
+            email: email || "",
+            company: company || "",
+            role: role || "",
+            linkedin: profileUrl || "",
+            status: "new"
+        })
+
+        res.status(201).json({
+            message: "Lead enrolled successfully",
+            lead,
+            duplicate: false
+        })
+    } catch (err) {
+        console.error("Enroll lead failed:", err)
+        res.status(500).json({ message: "Failed to enroll lead", error: err.message })
+    }
+}
+
 module.exports = {
     uploadLeads,
     getLeads,
     getLeadById,
-    deleteLead
+    deleteLead,
+    enrollLead
 }
