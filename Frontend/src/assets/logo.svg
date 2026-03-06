@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 130" fill="none">
+  <!-- LEFT face of cube -->
+  <path d="M20 58 L60 81 L60 115 L20 92 Z" fill="#a8bd15"/>
+  <!-- RIGHT face of cube -->
+  <path d="M60 81 L100 58 L100 92 L60 115 Z" fill="#8fa312"/>
+  <!-- TOP face of cube -->
+  <path d="M60 47 L100 58 L60 81 L20 58 Z" fill="#c8df1a"/>
+
+  <!-- Top chain/knot link -->
+  <path d="M60 8 L82 20 L60 32 L38 20 Z" stroke="#c8df1a" stroke-width="5" fill="none"/>
+  <path d="M60 15 L73 23 L60 31 L47 23 Z" stroke="#c8df1a" stroke-width="4" fill="none"/>
+  <rect x="52" y="19" width="16" height="7" fill="white" rx="1"/>
+  <path d="M55 19 L60 16 L65 19" stroke="#c8df1a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M55 26 L60 29 L65 26" stroke="#c8df1a" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- Connection lines from top knot to cube top -->
+  <path d="M48 28 L30 48 L20 58" stroke="#c8df1a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+  <path d="M72 28 L90 48 L100 58" stroke="#c8df1a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Bottom-left chain/knot link -->
+  <path d="M8 82 L22 90 L8 98 L-6 90 Z" stroke="#c8df1a" stroke-width="4.5" fill="none"/>
+  <path d="M8 86 L16 91 L8 96 L0 91 Z" stroke="#c8df1a" stroke-width="3.5" fill="none"/>
+  <rect x="2" y="87" width="12" height="6" fill="white" rx="1"/>
+  <path d="M4 87 L8 84 L12 87" stroke="#c8df1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M4 93 L8 96 L12 93" stroke="#c8df1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Connection from left knot to left cube face -->
+  <path d="M16 86 L20 75 L20 58" stroke="#c8df1a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+  <path d="M14 96 L20 105 L20 92" stroke="#c8df1a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Bottom-right chain/knot link -->
+  <path d="M112 82 L126 90 L112 98 L98 90 Z" stroke="#c8df1a" stroke-width="4.5" fill="none"/>
+  <path d="M112 86 L120 91 L112 96 L104 91 Z" stroke="#c8df1a" stroke-width="3.5" fill="none"/>
+  <rect x="106" y="87" width="12" height="6" fill="white" rx="1"/>
+  <path d="M108 87 L112 84 L116 87" stroke="#c8df1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M108 93 L112 96 L116 93" stroke="#c8df1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Connection from right knot to right cube face -->
+  <path d="M104 86 L100 75 L100 58" stroke="#c8df1a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+  <path d="M106 96 L100 105 L100 92" stroke="#c8df1a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+</svg>
