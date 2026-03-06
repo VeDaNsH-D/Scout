@@ -54,6 +54,31 @@
 }
 
 @layer utilities {
+  .workflow-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b880 #ffffff14;
+  }
+
+  .workflow-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .workflow-scrollbar::-webkit-scrollbar-track {
+    background: #ffffff0d;
+    border-radius: 9999px;
+  }
+
+  .workflow-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #64748bcc, #475569cc);
+    border-radius: 9999px;
+    border: 2px solid #0b101b;
+  }
+
+  .workflow-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #94a3b8e6, #64748be6);
+  }
+
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #ffffff 0%, #ffffffb3 100%);
