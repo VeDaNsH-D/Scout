@@ -52,6 +52,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/leads", leadRoutes);
 app.post("/api/enroll-lead", enrollLead);
+app.use("/api/ml", mlRoutes);
 app.use("/api/workflows", workflowsRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/analytics", analyticsRoutes);

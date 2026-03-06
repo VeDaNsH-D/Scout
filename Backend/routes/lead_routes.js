@@ -8,7 +8,9 @@ const {
     uploadLeads,
     getLeads,
     getLeadById,
-    deleteLead
+    deleteLead,
+    getLeadInsights,
+    generateLeadWorkflow
 } = require("../controllers/lead_controller")
 
 const allowedExtensions = new Set([".csv", ".xlsx", ".xls"])
@@ -33,5 +35,9 @@ router.post("/upload", upload.single("file"), uploadLeads)
 router.get("/", getLeads)
 router.get("/:id", validateObjectId("id"), getLeadById)
 router.delete("/:id", validateObjectId("id"), deleteLead)
+
+/* ML-powered endpoints */
+router.get("/:id/insights", validateObjectId("id"), getLeadInsights)
+router.post("/:id/generate-workflow", validateObjectId("id"), generateLeadWorkflow)
 
 module.exports = router

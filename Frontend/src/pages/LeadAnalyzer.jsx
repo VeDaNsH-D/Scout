@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import { useNavigate } from 'react-router-dom';
+import apiService from '../services/api';
+import { API_ENDPOINTS } from '../config/api';
 
 export default function LeadAnalyzer() {
+  const navigate = useNavigate();
   const [leadFeatures, setLeadFeatures] = useState({
     role: 'CEO',
     industry: 'Technology',
@@ -10,10 +12,11 @@ export default function LeadAnalyzer() {
     company_name: 'TechCorp',
     lead_source: 'Referral'
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [savingWorkflow, setSavingWorkflow] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,17 +27,86 @@ export default function LeadAnalyzer() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/analyze-lead`, {
+      const data = await apiService.post(API_ENDPOINTS.ML.ANALYZE, {
         lead_features: leadFeatures
       });
-      setResult(response.data);
+      setResult(data);
     } catch (err) {
       console.error('Failed to analyze lead:', err);
-      setError(err.response?.data?.error || err.message || 'Failed to analyze lead');
+      setError(err.message || 'Failed to analyze lead');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleUseTemplate = async () => {
+    if (!result?.workflow_template) return;
+    setSavingWorkflow(true);
+    try {
+      const template = result.workflow_template;
+      const { nodes, edges } = convertTemplateToReactFlow(template);
+      const data = await apiService.post(API_ENDPOINTS.WORKFLOWS.CREATE, {
+        name: template.workflow_name || 'AI Generated Workflow',
+        description: `Generated from Lead Analyzer for ${leadFeatures.role} at ${leadFeatures.company_name || 'Unknown'}`,
+        nodes,
+        edges
+      });
+      const wfId = data.workflow?._id || data.workflow?.id;
+      if (wfId) {
+        navigate(`/workflows?id=${wfId}`);
+      }
+    } catch (err) {
+      console.error('Failed to save workflow:', err);
+      setError('Failed to save workflow template');
+    } finally {
+      setSavingWorkflow(false);
+    }
+  };
+
+  function convertTemplateToReactFlow(template) {
+    const nodes = [];
+    const edges = [];
+    const steps = template.steps || [];
+
+    const triggerId = 'trigger-1';
+    nodes.push({
+      id: triggerId,
+      type: 'trigger',
+      position: { x: 300, y: 50 },
+      data: { label: 'Lead Analyzed', subtitle: `${leadFeatures.role} - ${leadFeatures.industry}`, category: 'trigger', config: {} }
+    });
+
+    let prevNodeId = triggerId;
+    steps.forEach((step, idx) => {
+      const nodeId = `step-${step.step_number || idx + 1}`;
+      const yPos = 150 + idx * 150;
+      let nodeType = 'action';
+      let label = '';
+      let subtitle = '';
+      const config = {};
+
+      if (step.action === 'send_email') {
+        nodeType = 'action';
+        const emailType = (step.email_type || 'email').replace(/_/g, ' ');
+        label = emailType.charAt(0).toUpperCase() + emailType.slice(1);
+        subtitle = step.send_day && step.send_hour != null ? `${step.send_day} at ${step.send_hour}:00` : '';
+        config.channel = 'email';
+        config.emailType = step.email_type;
+      } else if (step.action === 'wait') {
+        nodeType = 'wait';
+        label = `Wait ${step.delay_days || 1} day${(step.delay_days || 1) > 1 ? 's' : ''}`;
+        config.delayHours = (step.delay_days || 1) * 24;
+      } else {
+        label = (step.action || 'Action').replace(/_/g, ' ');
+      }
+
+      nodes.push({ id: nodeId, type: nodeType, position: { x: 300, y: yPos }, data: { label, subtitle, category: nodeType === 'wait' ? 'logic' : 'action', config } });
+      edges.push({ id: `edge-${prevNodeId}-${nodeId}`, source: prevNodeId, target: nodeId, type: 'smoothstep', animated: true });
+      prevNodeId = nodeId;
+    });
+
+    return { nodes, edges };
+  }
 
   return (
     <div className="space-y-6">
@@ -49,7 +121,7 @@ export default function LeadAnalyzer() {
         <div className="lg:col-span-1 space-y-4">
           <div className="bg-bg-card border border-border-card rounded-xl p-6">
             <h3 className="text-lg font-bold text-text-primary mb-4">Lead Features</h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-text-secondary text-sm font-semibold mb-2">Role</label>
@@ -61,7 +133,7 @@ export default function LeadAnalyzer() {
                   className="w-full px-4 py-2 bg-bg-card-hover border border-border-card rounded-lg text-text-primary placeholder-text-muted"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-text-secondary text-sm font-semibold mb-2">Industry</label>
                 <input
@@ -113,15 +185,14 @@ export default function LeadAnalyzer() {
               <button
                 onClick={analyzeLead}
                 disabled={loading}
-                className={`w-full px-6 py-3 font-bold rounded-lg transition ${
-                  loading 
-                    ? 'bg-accent/50 text-text-inverse cursor-not-allowed' 
+                className={`w-full px-6 py-3 font-bold rounded-lg transition ${loading
+                    ? 'bg-accent/50 text-text-inverse cursor-not-allowed'
                     : 'bg-accent hover:bg-accent-hover text-text-inverse'
-                }`}
+                  }`}
               >
                 {loading ? 'Analyzing...' : 'Analyze Lead ✨'}
               </button>
-              
+
               {error && (
                 <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300 text-sm">
                   {error}
@@ -146,8 +217,8 @@ export default function LeadAnalyzer() {
                     </p>
                   </div>
                   <div className="mt-4 w-full bg-bg-card-hover rounded-full h-2.5">
-                    <div 
-                      className="bg-accent h-2.5 rounded-full" 
+                    <div
+                      className="bg-accent h-2.5 rounded-full"
                       style={{ width: `${result.lead_score * 100}%` }}
                     ></div>
                   </div>
@@ -192,21 +263,20 @@ export default function LeadAnalyzer() {
                     <span className="text-accent">⚡</span> Generated Workflow: {result.workflow_template?.workflow_name || 'Custom Outreach'}
                   </h3>
                 </div>
-                
+
                 <div className="space-y-4">
                   {result.workflow_template?.steps?.map((step, idx) => (
                     <div key={idx} className="relative pl-8 pb-4 border-l-2 border-border-card last:border-0 last:pb-0">
                       <div className="absolute w-6 h-6 bg-bg-card border-2 border-accent rounded-full -left-[13px] top-0 flex items-center justify-center text-xs text-accent font-bold">
                         {step.step_number}
                       </div>
-                      
+
                       <div className="bg-bg-card-hover border border-border-subtle rounded-lg p-4 -mt-2 ml-2">
                         <div className="flex justify-between items-start mb-2">
-                          <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                            step.action === 'send_email' 
-                              ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
+                          <span className={`px-2 py-1 rounded text-xs font-semibold ${step.action === 'send_email'
+                              ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
                               : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
-                          }`}>
+                            }`}>
                             {step.action.toUpperCase().replace('_', ' ')}
                           </span>
                           {step.condition && (
@@ -215,14 +285,14 @@ export default function LeadAnalyzer() {
                             </span>
                           )}
                         </div>
-                        
+
                         {step.action === 'send_email' && (
                           <div className="text-sm text-text-secondary">
                             <p><span className="font-semibold text-text-primary">Type:</span> {step.email_type?.replace(/_/g, ' ')}</p>
                             <p><span className="font-semibold text-text-primary">Schedule:</span> {step.send_day} at {step.send_hour}:00</p>
                           </div>
                         )}
-                        
+
                         {step.action === 'wait' && (
                           <div className="text-sm text-text-secondary">
                             <p><span className="font-semibold text-text-primary">Delay:</span> {step.delay_days} days</p>
@@ -232,10 +302,17 @@ export default function LeadAnalyzer() {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="mt-6 flex justify-end">
-                  <button className="px-4 py-2 bg-accent hover:bg-accent-hover text-text-inverse font-semibold rounded-lg transition text-sm">
-                    Use This Template
+                  <button
+                    onClick={handleUseTemplate}
+                    disabled={savingWorkflow}
+                    className={`px-4 py-2 font-semibold rounded-lg transition text-sm ${savingWorkflow
+                        ? 'bg-accent/50 text-text-inverse cursor-not-allowed'
+                        : 'bg-accent hover:bg-accent-hover text-text-inverse'
+                      }`}
+                  >
+                    {savingWorkflow ? 'Saving...' : 'Use This Template'}
                   </button>
                 </div>
               </div>

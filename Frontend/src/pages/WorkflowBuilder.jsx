@@ -547,9 +547,9 @@ function normalizeIncomingNodes(rawNodes) {
       const position = hasPositionObject
         ? { x: node.position.x, y: node.position.y }
         : {
-            x: typeof node?.x === 'number' ? node.x : 120 + index * 240,
-            y: typeof node?.y === 'number' ? node.y : 140 + (index % 2) * 120,
-          };
+          x: typeof node?.x === 'number' ? node.x : 120 + index * 240,
+          y: typeof node?.y === 'number' ? node.y : 140 + (index % 2) * 120,
+        };
 
       return {
         id: String(node?.id || `node_${index + 1}`),
@@ -663,9 +663,8 @@ function WorkflowCanvasNode({ data, selected }) {
 
   return (
     <div
-      className={`min-w-60 rounded-xl border bg-[#0b0f1a]/95 p-2 backdrop-blur-md ${visual.border} ${visual.glow} ${
-        selected ? 'ring-2 ring-accent/70' : ''
-      }`}
+      className={`min-w-60 rounded-xl border bg-[#0b0f1a]/95 p-2 backdrop-blur-md ${visual.border} ${visual.glow} ${selected ? 'ring-2 ring-accent/70' : ''
+        }`}
     >
       <Handle
         type="target"
@@ -824,6 +823,14 @@ function WorkflowBuilderContent() {
 
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
+  // Execute workflow modal state
+  const [showExecuteModal, setShowExecuteModal] = useState(false);
+  const [availableLeads, setAvailableLeads] = useState([]);
+  const [selectedLeadIds, setSelectedLeadIds] = useState([]);
+  const [loadingLeads, setLoadingLeads] = useState(false);
+  const [leadSearchQuery, setLeadSearchQuery] = useState('');
+
   const [leftSidebarWidth, setLeftSidebarWidth] = useState(() =>
     getStoredSidebarWidth(
       SIDEBAR_STORAGE_KEYS.left,
@@ -1163,9 +1170,9 @@ function WorkflowBuilderContent() {
       const baseNode = createNodeFromTemplate(template, position);
       const nextNode = candidate
         ? {
-            ...baseNode,
-            position: candidate.snappedPosition,
-          }
+          ...baseNode,
+          position: candidate.snappedPosition,
+        }
         : baseNode;
 
       setNodes((current) => [...current, nextNode]);
@@ -1204,9 +1211,9 @@ function WorkflowBuilderContent() {
         currentNodes.map((node) =>
           String(node.id) === draggedNodeId
             ? {
-                ...node,
-                position: candidate.snappedPosition,
-              }
+              ...node,
+              position: candidate.snappedPosition,
+            }
             : node
         )
       );
@@ -1352,7 +1359,6 @@ function WorkflowBuilderContent() {
     [navigate, setEdges, setNodes]
   );
 
-<<<<<<< HEAD
   const handleShareWorkflow = useCallback(() => {
     if (!currentWorkflowId) {
       setErrorMessage('Please save the workflow before sharing.');
@@ -1365,18 +1371,11 @@ function WorkflowBuilderContent() {
       .catch(() => setErrorMessage('Failed to copy link.'));
   }, [currentWorkflowId]);
 
-  const handleSaveWorkflow = useCallback(async () => {
-    if (!workflowName.trim()) {
-      setErrorMessage('Please enter a workflow name before saving.');
-      return;
-    }
-=======
   const persistWorkflow = useCallback(
     async ({ notifySuccess = false } = {}) => {
       if (!workflowName.trim()) {
         throw new Error('Please enter a workflow name before saving.');
       }
->>>>>>> fd1713bd3ebc20df20e01dc060f791e6b6317090
 
       const payload = {
         name: workflowName.trim(),
@@ -1427,47 +1426,85 @@ function WorkflowBuilderContent() {
     }
   }, [persistWorkflow]);
 
-  const handleExecuteWorkflow = useCallback(async () => {
-    setExecutingWorkflow(true);
-    setErrorMessage(null);
-    setSuccessMessage(null);
+  // ── Execute workflow handlers ──────────────────────────────────────
+  const handleOpenExecuteModal = useCallback(async () => {
+    if (!currentWorkflowId) {
+      setErrorMessage('Please save the workflow before executing.');
+      return;
+    }
+
+    setShowExecuteModal(true);
+    setSelectedLeadIds([]);
+    setLeadSearchQuery('');
+    setLoadingLeads(true);
 
     try {
-      const workflowToRunId = await persistWorkflow({ notifySuccess: false });
-      if (!workflowToRunId) {
-        throw new Error('Unable to determine workflow id for execution.');
-      }
+      const response = await leadsService.getAll();
+      const leads = response?.leads || response || [];
+      setAvailableLeads(Array.isArray(leads) ? leads : []);
+    } catch (error) {
+      console.error('Failed to fetch leads:', error);
+      setAvailableLeads([]);
+    } finally {
+      setLoadingLeads(false);
+    }
+  }, [currentWorkflowId]);
 
-      const leadsResponse = await leadsService.getAll();
-      const leads = Array.isArray(leadsResponse?.leads)
-        ? leadsResponse.leads
-        : Array.isArray(leadsResponse)
-          ? leadsResponse
-          : [];
+  const handleToggleLead = useCallback((leadId) => {
+    setSelectedLeadIds((prev) =>
+      prev.includes(leadId) ? prev.filter((id) => id !== leadId) : [...prev, leadId]
+    );
+  }, []);
 
-      const leadIds = leads
-        .map((lead) => lead?._id || lead?.id)
-        .filter((id) => typeof id === 'string' && id.length > 0);
-
-      if (leadIds.length === 0) {
-        throw new Error('No leads found. Upload or enroll leads before executing this workflow.');
-      }
-
-      const executionResponse = await workflowsService.start(workflowToRunId, leadIds);
-      const startedRuns = Array.isArray(executionResponse?.runs)
-        ? executionResponse.runs.length
-        : leadIds.length;
-
-      setSuccessMessage(
-        `Workflow execution started for ${startedRuns} lead${startedRuns === 1 ? '' : 's'}.`
+  const handleSelectAllLeads = useCallback(() => {
+    const filtered = availableLeads.filter((lead) => {
+      if (!leadSearchQuery.trim()) return true;
+      const q = leadSearchQuery.toLowerCase();
+      return (
+        (lead.name || '').toLowerCase().includes(q) ||
+        (lead.email || '').toLowerCase().includes(q) ||
+        (lead.company || '').toLowerCase().includes(q)
       );
+    });
+    const allIds = filtered.map((l) => l._id || l.id);
+    const allSelected = allIds.every((id) => selectedLeadIds.includes(id));
+    setSelectedLeadIds(allSelected ? [] : allIds);
+  }, [availableLeads, leadSearchQuery, selectedLeadIds]);
+
+  const handleExecuteWorkflow = useCallback(async () => {
+    if (selectedLeadIds.length === 0) {
+      setErrorMessage('Please select at least one lead to execute the workflow.');
+      return;
+    }
+
+    setExecutingWorkflow(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await workflowsService.execute(currentWorkflowId, selectedLeadIds);
+      setShowExecuteModal(false);
+      setSuccessMessage(
+        `Workflow started for ${selectedLeadIds.length} lead${selectedLeadIds.length > 1 ? 's' : ''}!`
+      );
+      setSelectedLeadIds([]);
     } catch (error) {
       console.error('Failed to execute workflow:', error);
       setErrorMessage(error.message || 'Failed to execute workflow.');
     } finally {
       setExecutingWorkflow(false);
     }
-  }, [persistWorkflow]);
+  }, [currentWorkflowId, selectedLeadIds]);
+
+  const filteredLeads = useMemo(() => {
+    if (!leadSearchQuery.trim()) return availableLeads;
+    const q = leadSearchQuery.toLowerCase();
+    return availableLeads.filter(
+      (lead) =>
+        (lead.name || '').toLowerCase().includes(q) ||
+        (lead.email || '').toLowerCase().includes(q) ||
+        (lead.company || '').toLowerCase().includes(q)
+    );
+  }, [availableLeads, leadSearchQuery]);
 
   return (
     <div className="h-full min-h-0 overflow-hidden bg-[#04060d]">
@@ -1615,11 +1652,12 @@ function WorkflowBuilderContent() {
 
               <button
                 type="button"
-                onClick={handleExecuteWorkflow}
-                disabled={savingWorkflow || executingWorkflow || loadingWorkflow}
-                className="rounded-lg border border-emerald-400/45 bg-emerald-500/18 px-4 py-2 text-xs font-bold text-emerald-100 transition hover:bg-emerald-500/28 disabled:cursor-not-allowed disabled:opacity-50"
+                onClick={handleOpenExecuteModal}
+                disabled={!currentWorkflowId || executingWorkflow}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+                title={!currentWorkflowId ? 'Save the workflow first' : 'Execute workflow for selected leads'}
               >
-                {executingWorkflow ? 'Executing...' : 'Execute'}
+                {executingWorkflow ? 'Executing...' : '▶ Execute'}
               </button>
             </div>
 
@@ -1830,6 +1868,140 @@ function WorkflowBuilderContent() {
           />
         </aside>
       </div>
+
+      {/* ── Execute Workflow Modal ── */}
+      {showExecuteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="relative mx-4 flex max-h-[80vh] w-full max-w-lg flex-col rounded-2xl border border-white/12 bg-[#0c0f1a] shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+              <div>
+                <h2 className="text-lg font-bold text-white">Execute Workflow</h2>
+                <p className="mt-0.5 text-xs text-white/50">
+                  Select leads to run <span className="text-accent">{workflowName}</span> on
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowExecuteModal(false)}
+                className="rounded-lg p-1.5 text-white/50 transition hover:bg-white/10 hover:text-white"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            {/* Search + Select All */}
+            <div className="flex items-center gap-2 border-b border-white/8 px-6 py-3">
+              <input
+                type="text"
+                placeholder="Search leads..."
+                value={leadSearchQuery}
+                onChange={(e) => setLeadSearchQuery(e.target.value)}
+                className="flex-1 rounded-lg border border-white/12 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/35 focus:border-accent/50 focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={handleSelectAllLeads}
+                className="whitespace-nowrap rounded-lg border border-white/12 bg-white/8 px-3 py-2 text-xs font-semibold text-white/70 transition hover:text-white"
+              >
+                {filteredLeads.length > 0 && filteredLeads.every((l) => selectedLeadIds.includes(l._id || l.id))
+                  ? 'Deselect All'
+                  : 'Select All'}
+              </button>
+            </div>
+
+            {/* Lead list */}
+            <div className="flex-1 overflow-y-auto px-6 py-3">
+              {loadingLeads ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+                  <span className="ml-3 text-sm text-white/50">Loading leads...</span>
+                </div>
+              ) : filteredLeads.length === 0 ? (
+                <div className="py-12 text-center text-sm text-white/40">
+                  {availableLeads.length === 0 ? 'No leads found. Upload leads first.' : 'No leads match your search.'}
+                </div>
+              ) : (
+                <div className="space-y-1.5">
+                  {filteredLeads.map((lead) => {
+                    const leadId = lead._id || lead.id;
+                    const isSelected = selectedLeadIds.includes(leadId);
+                    return (
+                      <label
+                        key={leadId}
+                        className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition ${isSelected
+                            ? 'border-emerald-500/50 bg-emerald-500/10'
+                            : 'border-white/8 bg-white/4 hover:border-white/18 hover:bg-white/8'
+                          }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleToggleLead(leadId)}
+                          className="h-4 w-4 rounded border-white/30 bg-transparent accent-emerald-500"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate text-sm font-medium text-white">
+                              {lead.name || lead.email}
+                            </span>
+                            {lead.lead_score != null && (
+                              <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
+                                {Math.round(lead.lead_score * 100)}%
+                              </span>
+                            )}
+                          </div>
+                          <div className="mt-0.5 flex items-center gap-2 text-xs text-white/45">
+                            {lead.email && <span className="truncate">{lead.email}</span>}
+                            {lead.company && (
+                              <>
+                                <span className="text-white/20">·</span>
+                                <span className="truncate">{lead.company}</span>
+                              </>
+                            )}
+                            {lead.role && (
+                              <>
+                                <span className="text-white/20">·</span>
+                                <span className="truncate">{lead.role}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between border-t border-white/10 px-6 py-4">
+              <span className="text-xs text-white/50">
+                {selectedLeadIds.length} lead{selectedLeadIds.length !== 1 ? 's' : ''} selected
+              </span>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowExecuteModal(false)}
+                  className="rounded-lg border border-white/12 bg-white/8 px-4 py-2 text-xs font-semibold text-white/70 transition hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExecuteWorkflow}
+                  disabled={selectedLeadIds.length === 0 || executingWorkflow}
+                  className="rounded-lg bg-emerald-600 px-5 py-2 text-xs font-bold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {executingWorkflow
+                    ? 'Starting...'
+                    : `Execute for ${selectedLeadIds.length} Lead${selectedLeadIds.length !== 1 ? 's' : ''}`}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

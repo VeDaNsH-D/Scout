@@ -3,6 +3,7 @@ const WorkflowRun = require('../schemas/workflow_run_schema');
 const Lead = require('../schemas/lead_schema');
 const Message = require('../schemas/message_schema');
 const emailService = require('./emailService');
+const { generateEmail } = require('./llmService');
 const { scheduler } = require('./scheduler');
 
 /**
@@ -171,11 +172,20 @@ class WorkflowEngine {
               break;
             }
 
-            const subject = node.data?.config?.subject || `${workflow.name}: ${actionLabel}`;
-            const messageBody =
-              node.data?.config?.body ||
-              `Hi ${lead.name || 'there'},\n\nThis is an automated follow-up from ${workflow.name}.\n\nThanks.`;
+            // Determine email type from node label/config
+            const emailType = this._resolveEmailType(node);
 
+            // Build campaign context from workflow metadata or node config
+            const campaignContext = this._buildCampaignContext(node, workflow);
+
+            // Generate personalized email using Llama3
+            console.log(`[WorkflowEngine] 🤖 Generating personalized ${emailType} for lead ${lead.email} using Llama3...`);
+            const generated = await generateEmail(lead, lead.insights || [], campaignContext, emailType);
+
+            const subject = node.data?.config?.subject || generated.subject;
+            const messageBody = generated.body;
+
+            console.log(`[WorkflowEngine] 📧 Sending AI-generated email to ${lead.email}`);
             const result = await emailService.sendEmail(lead.email, subject, messageBody);
 
             await Message.create({
@@ -200,19 +210,38 @@ class WorkflowEngine {
         break;
 
       case 'email':
-        const subject = node.data?.subject || 'No Subject';
-        const messageBody = node.data?.body || 'Hello...';
+        {
+          if (!lead.email) {
+            console.log(`[WorkflowEngine] Skipping email node for lead ${lead._id}: missing email address`);
+            break;
+          }
 
-        await emailService.sendEmail(lead.email, subject, messageBody);
+          // Determine email type from node data
+          const emailType = this._resolveEmailType(node);
 
-        // Save message record
-        await Message.create({
-          lead_id: lead._id,
-          workflow_run_id: run._id,
-          channel: 'email',
-          content: messageBody,
-          sent_at: new Date()
-        });
+          // Build campaign context from workflow metadata or node config
+          const campaignContext = this._buildCampaignContext(node, workflow);
+
+          // Generate personalized email using Llama3
+          console.log(`[WorkflowEngine] 🤖 Generating personalized ${emailType} for lead ${lead.email} using Llama3...`);
+          const generated = await generateEmail(lead, lead.insights || [], campaignContext, emailType);
+
+          const subject = node.data?.subject || node.data?.config?.subject || generated.subject;
+          const messageBody = generated.body;
+
+          console.log(`[WorkflowEngine] 📧 Sending AI-generated email to ${lead.email}`);
+          const result = await emailService.sendEmail(lead.email, subject, messageBody);
+
+          // Save message record
+          await Message.create({
+            lead_id: lead._id,
+            workflow_run_id: run._id,
+            channel: 'email',
+            content: messageBody,
+            sent_at: new Date(),
+            status: result.success ? 'sent' : 'failed',
+          });
+        }
         break;
 
       case 'wait':
@@ -228,6 +257,40 @@ class WorkflowEngine {
       default:
         console.log(`[WorkflowEngine] Unknown node type: ${node.type}`);
     }
+  }
+
+  /**
+   * Resolve the email type based on node label/config
+   * Maps workflow node labels to email sequence types
+   */
+  _resolveEmailType(node) {
+    const label = String(node.data?.label || node.label || '').toLowerCase();
+    const configType = String(node.data?.config?.emailType || node.data?.emailType || '').toLowerCase();
+
+    // Check explicit config first
+    if (configType && ['cold_email', 'followup_1', 'followup_2', 'final_followup'].includes(configType)) {
+      return configType;
+    }
+
+    // Infer from label
+    if (/final|last|closing/i.test(label)) return 'final_followup';
+    if (/second\s*follow|follow\s*-?\s*up\s*2|2nd/i.test(label)) return 'followup_2';
+    if (/follow\s*-?\s*up|reminder/i.test(label)) return 'followup_1';
+    return 'cold_email';
+  }
+
+  /**
+   * Build campaign context from workflow and node metadata
+   */
+  _buildCampaignContext(node, workflow) {
+    const nodeConfig = node.data?.config || {};
+    return {
+      team_name: nodeConfig.team_name || workflow.name || 'Our Team',
+      product_name: nodeConfig.product_name || 'Our Product',
+      product_description: nodeConfig.product_description || 'A platform to help your business grow',
+      pain_point: nodeConfig.pain_point || 'improving efficiency and outcomes',
+      goal: nodeConfig.goal || 'a short introductory call',
+    };
   }
 }
 

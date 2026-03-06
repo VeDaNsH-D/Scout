@@ -22,8 +22,8 @@ export const workflowsService = {
     return apiService.delete(API_ENDPOINTS.WORKFLOWS.DELETE(id));
   },
 
-  async start(id, leadIds = []) {
-    return apiService.post(API_ENDPOINTS.WORKFLOWS.START(id), { leadIds });
+  async execute(id, leadIds) {
+    return apiService.post(API_ENDPOINTS.WORKFLOWS.EXECUTE(id), { leadIds });
   },
 };
 

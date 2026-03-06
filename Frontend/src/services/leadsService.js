@@ -17,6 +17,14 @@ export const leadsService = {
   async delete(id) {
     return apiService.delete(API_ENDPOINTS.LEADS.DELETE(id));
   },
+
+  async getInsights(id) {
+    return apiService.get(API_ENDPOINTS.LEADS.INSIGHTS(id));
+  },
+
+  async generateWorkflow(id) {
+    return apiService.post(API_ENDPOINTS.LEADS.GENERATE_WORKFLOW(id), {});
+  },
 };
 
 export default leadsService;

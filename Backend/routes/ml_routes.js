@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 // Node 18+ has native fetch
 
-const ML_BASE_URL = process.env.ML_API_URL || 'http://127.0.0.1:5000/api/ml';
+const ML_BASE_URL = process.env.ML_API_URL || 'http://127.0.0.1:5001/api/ml';
 
 router.post('/analyze-lead', async (req, res, next) => {
     try {
         const { lead_features } = req.body;
-        
+
         if (!lead_features) {
             return res.status(400).json({ error: 'lead_features is required' });
         }
@@ -95,7 +95,7 @@ router.post('/analyze-lead', async (req, res, next) => {
         };
 
         return res.status(200).json(unifiedResponse);
-        
+
     } catch (error) {
         console.error('[ML Orchestrator] General error:', error);
         next(error);

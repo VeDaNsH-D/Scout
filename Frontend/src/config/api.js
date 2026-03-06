@@ -21,6 +21,11 @@ export const API_ENDPOINTS = {
     UPLOAD: '/api/leads/upload',
     GET: (id) => `/api/leads/${id}`,
     DELETE: (id) => `/api/leads/${id}`,
+    INSIGHTS: (id) => `/api/leads/${id}/insights`,
+    GENERATE_WORKFLOW: (id) => `/api/leads/${id}/generate-workflow`,
+  },
+  ML: {
+    ANALYZE: '/api/ml/analyze-lead',
   },
   // Workflows
   WORKFLOWS: {
@@ -29,7 +34,7 @@ export const API_ENDPOINTS = {
     GET: (id) => `/api/workflows/${id}`,
     UPDATE: (id) => `/api/workflows/${id}`,
     DELETE: (id) => `/api/workflows/${id}`,
-    START: (id) => `/api/workflows/${id}/start`,
+    EXECUTE: (id) => `/api/workflows/${id}/start`,
   },
   // Analytics
   ANALYTICS: {

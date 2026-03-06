@@ -18,7 +18,7 @@ const leadSchema = new mongoose.Schema(
         role: {
             type: String
         },
-        
+
         industry: {
             type: String
         },
@@ -38,9 +38,27 @@ const leadSchema = new mongoose.Schema(
         lead_source: {
             type: String
         },
-        
+
         linkedin: {
             type: String
+        },
+
+        lead_score: {
+            type: Number,
+            default: null
+        },
+
+        insights: {
+            type: [String],
+            default: []
+        },
+
+        best_send_day: {
+            type: String
+        },
+
+        best_send_hour: {
+            type: Number
         },
 
         status: {
