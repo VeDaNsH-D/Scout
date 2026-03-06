@@ -1,13 +1,14 @@
 // Extension Configuration
 // Update these values to match your setup
 
-module.exports = {
+// eslint-disable-next-line no-unused-vars
+const ExtensionConfig = {
     // FastAPI Backend
-    API_BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:8000',
-    
+    API_BASE_URL: 'http://localhost:8000',
+
     // LinkedIn Configuration
     LINKEDIN_PROFILE_REGEX: /linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/,
-    
+
     // Feature Flags
     FEATURES: {
         AUTO_CAPTURE: true,
@@ -16,7 +17,7 @@ module.exports = {
         EMAIL_DETECTION: true,
         RECENT_POST_EXTRACTION: true
     },
-    
+
     // Human-like behavior settings
     HUMAN_BEHAVIOR: {
         MIN_SEND_HOUR: 9,        // 9 AM
@@ -25,7 +26,7 @@ module.exports = {
         MIN_DELAY_MINUTES: 30,
         MAX_DELAY_MINUTES: 180
     },
-    
+
     // Storage keys
     STORAGE_KEYS: {
         SETTINGS: 'intelligenceScout_settings',
@@ -33,7 +34,7 @@ module.exports = {
         CACHED_INSIGHTS: 'cachedInsights',
         USER_PREFERENCES: 'userPreferences'
     },
-    
+
     // API Endpoints
     ENDPOINTS: {
         ENROLL_LEAD: '/api/enroll-lead',
@@ -41,7 +42,7 @@ module.exports = {
         GET_RECOMMENDATION: '/api/get-recommendation',
         LOG_ACTIVITY: '/api/log-activity'
     },
-    
+
     // Timeouts (in milliseconds)
     TIMEOUTS: {
         API_REQUEST: 10000,
