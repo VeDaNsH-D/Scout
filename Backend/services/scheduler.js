@@ -1,10 +1,16 @@
 const { Queue } = require('bullmq');
 
+const redisUsername = process.env.REDIS_USERNAME || process.env.REDIS_USER;
+const redisPassword = process.env.REDIS_PASSWORD || process.env.REDIS_PASS;
+const redisTlsEnabled =
+  String(process.env.REDIS_TLS || process.env.REDIS_USE_TLS || 'false').toLowerCase() === 'true';
+
 const connection = {
   host: process.env.REDIS_HOST || 'localhost',
   port: process.env.REDIS_PORT || 6379,
-  // username: process.env.REDIS_USERNAME,
-  // password: process.env.REDIS_PASSWORD
+  ...(redisUsername ? { username: redisUsername } : {}),
+  ...(redisPassword ? { password: redisPassword } : {}),
+  ...(redisTlsEnabled ? { tls: {} } : {}),
 };
 
 const workflowQueue = new Queue('workflow-jobs', { connection });

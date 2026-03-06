@@ -4,13 +4,30 @@ const nodemailer = require('nodemailer');
  */
 class EmailService {
   constructor() {
-    this.transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = Number(process.env.SMTP_PORT || 587);
+
+    const transportConfig = smtpHost
+      ? {
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        }
+      : {
+          service: 'gmail',
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        };
+
+    this.transporter = nodemailer.createTransport(transportConfig);
   }
 
   async sendEmail(to, subject, message) {
