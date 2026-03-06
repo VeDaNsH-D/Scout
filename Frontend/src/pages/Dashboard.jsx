@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import analyticsService from '../services/analyticsService';
 import workflowsService from '../services/workflowsService';
 import { mockDashboardData } from '../utils/mockData';
+import ExtensionImportBanner from '../components/ExtensionImportBanner';
 
 const MetricCard = ({ metric, loading }) => (
   <div className="bg-bg-card border border-border-card hover:border-border-strong hover:bg-bg-card-hover rounded-xl p-6 transition-all duration-300">
@@ -96,6 +97,7 @@ export default function Dashboard() {
         <p className="text-text-secondary">
           Welcome back{user?.name ? `, ${user.name}` : ''}! Here's your campaign overview.
         </p>
+        <ExtensionImportBanner />
       </div>
 
       {error && (

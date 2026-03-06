@@ -18,6 +18,7 @@ const workflowCollaboration = require("./sockets/workflowCollaboration");
 const { initWorker } = require("./workers/jobWorker");
 const requestLogger = require("./middleware/request_logger");
 const { notFound, errorHandler } = require("./middleware/error_middleware");
+const chatbotRoutes = require("./routes/chatbot");
 
 const app = express();
 const server = http.createServer(app);
@@ -28,13 +29,9 @@ const googleAuthRoutes = require("./routes/googleAuth");
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
-<<<<<<< HEAD
-
-=======
 app.use("/api/chatbot", chatbotRoutes);
 app.use(passport.initialize());
 app.use("/auth", googleAuthRoutes);
->>>>>>> 37f651f911fa637e614bd48239fd090a33cffee1
 /* Validate required environment variables */
 validateEnv();
 
