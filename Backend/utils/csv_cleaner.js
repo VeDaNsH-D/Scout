@@ -35,6 +35,24 @@ function cleanLeads(rows) {
             normalized.title ||
             normalized.job_title ||
             ""
+        const industry =
+            normalized.industry ||
+            ""
+
+        const company_size =
+            normalized.company_size ||
+            ""
+
+        const growth_rate =
+            normalized.growth_rate ? parseFloat(normalized.growth_rate) : null
+
+        const seniority =
+            normalized.seniority ||
+            ""
+
+        const lead_source =
+            normalized.lead_source ||
+            ""
 
         if (!email) continue
 
@@ -48,7 +66,12 @@ function cleanLeads(rows) {
             name: name.trim(),
             email: cleanEmail,
             company: company.trim(),
-            role: role.trim()
+            role: role.trim(),
+            industry: industry.trim(),
+            company_size: company_size.trim(),
+            growth_rate: isNaN(growth_rate) ? null : growth_rate,
+            seniority: seniority.trim(),
+            lead_source: lead_source.trim()
         })
     }
 

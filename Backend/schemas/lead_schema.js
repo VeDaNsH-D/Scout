@@ -18,7 +18,27 @@ const leadSchema = new mongoose.Schema(
         role: {
             type: String
         },
+        
+        industry: {
+            type: String
+        },
 
+        company_size: {
+            type: String
+        },
+
+        growth_rate: {
+            type: Number
+        },
+
+        seniority: {
+            type: String
+        },
+
+        lead_source: {
+            type: String
+        },
+        
         linkedin: {
             type: String
         },
