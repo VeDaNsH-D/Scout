@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import ReactFlow, {
+  BaseEdge,
   addEdge,
   Background,
   BackgroundVariant,
@@ -10,6 +11,7 @@ import ReactFlow, {
   MiniMap,
   Position,
   ReactFlowProvider,
+  getSmoothStepPath,
   useEdgesState,
   useNodesState,
 } from 'reactflow';
@@ -284,13 +286,56 @@ const CATEGORY_STYLES = {
 };
 
 const DEFAULT_EDGE_OPTIONS = {
-  type: 'smoothstep',
-  animated: true,
-  style: { stroke: 'rgba(255,255,255,0.35)', strokeWidth: 2 },
-  markerEnd: { type: MarkerType.ArrowClosed, color: 'rgba(255,255,255,0.45)' },
+  type: 'goldenFlow',
+  animated: false,
+  style: {
+    stroke: 'rgba(255, 255, 255, 0.62)',
+    strokeWidth: 2,
+    filter: 'drop-shadow(0 0 5px rgba(249, 115, 22, 0.33))',
+  },
+  markerEnd: { type: MarkerType.ArrowClosed, color: 'rgba(255, 255, 255, 0.74)' },
 };
 
+const SIDEBAR_WIDTH_LIMITS = {
+  left: { min: 220, max: 420, start: 240 },
+  right: { min: 260, max: 460, start: 312 },
+};
+
+const SIDEBAR_STORAGE_KEYS = {
+  left: 'workflow.sidebar.left.width',
+  right: 'workflow.sidebar.right.width',
+};
+
+const NODE_BOX_ESTIMATE = {
+  width: 240,
+  height: 96,
+};
+
+const MAGNETIC_INSERT_DISTANCE = 72;
+
 let nodeCounter = 200;
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getStoredSidebarWidth(storageKey, fallback, min, max) {
+  if (typeof window === 'undefined') {
+    return fallback;
+  }
+
+  const raw = window.localStorage.getItem(storageKey);
+  if (!raw) {
+    return fallback;
+  }
+
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return clamp(parsed, min, max);
+}
 
 function cloneNodes(nodes) {
   return nodes.map((node) => ({
@@ -356,6 +401,130 @@ function createLinearEdges(nodes) {
   return nodes.slice(0, -1).map((node, index) =>
     createStyledEdge({ source: node.id, target: nodes[index + 1].id })
   );
+}
+
+function getEdgeGuidePoints(sourceNode, targetNode) {
+  const sourcePoint = {
+    x: sourceNode.position.x + NODE_BOX_ESTIMATE.width,
+    y: sourceNode.position.y + NODE_BOX_ESTIMATE.height / 2,
+  };
+  const targetPoint = {
+    x: targetNode.position.x,
+    y: targetNode.position.y + NODE_BOX_ESTIMATE.height / 2,
+  };
+
+  const splitX = sourcePoint.x + (targetPoint.x - sourcePoint.x) / 2;
+  const polyline = [
+    sourcePoint,
+    { x: splitX, y: sourcePoint.y },
+    { x: splitX, y: targetPoint.y },
+    targetPoint,
+  ];
+
+  return polyline.filter(
+    (point, index, points) =>
+      index === 0 || point.x !== points[index - 1].x || point.y !== points[index - 1].y
+  );
+}
+
+function getClosestPointOnSegment(point, start, end) {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const lengthSq = dx * dx + dy * dy;
+
+  if (lengthSq === 0) {
+    const distanceSq = (point.x - start.x) ** 2 + (point.y - start.y) ** 2;
+    return { x: start.x, y: start.y, distanceSq };
+  }
+
+  const projected = ((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSq;
+  const t = clamp(projected, 0, 1);
+  const x = start.x + dx * t;
+  const y = start.y + dy * t;
+  const distanceSq = (point.x - x) ** 2 + (point.y - y) ** 2;
+
+  return { x, y, distanceSq };
+}
+
+function getClosestPointOnPolyline(point, polyline) {
+  if (!Array.isArray(polyline) || polyline.length < 2) {
+    return null;
+  }
+
+  let closest = null;
+
+  for (let index = 0; index < polyline.length - 1; index += 1) {
+    const candidate = getClosestPointOnSegment(point, polyline[index], polyline[index + 1]);
+
+    if (!closest || candidate.distanceSq < closest.distanceSq) {
+      closest = candidate;
+    }
+  }
+
+  return closest;
+}
+
+function findMagneticInsertCandidate(position, nodes, edges, excludeNodeId = null) {
+  if (!Array.isArray(nodes) || !Array.isArray(edges) || edges.length === 0) {
+    return null;
+  }
+
+  const nodeMap = new Map(nodes.map((node) => [String(node.id), node]));
+  const excluded = excludeNodeId ? String(excludeNodeId) : null;
+  let bestCandidate = null;
+
+  edges.forEach((edge) => {
+    const sourceId = String(edge.source || '');
+    const targetId = String(edge.target || '');
+
+    if (!sourceId || !targetId) {
+      return;
+    }
+
+    if (excluded && (sourceId === excluded || targetId === excluded)) {
+      return;
+    }
+
+    const sourceNode = nodeMap.get(sourceId);
+    const targetNode = nodeMap.get(targetId);
+
+    if (!sourceNode || !targetNode) {
+      return;
+    }
+
+    const nearest = getClosestPointOnPolyline(position, getEdgeGuidePoints(sourceNode, targetNode));
+    if (!nearest) {
+      return;
+    }
+
+    if (!bestCandidate || nearest.distanceSq < bestCandidate.distanceSq) {
+      bestCandidate = {
+        edgeId: edge.id || null,
+        source: sourceId,
+        target: targetId,
+        sourceHandle: edge.sourceHandle || null,
+        targetHandle: edge.targetHandle || null,
+        closestPoint: { x: nearest.x, y: nearest.y },
+        distanceSq: nearest.distanceSq,
+      };
+    }
+  });
+
+  if (!bestCandidate) {
+    return null;
+  }
+
+  if (Math.sqrt(bestCandidate.distanceSq) > MAGNETIC_INSERT_DISTANCE) {
+    return null;
+  }
+
+  return {
+    ...bestCandidate,
+    snappedPosition: {
+      x: Math.max(20, Math.round(bestCandidate.closestPoint.x - NODE_BOX_ESTIMATE.width / 2)),
+      y: Math.max(20, Math.round(bestCandidate.closestPoint.y - NODE_BOX_ESTIMATE.height / 2)),
+    },
+  };
 }
 
 function normalizeIncomingNodes(rawNodes) {
@@ -506,7 +675,113 @@ function WorkflowCanvasNode({ data, selected }) {
   );
 }
 
+function GoldenFlowEdge({
+  id,
+  sourceX,
+  sourceY,
+  sourcePosition,
+  targetX,
+  targetY,
+  targetPosition,
+  markerEnd,
+  selected,
+}) {
+  const [edgePath] = getSmoothStepPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+    borderRadius: 14,
+  });
+
+  // Stagger pulse timing by edge id so all connectors do not animate in lockstep.
+  const phaseOffsetMs =
+    (Array.from(String(id || ''))
+      .reduce((sum, char) => sum + char.charCodeAt(0), 0) %
+      1400) *
+    -1;
+  const phaseOffsetSeconds = phaseOffsetMs / 1000;
+  const motionPathId = `workflow-edge-motion-${String(id || 'edge').replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+
+  return (
+    <>
+      <BaseEdge
+        id={`${id}-base`}
+        path={edgePath}
+        markerEnd={markerEnd}
+        className="workflow-edge-base"
+        style={{
+          stroke: 'rgba(255, 255, 255, 0.68)',
+          strokeWidth: 2.05,
+          strokeDasharray: '6 10',
+          filter: 'drop-shadow(0 0 3px rgba(249, 146, 60, 0.22))',
+        }}
+      />
+
+      <path
+        d={edgePath}
+        className="workflow-edge-pulse-halo"
+        style={{
+          stroke: 'rgba(251, 191, 36, 0.42)',
+          strokeWidth: selected ? 6.1 : 5.5,
+          strokeDasharray: '96 220',
+          strokeLinecap: 'round',
+          fill: 'none',
+          pointerEvents: 'none',
+          animationDelay: `${phaseOffsetSeconds}s`,
+          animationDuration: selected ? '1.95s' : '2.35s',
+          filter: 'drop-shadow(0 0 10px rgba(249, 146, 60, 0.45))',
+        }}
+      />
+
+      <path
+        d={edgePath}
+        className={`workflow-edge-pulse-core ${selected ? 'workflow-edge-pulse-core-selected' : ''}`}
+        style={{
+          stroke: 'rgba(254, 240, 138, 0.98)',
+          strokeWidth: selected ? 3.8 : 3.3,
+          strokeDasharray: '36 280',
+          strokeLinecap: 'round',
+          fill: 'none',
+          pointerEvents: 'none',
+          animationDelay: `${phaseOffsetSeconds}s`,
+          animationDuration: selected ? '1.05s' : '1.35s',
+          filter:
+            'drop-shadow(0 0 6px rgba(254, 240, 138, 0.95)) drop-shadow(0 0 15px rgba(249, 146, 60, 0.65))',
+        }}
+      />
+
+      <path id={motionPathId} d={edgePath} fill="none" stroke="none" pointerEvents="none" />
+
+      <circle className="workflow-edge-pulse-dot" r={selected ? 4.1 : 3.6} pointerEvents="none">
+        <animateMotion
+          dur={selected ? '0.95s' : '1.2s'}
+          repeatCount="indefinite"
+          begin={`${phaseOffsetSeconds}s`}
+          rotate="auto"
+        >
+          <mpath href={`#${motionPathId}`} />
+        </animateMotion>
+      </circle>
+
+      <circle className="workflow-edge-pulse-dot-tail" r={selected ? 2.7 : 2.3} pointerEvents="none">
+        <animateMotion
+          dur={selected ? '0.95s' : '1.2s'}
+          repeatCount="indefinite"
+          begin={`${phaseOffsetSeconds - 0.22}s`}
+          rotate="auto"
+        >
+          <mpath href={`#${motionPathId}`} />
+        </animateMotion>
+      </circle>
+    </>
+  );
+}
+
 const nodeTypes = { workflowNode: WorkflowCanvasNode };
+const edgeTypes = { goldenFlow: GoldenFlowEdge };
 
 const INITIAL_NODES = cloneNodes(TEMPLATE_LIBRARY[0].nodes);
 const INITIAL_EDGES = createLinearEdges(INITIAL_NODES);
@@ -531,8 +806,26 @@ function WorkflowBuilderContent() {
 
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [leftSidebarWidth, setLeftSidebarWidth] = useState(() =>
+    getStoredSidebarWidth(
+      SIDEBAR_STORAGE_KEYS.left,
+      SIDEBAR_WIDTH_LIMITS.left.start,
+      SIDEBAR_WIDTH_LIMITS.left.min,
+      SIDEBAR_WIDTH_LIMITS.left.max
+    )
+  );
+  const [rightSidebarWidth, setRightSidebarWidth] = useState(() =>
+    getStoredSidebarWidth(
+      SIDEBAR_STORAGE_KEYS.right,
+      SIDEBAR_WIDTH_LIMITS.right.start,
+      SIDEBAR_WIDTH_LIMITS.right.min,
+      SIDEBAR_WIDTH_LIMITS.right.max
+    )
+  );
+  const [activeResizer, setActiveResizer] = useState(null);
 
   const flowWrapperRef = useRef(null);
+  const layoutRef = useRef(null);
 
   const selectedNode = useMemo(
     () => nodes.find((node) => node.id === selectedNodeId) || null,
@@ -547,6 +840,79 @@ function WorkflowBuilderContent() {
     const timeout = window.setTimeout(() => setSuccessMessage(null), 2800);
     return () => window.clearTimeout(timeout);
   }, [successMessage]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(SIDEBAR_STORAGE_KEYS.left, String(leftSidebarWidth));
+  }, [leftSidebarWidth]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(SIDEBAR_STORAGE_KEYS.right, String(rightSidebarWidth));
+  }, [rightSidebarWidth]);
+
+  useEffect(() => {
+    if (!activeResizer) {
+      return undefined;
+    }
+
+    const handlePointerMove = (event) => {
+      const layoutBounds = layoutRef.current?.getBoundingClientRect();
+      if (!layoutBounds) {
+        return;
+      }
+
+      if (activeResizer === 'left') {
+        const nextWidth = clamp(
+          event.clientX - layoutBounds.left,
+          SIDEBAR_WIDTH_LIMITS.left.min,
+          SIDEBAR_WIDTH_LIMITS.left.max
+        );
+        setLeftSidebarWidth(nextWidth);
+        return;
+      }
+
+      const nextWidth = clamp(
+        layoutBounds.right - event.clientX,
+        SIDEBAR_WIDTH_LIMITS.right.min,
+        SIDEBAR_WIDTH_LIMITS.right.max
+      );
+      setRightSidebarWidth(nextWidth);
+    };
+
+    const stopResizing = () => setActiveResizer(null);
+
+    const previousCursor = document.body.style.cursor;
+    const previousUserSelect = document.body.style.userSelect;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', stopResizing);
+    window.addEventListener('pointercancel', stopResizing);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', stopResizing);
+      window.removeEventListener('pointercancel', stopResizing);
+      document.body.style.cursor = previousCursor;
+      document.body.style.userSelect = previousUserSelect;
+    };
+  }, [activeResizer]);
+
+  const handleResizeStart = useCallback(
+    (side) => (event) => {
+      event.preventDefault();
+      setActiveResizer(side);
+    },
+    []
+  );
 
   const resetBuilder = useCallback(() => {
     setNodes(cloneNodes(INITIAL_NODES));
@@ -615,6 +981,51 @@ function WorkflowBuilderContent() {
     loadWorkflow(workflowId);
   }, [loadWorkflow, resetBuilder, workflowId]);
 
+  const spliceNodeIntoEdge = useCallback(
+    (candidate, nodeId) => {
+      if (!candidate || !nodeId) {
+        return;
+      }
+
+      const resolvedNodeId = String(nodeId);
+
+      setEdges((currentEdges) => {
+        const edgeToReplace = currentEdges.find((edge) => {
+          if (candidate.edgeId && edge.id === candidate.edgeId) {
+            return true;
+          }
+
+          return (
+            String(edge.source) === candidate.source &&
+            String(edge.target) === candidate.target &&
+            (!candidate.edgeId || edge.id === candidate.edgeId)
+          );
+        });
+
+        if (!edgeToReplace) {
+          return currentEdges;
+        }
+
+        const remainingEdges = currentEdges.filter((edge) => edge !== edgeToReplace);
+
+        return [
+          ...remainingEdges,
+          createStyledEdge({
+            source: candidate.source,
+            target: resolvedNodeId,
+            sourceHandle: candidate.sourceHandle,
+          }),
+          createStyledEdge({
+            source: resolvedNodeId,
+            target: candidate.target,
+            targetHandle: candidate.targetHandle,
+          }),
+        ];
+      });
+    },
+    [setEdges]
+  );
+
   const addNodeFromLibrary = useCallback(
     (templateId, position) => {
       const template = NODE_LIBRARY_MAP.get(templateId);
@@ -622,9 +1033,66 @@ function WorkflowBuilderContent() {
         return;
       }
 
-      setNodes((current) => [...current, createNodeFromTemplate(template, position)]);
+      const dropCenter = {
+        x: position.x + NODE_BOX_ESTIMATE.width / 2,
+        y: position.y + NODE_BOX_ESTIMATE.height / 2,
+      };
+      const candidate = findMagneticInsertCandidate(dropCenter, nodes, edges);
+
+      const baseNode = createNodeFromTemplate(template, position);
+      const nextNode = candidate
+        ? {
+            ...baseNode,
+            position: candidate.snappedPosition,
+          }
+        : baseNode;
+
+      setNodes((current) => [...current, nextNode]);
+      setSelectedNodeId(nextNode.id);
+
+      if (candidate) {
+        spliceNodeIntoEdge(candidate, nextNode.id);
+      }
     },
-    [setNodes]
+    [edges, nodes, setNodes, spliceNodeIntoEdge]
+  );
+
+  const handleNodeDragStop = useCallback(
+    (_, draggedNode) => {
+      const draggedNodeId = String(draggedNode.id);
+      const isConnected = edges.some(
+        (edge) => String(edge.source) === draggedNodeId || String(edge.target) === draggedNodeId
+      );
+
+      // Only auto-splice isolated nodes to avoid surprising rewires.
+      if (isConnected) {
+        return;
+      }
+
+      const dropCenter = {
+        x: draggedNode.position.x + NODE_BOX_ESTIMATE.width / 2,
+        y: draggedNode.position.y + NODE_BOX_ESTIMATE.height / 2,
+      };
+
+      const candidate = findMagneticInsertCandidate(dropCenter, nodes, edges, draggedNodeId);
+      if (!candidate) {
+        return;
+      }
+
+      setNodes((currentNodes) =>
+        currentNodes.map((node) =>
+          String(node.id) === draggedNodeId
+            ? {
+                ...node,
+                position: candidate.snappedPosition,
+              }
+            : node
+        )
+      );
+
+      spliceNodeIntoEdge(candidate, draggedNodeId);
+    },
+    [edges, nodes, setNodes, spliceNodeIntoEdge]
   );
 
   const handlePaletteDragStart = useCallback((event, templateId) => {
@@ -817,32 +1285,42 @@ function WorkflowBuilderContent() {
 
   return (
     <div className="h-full min-h-0 overflow-hidden bg-[#04060d]">
-      <div className="grid h-full min-h-0 grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)_312px]">
-        <aside className="hidden h-full min-h-0 border-r border-white/8 bg-[#070a13] lg:flex lg:flex-col">
-          <div className="border-b border-white/8 px-4 py-4">
-            <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-white/90">Nodes</h2>
-            <p className="mt-1 text-xs text-white/45">Drag or click to add</p>
+      <div
+        ref={layoutRef}
+        className="grid h-full min-h-0 grid-cols-1 lg:[grid-template-columns:var(--wf-left)_minmax(0,1fr)_var(--wf-right)]"
+        style={{
+          '--wf-left': `${leftSidebarWidth}px`,
+          '--wf-right': `${rightSidebarWidth}px`,
+          '--wf-header': '80px',
+        }}
+      >
+        <aside className="relative hidden h-full min-h-0 border-r border-white/8 bg-[#070a13] lg:flex lg:flex-col">
+          <div className="h-[var(--wf-header)] border-b border-white/8 px-4">
+            <div className="flex h-full flex-col justify-center">
+              <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-white/90">Nodes</h2>
+              <p className="mt-1 text-xs text-white/45">Drag or click to add</p>
+            </div>
           </div>
 
-          <div className="workflow-scrollbar min-h-0 flex-1 overflow-y-auto px-2 py-3">
+          <div className="workflow-scrollbar workflow-scrollbar-hidden min-h-0 flex-1 overflow-y-auto px-2 py-3">
             {NODE_SECTIONS.map((section) => (
-              <div key={section.id} className="mb-5">
+              <div key={section.id} className="mb-3">
                 <p className="px-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45">{section.title}</p>
-                <div className="mt-2 space-y-2">
+                <div className="mt-2 space-y-1.5">
                   {NODE_LIBRARY.filter((template) => template.group === section.id).map((template) => (
                     <button
                       key={template.id}
                       draggable
                       onDragStart={(event) => handlePaletteDragStart(event, template.id)}
                       onClick={() => addNodeFromLibrary(template.id, { x: 260, y: 200 })}
-                      className={`w-full rounded-xl border px-3 py-2.5 text-left transition ${template.cardClass}`}
+                      className={`w-full rounded-xl border px-2.5 py-1.5 text-left transition ${template.cardClass}`}
                       type="button"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className={`h-7 w-7 rounded-md ${template.iconClass}`} />
+                      <div className="flex items-center gap-2">
+                        <span className={`h-5 w-5 rounded-md ${template.iconClass}`} />
                         <div>
-                          <p className="text-[15px] font-semibold text-white/95">{template.label}</p>
-                          <p className="text-xs text-white/45">{template.subtitle}</p>
+                          <p className="text-[13px] leading-tight font-semibold text-white/95">{template.label}</p>
+                          <p className="text-[10px] leading-snug text-white/45">{template.subtitle}</p>
                         </div>
                       </div>
                     </button>
@@ -853,16 +1331,16 @@ function WorkflowBuilderContent() {
 
             <div className="mt-2 border-t border-white/8 pt-4">
               <p className="px-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45">Templates</p>
-              <div className="mt-2 space-y-2">
+              <div className="mt-2 space-y-1.5">
                 {TEMPLATE_LIBRARY.map((template) => (
                   <button
                     key={template.id}
                     onClick={() => applyTemplate(template)}
-                    className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-left transition hover:border-white/25 hover:bg-white/10"
+                    className="w-full rounded-lg border border-white/12 bg-white/6 px-2.5 py-1.5 text-left transition hover:border-white/25 hover:bg-white/10"
                     type="button"
                   >
-                    <p className="text-sm font-semibold text-white/90">{template.name}</p>
-                    <p className="mt-0.5 text-xs text-white/45">{template.description}</p>
+                    <p className="text-[13px] font-semibold text-white/90">{template.name}</p>
+                    <p className="mt-0.5 text-[11px] text-white/45">{template.description}</p>
                   </button>
                 ))}
               </div>
@@ -879,7 +1357,7 @@ function WorkflowBuilderContent() {
                   navigate(`/workflows?id=${selectedId}`);
                 }
               }}
-              className="w-full rounded-lg border border-white/12 bg-[#0d111a] px-3 py-2 text-sm text-white/80 focus:border-accent/60 focus:outline-none"
+              className="w-full rounded-lg border border-white/12 bg-[#0d111a] px-2.5 py-1.5 text-[13px] text-white/80 focus:border-accent/60 focus:outline-none"
             >
               <option value="">Open workflow</option>
               {workflowCatalog.map((workflow) => {
@@ -892,11 +1370,18 @@ function WorkflowBuilderContent() {
               })}
             </select>
           </div>
+
+          <button
+            type="button"
+            onPointerDown={handleResizeStart('left')}
+            aria-label="Resize left sidebar"
+            className="absolute inset-y-0 right-0 z-20 hidden w-2 translate-x-1/2 cursor-col-resize bg-transparent focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/60 lg:block"
+          />
         </aside>
 
         <section className="relative h-full min-h-0 overflow-hidden bg-[#04060d]">
-          <div className="absolute inset-x-3 top-3 z-20 rounded-xl border border-white/10 bg-[#0b101b]/90 p-3 shadow-[0_14px_36px_rgba(0,0,0,0.45)] backdrop-blur-md">
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="absolute inset-x-0 top-0 z-20 h-[var(--wf-header)] border-b border-white/8 bg-[#070a13]/94 px-4 backdrop-blur-md">
+            <div className="flex h-full flex-wrap items-center gap-2">
               <input
                 type="text"
                 value={workflowName}
@@ -935,7 +1420,7 @@ function WorkflowBuilderContent() {
             </div>
 
             {(errorMessage || successMessage || loadingWorkflow) && (
-              <div className="mt-2 flex flex-wrap gap-2 text-xs">
+              <div className="absolute left-4 right-4 top-[calc(var(--wf-header)+0.35rem)] z-10 flex flex-wrap gap-2 text-xs">
                 {loadingWorkflow && (
                   <span className="rounded-full border border-blue-400/35 bg-blue-500/12 px-3 py-1 text-blue-200">
                     Loading workflow...
@@ -954,7 +1439,7 @@ function WorkflowBuilderContent() {
               </div>
             )}
 
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden">
+            <div className="absolute left-4 right-4 top-[calc(var(--wf-header)+0.35rem)] z-10 flex gap-2 overflow-x-auto pb-1 lg:hidden">
               {NODE_LIBRARY.map((template) => (
                 <button
                   key={template.id}
@@ -968,11 +1453,12 @@ function WorkflowBuilderContent() {
             </div>
           </div>
 
-          <div ref={flowWrapperRef} className="h-full w-full pt-24">
+          <div ref={flowWrapperRef} className="h-full w-full pt-[var(--wf-header)]">
             <ReactFlow
               nodes={nodes}
               edges={edges}
               nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               onConnect={handleConnect}
@@ -980,13 +1466,18 @@ function WorkflowBuilderContent() {
               onDragOver={handleCanvasDragOver}
               onSelectionChange={handleSelectionChange}
               onNodeClick={(_, node) => setSelectedNodeId(node.id)}
+              onNodeDragStop={handleNodeDragStop}
               onPaneClick={() => setSelectedNodeId(null)}
               onInit={setReactFlowInstance}
               fitView
               fitViewOptions={{ padding: 0.25 }}
               deleteKeyCode={['Delete', 'Backspace']}
               defaultEdgeOptions={DEFAULT_EDGE_OPTIONS}
-              connectionLineStyle={{ stroke: 'rgba(255,255,255,0.42)', strokeWidth: 2 }}
+              connectionLineStyle={{
+                stroke: 'rgba(255, 255, 255, 0.74)',
+                strokeWidth: 2,
+                filter: 'drop-shadow(0 0 6px rgba(249, 115, 22, 0.44))',
+              }}
               snapToGrid
               snapGrid={[24, 24]}
               panOnScroll
@@ -1003,10 +1494,11 @@ function WorkflowBuilderContent() {
                   return '#60a5fa';
                 }}
                 maskColor="rgba(6, 9, 18, 0.82)"
-                className="rounded-xl! border! border-white/12! bg-[#0b101b]/90!"
+                className="workflow-minimap"
+                style={{ width: 158, height: 96 }}
               />
 
-              <Controls className="rounded-xl! border! border-white/12! bg-[#0b101b]/90! shadow-xl!" />
+              <Controls className="workflow-controls" />
 
               <Background
                 id="major-lines"
@@ -1022,96 +1514,116 @@ function WorkflowBuilderContent() {
                 size={1.3}
                 color="rgba(255,255,255,0.17)"
               />
+              <Background
+                id="accent-lines"
+                variant={BackgroundVariant.Lines}
+                gap={360}
+                size={1.4}
+                color="rgba(249, 146, 60, 0.11)"
+              />
             </ReactFlow>
           </div>
         </section>
 
-        <aside className="workflow-scrollbar hidden h-full min-h-0 overflow-y-auto border-l border-white/8 bg-[#070a13] p-4 lg:block">
-          <h2 className="mb-3 text-sm font-bold uppercase tracking-[0.14em] text-white/90">Inspector</h2>
-
-          {!selectedNode && (
-            <div className="rounded-xl border border-white/12 bg-white/6 p-4 text-sm text-white/65">
-              Select a node in the canvas to edit details and configuration.
+        <aside className="relative hidden h-full min-h-0 border-l border-white/8 bg-[#070a13] lg:flex lg:flex-col">
+          <div className="h-[var(--wf-header)] border-b border-white/8 px-4">
+            <div className="flex h-full items-center">
+              <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-white/90">Inspector</h2>
             </div>
-          )}
-
-          {selectedNode && (
-            <div className="space-y-4">
-              <div className="rounded-xl border border-white/12 bg-white/6 p-4">
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
-                  Label
-                </label>
-                <input
-                  value={selectedNode.data.label}
-                  onChange={(event) => patchSelectedNodeData({ label: event.target.value })}
-                  className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
-                />
-
-                <label className="mb-1 mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
-                  Subtitle
-                </label>
-                <input
-                  value={selectedNode.data.subtitle}
-                  onChange={(event) => patchSelectedNodeData({ subtitle: event.target.value })}
-                  className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
-                />
-
-                <label className="mb-1 mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
-                  Category
-                </label>
-                <select
-                  value={selectedNode.data.category}
-                  onChange={(event) => patchSelectedNodeData({ category: event.target.value })}
-                  className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
-                >
-                  <option value="trigger">Trigger</option>
-                  <option value="action">Action</option>
-                  <option value="wait">Wait</option>
-                  <option value="decision">Decision</option>
-                </select>
-              </div>
-
-              <div className="rounded-xl border border-white/12 bg-white/6 p-4">
-                <h3 className="mb-2 text-sm font-semibold text-white/90">Step Configuration</h3>
-
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
-                  Delay (hours)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={selectedNode.data.config?.delayHours || 0}
-                  onChange={(event) => patchSelectedNodeConfig('delayHours', Number(event.target.value || 0))}
-                  className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
-                />
-
-                <label className="mb-1 mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
-                  Channel
-                </label>
-                <input
-                  value={selectedNode.data.config?.channel || ''}
-                  onChange={(event) => patchSelectedNodeConfig('channel', event.target.value)}
-                  placeholder="email, linkedin, webhook"
-                  className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white placeholder:text-white/35 focus:border-accent/60 focus:outline-none"
-                />
-              </div>
-
-              <button
-                type="button"
-                onClick={deleteSelectedNode}
-                className="w-full rounded-lg border border-red-400/45 bg-red-500/12 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-500/22"
-              >
-                Delete Selected Node
-              </button>
-            </div>
-          )}
-
-          <div className="mt-6 rounded-xl border border-white/12 bg-white/6 p-4">
-            <h3 className="mb-2 text-sm font-semibold text-white/90">Canvas Stats</h3>
-            <p className="text-sm text-white/70">Nodes: {nodes.length}</p>
-            <p className="text-sm text-white/70">Connections: {edges.length}</p>
-            <p className="mt-2 text-xs text-white/45">Tip: drag from left palette and connect steps by dragging from node handle to handle.</p>
           </div>
+
+          <div className="workflow-scrollbar min-h-0 flex-1 overflow-y-auto p-4">
+            {!selectedNode && (
+              <div className="rounded-xl border border-white/12 bg-white/6 p-4 text-sm text-white/65">
+                Select a node in the canvas to edit details and configuration.
+              </div>
+            )}
+
+            {selectedNode && (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-white/12 bg-white/6 p-4">
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
+                    Label
+                  </label>
+                  <input
+                    value={selectedNode.data.label}
+                    onChange={(event) => patchSelectedNodeData({ label: event.target.value })}
+                    className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
+                  />
+
+                  <label className="mb-1 mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
+                    Subtitle
+                  </label>
+                  <input
+                    value={selectedNode.data.subtitle}
+                    onChange={(event) => patchSelectedNodeData({ subtitle: event.target.value })}
+                    className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
+                  />
+
+                  <label className="mb-1 mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
+                    Category
+                  </label>
+                  <select
+                    value={selectedNode.data.category}
+                    onChange={(event) => patchSelectedNodeData({ category: event.target.value })}
+                    className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
+                  >
+                    <option value="trigger">Trigger</option>
+                    <option value="action">Action</option>
+                    <option value="wait">Wait</option>
+                    <option value="decision">Decision</option>
+                  </select>
+                </div>
+
+                <div className="rounded-xl border border-white/12 bg-white/6 p-4">
+                  <h3 className="mb-2 text-sm font-semibold text-white/90">Step Configuration</h3>
+
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
+                    Delay (hours)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={selectedNode.data.config?.delayHours || 0}
+                    onChange={(event) => patchSelectedNodeConfig('delayHours', Number(event.target.value || 0))}
+                    className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white focus:border-accent/60 focus:outline-none"
+                  />
+
+                  <label className="mb-1 mt-3 block text-xs font-semibold uppercase tracking-[0.08em] text-white/45">
+                    Channel
+                  </label>
+                  <input
+                    value={selectedNode.data.config?.channel || ''}
+                    onChange={(event) => patchSelectedNodeConfig('channel', event.target.value)}
+                    placeholder="email, linkedin, webhook"
+                    className="w-full rounded-lg border border-white/12 bg-black/25 px-3 py-2 text-sm text-white placeholder:text-white/35 focus:border-accent/60 focus:outline-none"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={deleteSelectedNode}
+                  className="w-full rounded-lg border border-red-400/45 bg-red-500/12 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-500/22"
+                >
+                  Delete Selected Node
+                </button>
+              </div>
+            )}
+
+            <div className="mt-6 rounded-xl border border-white/12 bg-white/6 p-4">
+              <h3 className="mb-2 text-sm font-semibold text-white/90">Canvas Stats</h3>
+              <p className="text-sm text-white/70">Nodes: {nodes.length}</p>
+              <p className="text-sm text-white/70">Connections: {edges.length}</p>
+              <p className="mt-2 text-xs text-white/45">Tip: drag from left palette and connect steps by dragging from node handle to handle.</p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onPointerDown={handleResizeStart('right')}
+            aria-label="Resize right sidebar"
+            className="absolute inset-y-0 left-0 z-20 hidden w-2 -translate-x-1/2 cursor-col-resize bg-transparent focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/60 lg:block"
+          />
         </aside>
       </div>
     </div>

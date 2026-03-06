@@ -54,6 +54,64 @@
 }
 
 @layer utilities {
+  .react-flow__controls.workflow-controls {
+    @apply overflow-hidden;
+    border: 1px solid #ffffff1f !important;
+    border-radius: 9px !important;
+    background: #0b101be6 !important;
+    box-shadow: 0 12px 28px #00000059 !important;
+    backdrop-filter: blur(8px);
+  }
+
+  .react-flow__controls.workflow-controls .react-flow__controls-button {
+    width: 28px !important;
+    height: 28px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #ffffff14 !important;
+    background: transparent !important;
+    color: #e2e8f0 !important;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+
+  .react-flow__controls.workflow-controls .react-flow__controls-button:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .react-flow__controls.workflow-controls .react-flow__controls-button:hover {
+    background: #ffffff14 !important;
+    color: #ffffff !important;
+  }
+
+  .react-flow__controls.workflow-controls .react-flow__controls-button svg {
+    max-width: 12px !important;
+    max-height: 12px !important;
+    fill: currentColor;
+  }
+
+  .react-flow__controls.workflow-controls .react-flow__controls-button:disabled {
+    opacity: 0.45;
+  }
+
+  .react-flow__controls.workflow-controls .react-flow__controls-button:disabled svg {
+    fill-opacity: 0.7;
+  }
+
+  .react-flow__minimap.workflow-minimap {
+    border: 1px solid #ffffff1f !important;
+    border-radius: 12px !important;
+    background: #0b101be6 !important;
+    box-shadow: 0 12px 28px #00000059 !important;
+    backdrop-filter: blur(8px);
+  }
+
+  .react-flow__minimap.workflow-minimap svg {
+    background: transparent !important;
+  }
+
+  .react-flow__minimap.workflow-minimap .react-flow__minimap-mask {
+    fill: #050913c9 !important;
+  }
+
   .workflow-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: #94a3b880 #ffffff14;
@@ -79,6 +137,45 @@
     background: linear-gradient(180deg, #94a3b8e6, #64748be6);
   }
 
+  .workflow-scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none !important;
+  }
+
+  .workflow-scrollbar-hidden::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none;
+  }
+
+  .workflow-edge-pulse-halo {
+    animation: workflow-edge-pulse-halo 2.6s linear infinite;
+    opacity: 0.78;
+  }
+
+  .workflow-edge-pulse-core {
+    animation: workflow-edge-pulse-core 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    opacity: 0.97;
+  }
+
+  .workflow-edge-pulse-core-selected {
+    animation-duration: 1.2s;
+  }
+
+  .workflow-edge-pulse-dot {
+    fill: rgba(255, 244, 182, 1);
+    filter: drop-shadow(0 0 7px rgba(255, 214, 102, 0.98)) drop-shadow(0 0 18px rgba(249, 146, 60, 0.82));
+    animation: workflow-edge-dot-flicker 0.7s ease-in-out infinite alternate;
+    opacity: 0.98;
+  }
+
+  .workflow-edge-pulse-dot-tail {
+    fill: rgba(251, 191, 36, 0.95);
+    filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.9)) drop-shadow(0 0 14px rgba(249, 146, 60, 0.68));
+    animation: workflow-edge-dot-flicker 0.7s ease-in-out infinite alternate;
+    opacity: 0.88;
+  }
+
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #ffffff 0%, #ffffffb3 100%);
@@ -94,6 +191,52 @@
     background: linear-gradient(145deg, #1e1e2a80 0%, #0f0f144d 100%);
     border: 1px solid #ffffff0f;
     box-shadow: inset 0 1px 0 #ffffff1a, 0 20px 40px #00000066;
+  }
+}
+
+@keyframes workflow-edge-pulse-halo {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0.45;
+  }
+
+  45% {
+    opacity: 0.8;
+  }
+
+  100% {
+    stroke-dashoffset: -380;
+    opacity: 0.45;
+  }
+}
+
+@keyframes workflow-edge-pulse-core {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0.72;
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  62% {
+    opacity: 0.86;
+  }
+
+  100% {
+    stroke-dashoffset: -316;
+    opacity: 0.72;
+  }
+}
+
+@keyframes workflow-edge-dot-flicker {
+  0% {
+    opacity: 0.78;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 
