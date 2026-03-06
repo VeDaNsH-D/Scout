@@ -33,4 +33,8 @@ export const API_ENDPOINTS = {
   MESSAGES: {
     LIST: '/api/messages',
   },
+  // Chatbot
+  CHATBOT: {
+    CHAT: '/api/chatbot/chat',
+  },
 };

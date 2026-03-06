@@ -28,9 +28,9 @@ class Scheduler {
   async scheduleNextStep(jobData, delayMs = 0) {
     try {
       const jobId = `${jobData.workflowRunId}-${jobData.stepId}-${Date.now()}`;
-      
+
       console.log(`[Scheduler] 🕒 Scheduling job ${jobId} with delay ${delayMs}ms`);
-      
+
       const job = await workflowQueue.add(
         'execute-step',
         jobData,
@@ -41,7 +41,7 @@ class Scheduler {
           removeOnFail: false
         }
       );
-      
+
       return job;
     } catch (error) {
       console.error('[Scheduler] Error scheduling job:', error);
@@ -56,14 +56,14 @@ class Scheduler {
    */
   parseWaitTime(waitString) {
     if (!waitString) return 0;
-    
+
     const value = parseInt(waitString);
     if (isNaN(value)) return 0;
-    
+
     if (waitString.includes('m')) return value * 60 * 1000;
     if (waitString.includes('h')) return value * 60 * 60 * 1000;
     if (waitString.includes('d')) return value * 24 * 60 * 60 * 1000;
-    
+
     // Default to hours if no unit specified
     return value * 60 * 60 * 1000;
   }

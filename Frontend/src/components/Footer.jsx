@@ -1,4 +1,4 @@
-import logoPng from '../assets/logo.png';
+import logoSvg from '../assets/logo.svg';
 import React from 'react';
 const footerLinks = {
     Product: ['Features', 'Pricing', 'Integrations', 'Changelog'],
@@ -14,8 +14,8 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-8 md:gap-12 mb-24">
                     <div className="max-md:max-w-full md:col-span-2 max-md:col-span-1">
                         <div className="flex items-center gap-2.5 text-lg font-bold tracking-tight mb-6 text-white">
-                            <img src={logoPng} alt="NODEtorious logo" className="w-9 h-9 object-contain grayscale brightness-200 contrast-200" />
-                            <span>NODEtorious</span>
+                            <img src={logoSvg} alt="Scout logo" className="w-9 h-9 object-contain" />
+                            <span>Scout</span>
                         </div>
                         <p className="text-sm text-white/45 leading-[1.6]">
                             AI-powered workflow automation for modern outreach teams.
@@ -37,7 +37,7 @@ export default function Footer() {
                 </div>
 
                 <div className="flex items-center justify-between pt-8 border-t border-white/10 text-sm text-white/45 max-md:flex-col max-md:gap-6 max-md:text-center">
-                    <span>© 2026 NODEtorious. All rights reserved.</span>
+                    <span>© 2026 Scout. All rights reserved.</span>
                     <div className="flex gap-4">
                         <a href="#" aria-label="Twitter" className="flex items-center justify-center w-9 h-9 rounded-full text-white/45 bg-[#0a0a0f] border border-white/10 transition-all duration-150 hover:text-[#f97316] hover:bg-[#f97316]/10 hover:border-[#f97316]/30 hover:shadow-[0_0_15px_#f9731633] hover:-translate-y-0.5">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

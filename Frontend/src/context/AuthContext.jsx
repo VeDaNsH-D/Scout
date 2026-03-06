@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/authService';
+import { apiService } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -49,6 +50,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const loginWithToken = async (token) => {
+    setError(null);
+    try {
+      apiService.setToken(token);
+      const userData = await authService.getCurrentUser();
+      setUser(userData.user || userData);
+    } catch (err) {
+      apiService.removeToken();
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -61,6 +75,7 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!user,
     register,
     login,
+    loginWithToken,
     logout,
     checkAuth,
   };

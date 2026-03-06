@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema(
             sparse: true
         },
 
+        profile_picture: {
+            type: String,
+            default: null
+        },
+
         // Company information
         company_name: {
             type: String,
