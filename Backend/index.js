@@ -3,12 +3,17 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const os = require("os");
+const http = require("http");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth_routes");
 const leadRoutes = require("./routes/lead_routes");
+const workflowRunsRoutes = require("./routes/workflowRuns.routes");
+const workflowCollaboration = require("./sockets/workflowCollaboration");
+const { initWorker } = require("./workers/jobWorkers");
 
 const app = express();
+const server = http.createServer(app);
 
 /* Middleware */
 app.use(cors());
@@ -28,8 +33,19 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/leads", leadRoutes);
 
+/* Workflow routes */
+app.use("/api", workflowRunsRoutes);
+
+/* Initialize Socket.IO for real-time collaboration */
+const io = workflowCollaboration(server);
+console.log("[Server] ✅ Socket.IO initialized for real-time collaboration");
+
+/* Initialize Job Worker for workflow processing */
+const worker = initWorker();
+console.log("[Server] ✅ Job worker initialized for workflow execution");
+
 /* Start server */
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 
     const networkInterfaces = os.networkInterfaces();
     let networkIP = "localhost";
@@ -45,4 +61,5 @@ app.listen(PORT, () => {
     console.log("Backend running on:");
     console.log(`   Local:   http://localhost:${PORT}`);
     console.log(`   Network: http://${networkIP}:${PORT}`);
+    console.log("[Server] 🚀 Workflow engine, scheduler, and real-time collaboration are active!");
 });

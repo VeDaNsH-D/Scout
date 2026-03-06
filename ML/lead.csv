@@ -1,0 +1,51 @@
+role,industry,company_size,growth_rate,seniority,lead_source
+Marketing Manager,AI,small,0.13,Senior,Referral
+VP Sales,SaaS,large,0.06,Junior,Inbound
+VP Sales,AI,small,0.21,Executive,Conference
+HR Director,Fintech,medium,0.17,Executive,LinkedIn
+HR Director,AI,large,0.01,Mid,Referral
+CTO,Fintech,enterprise,0.08,Senior,ColdList
+Marketing Manager,Fintech,large,0.14,Mid,ColdList
+VP Sales,Ecommerce,medium,0.09,Executive,ColdList
+Founder,Healthcare,enterprise,0.3,Junior,ColdList
+HR Director,SaaS,enterprise,0.03,Mid,LinkedIn
+CEO,Healthcare,medium,0.06,Mid,LinkedIn
+CEO,Cybersecurity,enterprise,0.17,Executive,LinkedIn
+CEO,AI,large,0.11,Executive,Inbound
+Marketing Manager,Healthcare,small,0.2,Executive,Referral
+HR Director,AI,large,0.29,Mid,Conference
+CTO,Cybersecurity,large,0.22,Senior,Referral
+Founder,Fintech,enterprise,0.26,Mid,Inbound
+Founder,Cybersecurity,large,0.29,Junior,ColdList
+Founder,SaaS,large,0.23,Executive,ColdList
+VP Sales,Fintech,medium,0.02,Senior,LinkedIn
+CEO,Cybersecurity,enterprise,0.03,Mid,Referral
+Marketing Manager,AI,large,0.29,Junior,Conference
+CTO,AI,large,0.01,Mid,ColdList
+Founder,SaaS,enterprise,0.02,Mid,ColdList
+Marketing Manager,SaaS,small,0.17,Executive,Inbound
+HR Director,Healthcare,large,0.14,Mid,ColdList
+Engineering Manager,SaaS,large,0.24,Executive,Conference
+HR Director,Fintech,medium,0.14,Junior,Referral
+VP Sales,Healthcare,small,0.01,Executive,Conference
+CTO,AI,enterprise,0.27,Mid,Conference
+Engineering Manager,Healthcare,medium,0.27,Senior,Referral
+CEO,Fintech,large,0.02,Executive,ColdList
+Marketing Manager,Fintech,medium,0.19,Junior,Referral
+Marketing Manager,Healthcare,large,0.08,Junior,Conference
+CEO,SaaS,small,0.26,Senior,Referral
+HR Director,Healthcare,enterprise,0.27,Senior,LinkedIn
+Founder,Cybersecurity,enterprise,0.19,Senior,ColdList
+Marketing Manager,Fintech,medium,0.11,Senior,ColdList
+VP Sales,SaaS,large,0.14,Junior,ColdList
+CTO,Healthcare,small,0.08,Mid,Conference
+CTO,Cybersecurity,large,0.29,Mid,LinkedIn
+Founder,Cybersecurity,medium,0.18,Junior,Conference
+Marketing Manager,Ecommerce,large,0.08,Junior,LinkedIn
+Founder,Healthcare,medium,0.25,Junior,Inbound
+HR Director,AI,small,0.23,Junior,Conference
+Founder,Fintech,medium,0.22,Mid,LinkedIn
+Marketing Manager,Fintech,large,0.06,Senior,ColdList
+Marketing Manager,Fintech,small,0.14,Senior,LinkedIn
+CTO,AI,small,0.06,Executive,LinkedIn
+VP Sales,Healthcare,enterprise,0.26,Mid,Conference
