@@ -6,8 +6,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const { register, error: authError } = useAuth();
   const [formData, setFormData] = useState({
-    full_name: '',
-    company_name: '',
+    name: '',
     email: '',
     password: '',
   });
@@ -24,11 +23,6 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (!formData.full_name.trim() || !formData.company_name.trim() || !formData.email.trim() || !formData.password) {
-      setError('Full name, company name, email, and password are required');
-      return;
-    }
 
     if (formData.password.length < 8) {
       setError('Password must be at least 8 characters');
@@ -65,31 +59,16 @@ export default function Signup() {
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-text-secondary" htmlFor="full_name">
+            <label className="text-sm font-medium text-text-secondary" htmlFor="name">
               Full name
             </label>
             <input
-              id="full_name"
+              id="name"
               type="text"
-              value={formData.full_name}
+              value={formData.name}
               onChange={handleChange}
               className="w-full rounded-lg border border-border-subtle bg-bg-secondary px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
               placeholder="Ada Lovelace"
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-text-secondary" htmlFor="company_name">
-              Company name
-            </label>
-            <input
-              id="company_name"
-              type="text"
-              value={formData.company_name}
-              onChange={handleChange}
-              className="w-full rounded-lg border border-border-subtle bg-bg-secondary px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-              placeholder="Acme Inc."
               required
             />
           </div>
