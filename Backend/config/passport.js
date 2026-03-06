@@ -16,6 +16,7 @@ passport.use(
 
                 const email = profile?.emails?.[0]?.value?.toLowerCase() || null;
                 const fullName = profile?.displayName || null;
+                const profilePicture = profile?.photos?.[0]?.value || null;
 
                 if (!email) {
                     return done(new Error("Google account email is required"), null);
@@ -30,6 +31,7 @@ passport.use(
                         googleId: profile.id,
                         full_name: fullName,
                         email,
+                        profile_picture: profilePicture,
                         company_name: null,
                         company_website: null
                     });
@@ -38,6 +40,12 @@ passport.use(
                     if (!user.full_name && fullName) {
                         user.full_name = fullName;
                     }
+                    if (!user.profile_picture && profilePicture) {
+                        user.profile_picture = profilePicture;
+                    }
+                    await user.save();
+                } else if (profilePicture && user.profile_picture !== profilePicture) {
+                    user.profile_picture = profilePicture;
                     await user.save();
                 }
 

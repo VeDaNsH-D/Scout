@@ -17,7 +17,7 @@ router.post("/chat", async (req, res) => {
 
         // 2️⃣ build RAG prompt
         const prompt = `
-You are an AI assistant for the AuraReach platform.
+You are an AI assistant for the Scout platform.
 
 Use the context below to answer the question.
 

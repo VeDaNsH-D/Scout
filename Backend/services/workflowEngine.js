@@ -22,8 +22,18 @@ class WorkflowEngine {
 
       console.log(`[WorkflowEngine] 🚀 Starting workflow: ${workflow.name} for ${leadIds.length} leads`);
 
-      const startNode = workflow.nodes.find(n => n.type === 'start');
-      if (!startNode) throw new Error('Workflow has no start node');
+      const nodeList = Array.isArray(workflow.nodes) ? workflow.nodes : [];
+      const edgeList = Array.isArray(workflow.edges) ? workflow.edges : [];
+      const incomingTargets = new Set(edgeList.map((edge) => String(edge?.target || '')));
+
+      const startNode =
+        nodeList.find((node) => node?.type === 'start') ||
+        nodeList.find((node) => node?.type === 'trigger') ||
+        nodeList.find((node) => node?.data?.category === 'trigger') ||
+        nodeList.find((node) => !incomingTargets.has(String(node?.id || ''))) ||
+        nodeList[0];
+
+      if (!startNode) throw new Error('Workflow has no nodes to execute');
 
       const runs = [];
 
@@ -110,7 +120,12 @@ class WorkflowEngine {
           let delayMs = 0;
 
           if (nextNode.type === 'wait') {
-            delayMs = scheduler.parseWaitTime(nextNode.data?.waitTime || '0h');
+            const delayHours = Number(nextNode.data?.config?.delayHours || 0);
+            if (Number.isFinite(delayHours) && delayHours > 0) {
+              delayMs = delayHours * 60 * 60 * 1000;
+            } else {
+              delayMs = scheduler.parseWaitTime(nextNode.data?.waitTime || '0h');
+            }
           }
 
           await scheduler.scheduleNextStep({
@@ -136,6 +151,52 @@ class WorkflowEngine {
     switch (node.type) {
       case 'start':
         console.log(`[WorkflowEngine] Flow started for lead ${lead.email}`);
+        break;
+
+      case 'trigger':
+        // Trigger nodes are event markers; execution simply advances to outgoing edges.
+        console.log(`[WorkflowEngine] Trigger node reached for lead ${lead.email}`);
+        break;
+
+      case 'action':
+        // Send email when the action is configured for email channel or appears email-related by label.
+        {
+          const actionLabel = String(node.data?.label || node.label || 'Action');
+          const channel = String(node.data?.config?.channel || '').toLowerCase().trim();
+          const shouldEmail = channel === 'email' || /email|follow\s*-?\s*up|confirmation|send/i.test(actionLabel);
+
+          if (shouldEmail) {
+            if (!lead.email) {
+              console.log(`[WorkflowEngine] Skipping email action for lead ${lead._id}: missing email address`);
+              break;
+            }
+
+            const subject = node.data?.config?.subject || `${workflow.name}: ${actionLabel}`;
+            const messageBody =
+              node.data?.config?.body ||
+              `Hi ${lead.name || 'there'},\n\nThis is an automated follow-up from ${workflow.name}.\n\nThanks.`;
+
+            const result = await emailService.sendEmail(lead.email, subject, messageBody);
+
+            await Message.create({
+              lead_id: lead._id,
+              workflow_run_id: run._id,
+              channel: 'email',
+              content: messageBody,
+              sent_at: new Date(),
+              status: result.success ? 'sent' : 'failed',
+            });
+
+            break;
+          }
+
+          console.log(`[WorkflowEngine] Action node executed for lead ${lead.email}`);
+        }
+        break;
+
+      case 'decision':
+        // Decision branching is represented by outgoing edges; evaluation logic can be added later.
+        console.log(`[WorkflowEngine] Decision node evaluated for lead ${lead.email}`);
         break;
 
       case 'email':
