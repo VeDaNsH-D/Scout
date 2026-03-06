@@ -148,7 +148,7 @@ plt.show()
 # 10. SYSTEM PIPELINE (COMMENTED OUT FOR INTEGRATION LATER)
 # ============================================================
 
-"""
+
 # Example function that the automation system would call
 
 def score_leads(input_file):
@@ -185,4 +185,3 @@ scored_leads = score_leads("lead.csv")
 scored_leads.to_csv("scored_leads.csv", index=False)
 
 print(scored_leads.head())
-"""
