@@ -34,6 +34,7 @@ app.use(requestLogger);
 app.use("/api/chatbot", chatbotRoutes);
 app.use(passport.initialize());
 app.use("/auth", googleAuthRoutes);
+app.use("/api/auth", googleAuthRoutes);
 /* Validate required environment variables */
 validateEnv();
 
