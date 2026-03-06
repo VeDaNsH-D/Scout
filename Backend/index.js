@@ -1,11 +1,25 @@
 require("dotenv").config();
 
 const express = require("express");
+const http = require("http");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const os = require("os");
 
+// Load Services & Routes (Person 1)
+const workflowRunsRoutes = require("./routes/workflowRuns.routes");
+const messagesRoutes = require("./routes/messages.routes");
+const workflowCollaboration = require("./sockets/workflowCollaboration");
+const { initWorker } = require("./workers/jobWorker");
+
 const app = express();
+const server = http.createServer(app);
+
+// Initialize Socket.IO
+workflowCollaboration(server);
+
+// Initialize Background Worker
+initWorker();
 
 app.use(cors());
 app.use(express.json());
@@ -22,13 +36,17 @@ mongoose
         console.error("Mongo connection error:", err);
     });
 
+/* Routes */
+app.use("/api", workflowRunsRoutes);
+app.use("/api/messages", messagesRoutes);
+
 /* Root route */
 app.get("/", (req, res) => {
     res.send("Backend is running 🚀");
 });
 
 /* Start server */
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 
     const networkInterfaces = os.networkInterfaces();
     let networkIP = "localhost";
