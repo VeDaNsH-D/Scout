@@ -16,7 +16,7 @@ export default function CTA() {
                         Join thousands of teams using NODEtorious to automate personalized
                         outreach and close more deals, faster.
                     </p>
-                    <div className="flex flex-col items-center gap-6">
+                    <div className="flex flex-col items-center gap-4">
                         <Link
                             to="/signup"
                             className="inline-flex items-center gap-2 px-10 py-[18px] text-lg bg-[#f97316] text-[#080810] rounded-full shadow-[0_0_40px_#f9731666] transition-all duration-300 font-bold hover:bg-[#fb923c] hover:shadow-[0_0_60px_#f9731699] hover:-translate-y-0.5"
@@ -26,7 +26,15 @@ export default function CTA() {
                                 <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </Link>
-                        <span className="text-sm text-white/45 mt-2">Free to start · No credit card required</span>
+                        <a
+                            href="/extension/intelligence-scout-extension.zip"
+                            className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full border border-white/20 text-white/80 hover:text-white hover:border-white/40 transition"
+                        >
+                            <span>Download Intelligence Scout Extension</span>
+                        </a>
+                        <span className="text-sm text-white/45 mt-1">
+                            Works in Chromium-based browsers (Chrome, Edge, Brave, Arc) via “Load unpacked”.
+                        </span>
                     </div>
                 </div>
             </div>
