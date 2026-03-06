@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
         // Basic user info
         full_name: {
             type: String,
-            required: true
+            default: null
         },
 
         email: {
@@ -18,10 +18,16 @@ const userSchema = new mongoose.Schema(
             type: String
         },
 
+        googleId: {
+            type: String,
+            unique: true,
+            sparse: true
+        },
+
         // Company information
         company_name: {
             type: String,
-            required: true
+            default: null
         },
 
         company_website: {
@@ -88,4 +94,4 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);
