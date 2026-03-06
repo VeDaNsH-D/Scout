@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { GOOGLE_AUTH_URL } from '../config/api';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,14 +17,21 @@ export default function Login() {
   // Handle Google OAuth redirect with token
   useEffect(() => {
     const token = searchParams.get('token');
+    const oauthError = searchParams.get('oauthError');
+
     if (token) {
       setLoading(true);
       loginWithToken(token)
         .then(() => navigate('/dashboard'))
         .catch((err) => setError(err.message || 'Google login failed.'))
         .finally(() => setLoading(false));
+      return;
     }
-  }, [searchParams]);
+
+    if (oauthError) {
+      setError(oauthError);
+    }
+  }, [searchParams, loginWithToken, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -113,7 +121,7 @@ export default function Login() {
         </div>
 
         <a
-          href="/auth/google"
+          href={GOOGLE_AUTH_URL}
           className="w-full inline-flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg border border-border-subtle bg-bg-secondary text-text-primary font-medium text-sm hover:bg-bg-card transition"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">

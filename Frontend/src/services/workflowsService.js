@@ -21,6 +21,10 @@ export const workflowsService = {
   async delete(id) {
     return apiService.delete(API_ENDPOINTS.WORKFLOWS.DELETE(id));
   },
+
+  async start(id, leadIds = []) {
+    return apiService.post(API_ENDPOINTS.WORKFLOWS.START(id), { leadIds });
+  },
 };
 
 export default workflowsService;

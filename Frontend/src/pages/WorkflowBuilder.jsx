@@ -16,6 +16,7 @@ import ReactFlow, {
   useNodesState,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+import leadsService from '../services/leadsService';
 import workflowsService from '../services/workflowsService';
 
 const DND_NODE_TYPE = 'application/x-workflow-node';
@@ -603,10 +604,25 @@ function normalizeIncomingEdges(rawEdges, nodes) {
   return normalized.length > 0 ? normalized : createLinearEdges(nodes);
 }
 
-function serializeNodes(nodes) {
-  return nodes.map((node) => ({
+function serializeNodes(nodes, edges = []) {
+  const nodeList = Array.isArray(nodes) ? nodes : [];
+  const edgeList = Array.isArray(edges) ? edges : [];
+  const incomingTargets = new Set(edgeList.map((edge) => String(edge?.target || '')));
+
+  const startCandidate =
+    nodeList.find(
+      (node) => node?.data?.category === 'trigger' && !incomingTargets.has(String(node?.id || ''))
+    ) ||
+    nodeList.find((node) => node?.data?.category === 'trigger') ||
+    nodeList.find((node) => !incomingTargets.has(String(node?.id || ''))) ||
+    nodeList[0] ||
+    null;
+
+  const startNodeId = startCandidate ? String(startCandidate.id) : null;
+
+  return nodeList.map((node) => ({
     id: node.id,
-    type: node.data?.category || 'action',
+    type: String(node.id) === startNodeId ? 'start' : node.data?.category || 'action',
     position: node.position,
     data: {
       label: node.data?.label || '',
@@ -801,6 +817,7 @@ function WorkflowBuilderContent() {
   const [workflowCatalog, setWorkflowCatalog] = useState([]);
   const [loadingWorkflow, setLoadingWorkflow] = useState(false);
   const [savingWorkflow, setSavingWorkflow] = useState(false);
+  const [executingWorkflow, setExecutingWorkflow] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -1231,20 +1248,16 @@ function WorkflowBuilderContent() {
     [navigate, setEdges, setNodes]
   );
 
-  const handleSaveWorkflow = useCallback(async () => {
-    if (!workflowName.trim()) {
-      setErrorMessage('Please enter a workflow name before saving.');
-      return;
-    }
+  const persistWorkflow = useCallback(
+    async ({ notifySuccess = false } = {}) => {
+      if (!workflowName.trim()) {
+        throw new Error('Please enter a workflow name before saving.');
+      }
 
-    setSavingWorkflow(true);
-    setErrorMessage(null);
-
-    try {
       const payload = {
         name: workflowName.trim(),
         description: workflowDescription.trim(),
-        nodes: serializeNodes(nodes),
+        nodes: serializeNodes(nodes, edges),
         edges: serializeEdges(edges),
       };
 
@@ -1265,23 +1278,72 @@ function WorkflowBuilderContent() {
         navigate(`/workflows?id=${savedWorkflowId}`, { replace: true });
       }
 
-      setSuccessMessage('Workflow saved successfully.');
+      if (notifySuccess) {
+        setSuccessMessage('Workflow saved successfully.');
+      }
+
       fetchWorkflowCatalog();
+
+      return savedWorkflowId;
+    },
+    [currentWorkflowId, edges, fetchWorkflowCatalog, navigate, nodes, workflowDescription, workflowName]
+  );
+
+  const handleSaveWorkflow = useCallback(async () => {
+    setSavingWorkflow(true);
+    setErrorMessage(null);
+
+    try {
+      await persistWorkflow({ notifySuccess: true });
     } catch (error) {
       console.error('Failed to save workflow:', error);
       setErrorMessage(error.message || 'Failed to save workflow.');
     } finally {
       setSavingWorkflow(false);
     }
-  }, [
-    currentWorkflowId,
-    edges,
-    fetchWorkflowCatalog,
-    navigate,
-    nodes,
-    workflowDescription,
-    workflowName,
-  ]);
+  }, [persistWorkflow]);
+
+  const handleExecuteWorkflow = useCallback(async () => {
+    setExecutingWorkflow(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    try {
+      const workflowToRunId = await persistWorkflow({ notifySuccess: false });
+      if (!workflowToRunId) {
+        throw new Error('Unable to determine workflow id for execution.');
+      }
+
+      const leadsResponse = await leadsService.getAll();
+      const leads = Array.isArray(leadsResponse?.leads)
+        ? leadsResponse.leads
+        : Array.isArray(leadsResponse)
+          ? leadsResponse
+          : [];
+
+      const leadIds = leads
+        .map((lead) => lead?._id || lead?.id)
+        .filter((id) => typeof id === 'string' && id.length > 0);
+
+      if (leadIds.length === 0) {
+        throw new Error('No leads found. Upload or enroll leads before executing this workflow.');
+      }
+
+      const executionResponse = await workflowsService.start(workflowToRunId, leadIds);
+      const startedRuns = Array.isArray(executionResponse?.runs)
+        ? executionResponse.runs.length
+        : leadIds.length;
+
+      setSuccessMessage(
+        `Workflow execution started for ${startedRuns} lead${startedRuns === 1 ? '' : 's'}.`
+      );
+    } catch (error) {
+      console.error('Failed to execute workflow:', error);
+      setErrorMessage(error.message || 'Failed to execute workflow.');
+    } finally {
+      setExecutingWorkflow(false);
+    }
+  }, [persistWorkflow]);
 
   return (
     <div className="h-full min-h-0 overflow-hidden bg-[#04060d]">
@@ -1416,6 +1478,15 @@ function WorkflowBuilderContent() {
                 className="rounded-lg bg-accent px-4 py-2 text-xs font-bold text-text-inverse transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {savingWorkflow ? 'Saving...' : 'Save'}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleExecuteWorkflow}
+                disabled={savingWorkflow || executingWorkflow || loadingWorkflow}
+                className="rounded-lg border border-emerald-400/45 bg-emerald-500/18 px-4 py-2 text-xs font-bold text-emerald-100 transition hover:bg-emerald-500/28 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {executingWorkflow ? 'Executing...' : 'Execute'}
               </button>
             </div>
 

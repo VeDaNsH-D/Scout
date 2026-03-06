@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { GOOGLE_AUTH_URL } from '../config/api';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ export default function Signup() {
         </div>
 
         <a
-          href="/auth/google"
+          href={GOOGLE_AUTH_URL}
           className="w-full inline-flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg border border-border-subtle bg-bg-secondary text-text-primary font-medium text-sm hover:bg-bg-card transition"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
