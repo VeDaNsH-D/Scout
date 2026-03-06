@@ -175,31 +175,42 @@ function injectActionButton() {
     }
 }
 
-// Watch for page changes (LinkedIn is a SPA)
-let lastUrl = location.href;
-new MutationObserver(() => {
-    const currentUrl = location.href;
-    if (currentUrl !== lastUrl) {
-        lastUrl = currentUrl;
-        // Reinject button on profile change
-        setTimeout(() => {
-            injectActionButton();
-        }, 500);
+// Ensure observers start only after the DOM is ready
+function initObservers() {
+    const target = document.body || document.documentElement;
+    if (!target) {
+        // Try again shortly if body is not yet available
+        setTimeout(initObservers, 200);
+        return;
     }
-}).observe(document, { subtree: true, historyChange: true });
+
+    // Watch for URL/page changes (LinkedIn is a SPA)
+    let lastUrl = location.href;
+    const urlObserver = new MutationObserver(() => {
+        const currentUrl = location.href;
+        if (currentUrl !== lastUrl) {
+            lastUrl = currentUrl;
+            setTimeout(() => {
+                injectActionButton();
+            }, 500);
+        }
+    });
+
+    urlObserver.observe(target, { childList: true, subtree: true });
+
+    // Reinject when DOM changes significantly
+    const domObserver = new MutationObserver(() => {
+        injectActionButton();
+    });
+
+    domObserver.observe(target, { childList: true, subtree: true });
+}
 
 // Initial extraction and button injection
 window.addEventListener('load', () => {
     setTimeout(() => {
         extractLeadData();
         injectActionButton();
+        initObservers();
     }, 1000);
-});
-
-// Reinject when DOM changes significantly
-new MutationObserver(() => {
-    injectActionButton();
-}).observe(document.body, { 
-    childList: true, 
-    subtree: true 
 });
