@@ -23,9 +23,9 @@ const register = async (req, res) => {
         } = req.body;
 
         // Input validation
-        if (!full_name || !email || !password || !company_name) {
+        if (!email || !password) {
             return res.status(400).json({
-                message: "full_name, email, password, and company_name are required"
+                message: "email and password are required"
             });
         }
 
@@ -49,10 +49,10 @@ const register = async (req, res) => {
 
         // Create user document
         const user = await User.create({
-            full_name,
+            full_name: full_name || null,
             email: email.toLowerCase(),
             password_hash,
-            company_name,
+            company_name: company_name || null,
             company_website: company_website || null
         });
 

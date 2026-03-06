@@ -22,12 +22,16 @@ const chatbotRoutes = require("./routes/chatbot");
 
 const app = express();
 const server = http.createServer(app);
+const passport = require("./config/passport");
+const googleAuthRoutes = require("./routes/googleAuth");
 
 /* Middleware */
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 app.use("/api/chatbot", chatbotRoutes);
+app.use(passport.initialize());
+app.use("/auth", googleAuthRoutes);
 /* Validate required environment variables */
 validateEnv();
 
