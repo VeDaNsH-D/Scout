@@ -25,11 +25,11 @@ const initWorker = () => {
   });
 
   worker.on('failed', (job, err) => {
-    console.error(`[JobWorker] ❌ Job ${job.id} failed with error:`, err.message);
+    console.error(`[JobWorker] ❌ Job ${job?.id} failed with error:`, err.message);
   });
 
   worker.on('error', err => {
-    console.error(`[JobWorker] ❌ Worker connection error:`, err.message);
+    console.error(`[JobWorker] ❌ Worker connection error:`, err);
   });
 
   console.log('[JobWorker] 👷 Workflow job worker initialized and listening for jobs.');

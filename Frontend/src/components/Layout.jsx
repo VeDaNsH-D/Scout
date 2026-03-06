@@ -7,9 +7,19 @@ export default function Layout({ children }) {
   const location = useLocation();
 
   const isAuthPage = location.pathname === '/';
+  const isWorkflowPage = location.pathname === '/workflows';
 
   if (isAuthPage) {
     return children;
+  }
+
+  // Workflows uses an immersive full-screen canvas with its own internal tooling UI.
+  if (isWorkflowPage) {
+    return (
+      <div className="h-screen w-screen overflow-hidden bg-bg-primary text-text-primary">
+        {children}
+      </div>
+    );
   }
 
   return (
