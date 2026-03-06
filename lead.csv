@@ -1,0 +1,51 @@
+name,email,company,role,industry,company_size,growth_rate,seniority,lead_source
+Richard Jones,richard.jones@jones.com,Jones Systems,VP Sales,Healthcare,large,0.19,Mid,Referral
+Linda Thomas,linda.thomas@thomas.com,Thomas Systems,CTO,Fintech,small,0.24,Junior,Conference
+Patricia Moore,patricia.moore@moore.com,Moore LLC,HR Director,Fintech,medium,0.24,Senior,Conference
+James Garcia,james.garcia@garcia.com,Garcia Solutions,HR Director,Fintech,large,0.15,Executive,ColdList
+Thomas Smith,thomas.smith@smith.com,Smith LLC,Engineering Manager,Cybersecurity,medium,0.03,Senior,ColdList
+Michael Martinez,michael.martinez@martinez.com,Martinez Systems,CEO,Healthcare,small,0.26,Senior,LinkedIn
+Karen Lopez,karen.lopez@lopez.com,Lopez Inc.,HR Director,Ecommerce,medium,0.23,Junior,Conference
+Mary Miller,mary.miller@miller.com,Miller Inc.,VP Sales,SaaS,small,0.13,Junior,Inbound
+Barbara Jackson,barbara.jackson@jackson.com,Jackson LLC,CEO,SaaS,enterprise,0.1,Senior,Referral
+William Martinez,william.martinez@martinez.com,Martinez Technologies,Marketing Manager,SaaS,large,0.28,Mid,Referral
+Linda Gonzalez,linda.gonzalez@gonzalez.com,Gonzalez Corp,Marketing Manager,AI,small,0.24,Mid,Referral
+Linda Moore,linda.moore@moore.com,Moore LLC,Engineering Manager,Cybersecurity,enterprise,0.11,Junior,Inbound
+Barbara Johnson,barbara.johnson@johnson.com,Johnson Solutions,VP Sales,Ecommerce,small,0.21,Mid,LinkedIn
+Barbara Jackson,barbara.jackson@jackson.com,Jackson Inc.,CEO,Healthcare,medium,0.17,Senior,Referral
+Patricia Davis,patricia.davis@davis.com,Davis Systems,HR Director,AI,large,0.23,Junior,Inbound
+Linda Garcia,linda.garcia@garcia.com,Garcia Solutions,CTO,Fintech,small,0.06,Senior,Inbound
+Mary Thomas,mary.thomas@thomas.com,Thomas Corp,Founder,Healthcare,medium,0.05,Junior,Conference
+Jessica Wilson,jessica.wilson@wilson.com,Wilson LLC,Marketing Manager,Cybersecurity,small,0.25,Senior,Referral
+Charles Anderson,charles.anderson@anderson.com,Anderson LLC,Engineering Manager,AI,medium,0.1,Mid,LinkedIn
+James Williams,james.williams@williams.com,Williams Solutions,Engineering Manager,AI,medium,0.07,Senior,ColdList
+David Moore,david.moore@moore.com,Moore Inc.,VP Sales,Cybersecurity,medium,0.19,Junior,Conference
+William Jackson,william.jackson@jackson.com,Jackson Corp,HR Director,Fintech,large,0.09,Executive,Referral
+Jennifer Lopez,jennifer.lopez@lopez.com,Lopez Inc.,Marketing Manager,Cybersecurity,medium,0.26,Junior,Referral
+Elizabeth Gonzalez,elizabeth.gonzalez@gonzalez.com,Gonzalez LLC,Engineering Manager,Cybersecurity,small,0.12,Executive,Inbound
+David Thomas,david.thomas@thomas.com,Thomas Systems,HR Director,Cybersecurity,small,0.14,Senior,Inbound
+Jessica Garcia,jessica.garcia@garcia.com,Garcia Systems,Marketing Manager,Cybersecurity,medium,0.01,Mid,Referral
+John Martin,john.martin@martin.com,Martin Inc.,VP Sales,Healthcare,large,0.23,Senior,ColdList
+Michael Brown,michael.brown@brown.com,Brown Solutions,CEO,Healthcare,enterprise,0.27,Senior,Referral
+Jessica Martin,jessica.martin@martin.com,Martin Systems,HR Director,Cybersecurity,small,0.06,Mid,Inbound
+Mary Taylor,mary.taylor@taylor.com,Taylor LLC,CEO,Cybersecurity,small,0.07,Executive,Referral
+Joseph Lopez,joseph.lopez@lopez.com,Lopez Systems,HR Director,Ecommerce,medium,0.06,Mid,Conference
+Charles Jones,charles.jones@jones.com,Jones Group,Founder,Healthcare,medium,0.01,Mid,Inbound
+Thomas Johnson,thomas.johnson@johnson.com,Johnson Technologies,Marketing Manager,AI,small,0.21,Executive,ColdList
+James Moore,james.moore@moore.com,Moore Corp,Founder,Fintech,small,0.12,Executive,ColdList
+Michael Rodriguez,michael.rodriguez@rodriguez.com,Rodriguez Technologies,VP Sales,Fintech,medium,0.01,Executive,ColdList
+Charles Moore,charles.moore@moore.com,Moore Corp,CTO,AI,small,0.1,Mid,Conference
+Susan Wilson,susan.wilson@wilson.com,Wilson Corp,Marketing Manager,Fintech,enterprise,0.02,Executive,Inbound
+Linda Thomas,linda.thomas@thomas.com,Thomas Solutions,Marketing Manager,AI,large,0.19,Mid,Referral
+William Anderson,william.anderson@anderson.com,Anderson Group,Engineering Manager,Cybersecurity,large,0.07,Executive,ColdList
+Mary Taylor,mary.taylor@taylor.com,Taylor Solutions,Founder,Ecommerce,large,0.07,Senior,Referral
+Karen Moore,karen.moore@moore.com,Moore Technologies,VP Sales,Ecommerce,small,0.28,Executive,Inbound
+Barbara Williams,barbara.williams@williams.com,Williams LLC,HR Director,Fintech,enterprise,0.3,Mid,LinkedIn
+David Smith,david.smith@smith.com,Smith Corp,HR Director,Cybersecurity,large,0.08,Mid,ColdList
+David Anderson,david.anderson@anderson.com,Anderson Systems,Engineering Manager,SaaS,enterprise,0.28,Executive,ColdList
+Thomas Thomas,thomas.thomas@thomas.com,Thomas Technologies,Founder,Ecommerce,enterprise,0.24,Executive,LinkedIn
+Jennifer Smith,jennifer.smith@smith.com,Smith Corp,VP Sales,Healthcare,large,0.07,Senior,LinkedIn
+Patricia Thomas,patricia.thomas@thomas.com,Thomas Systems,VP Sales,SaaS,small,0.24,Mid,Referral
+Michael Lopez,michael.lopez@lopez.com,Lopez Solutions,Marketing Manager,AI,medium,0.24,Executive,ColdList
+Susan Martin,susan.martin@martin.com,Martin Technologies,HR Director,Fintech,small,0.21,Mid,Referral
+Joseph Garcia,joseph.garcia@garcia.com,Garcia Group,CEO,SaaS,small,0.05,Senior,Inbound
