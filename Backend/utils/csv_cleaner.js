@@ -36,6 +36,20 @@ function cleanLeads(rows) {
             normalized.job_title ||
             ""
 
+        const industry = normalized.industry || ""
+        const company_size = normalized.company_size || ""
+
+        let growth_rate = undefined
+        if (normalized.growth_rate) {
+            const parsedGrowthRate = parseFloat(normalized.growth_rate)
+            if (!isNaN(parsedGrowthRate)) {
+                growth_rate = parsedGrowthRate
+            }
+        }
+
+        const seniority = normalized.seniority || ""
+        const lead_source = normalized.lead_source || ""
+
         if (!email) continue
 
         const cleanEmail = email.trim().toLowerCase()
@@ -48,7 +62,12 @@ function cleanLeads(rows) {
             name: name.trim(),
             email: cleanEmail,
             company: company.trim(),
-            role: role.trim()
+            role: role.trim(),
+            industry: industry.trim(),
+            company_size: company_size.trim(),
+            growth_rate,
+            seniority: seniority.trim(),
+            lead_source: lead_source.trim()
         })
     }
 
