@@ -1,8 +1,25 @@
 # Intelligence Scout - AuraReach Extension
 
-🎯 **Smart Lead Capture + AI-Powered Outreach Recommendations**
+🎯 **Smart Lead Capture + AI-Powered Outreach Recommendations + Website Sync**
 
 A Chrome extension that brings the power of AI-driven lead intelligence directly into LinkedIn, inspired by Apollo.io but tailored for your AuraReach automation platform.
+
+## ✨ New Features: Lead Collection & Website Sync
+
+### 1. **Local Lead Storage** 💾
+- **Save to Collection**: Capture leads without immediately sending them
+- **Local Storage**: All data stays on your computer until you choose to sync
+- **Batch Processing**: Review and organize leads before bulk import
+
+### 2. **Website Integration** 🔄
+- **One-Click Import**: Pull captured leads directly into your website
+- **Bulk Sync**: Import multiple leads at once to your database
+- **Real-time Connection**: Extension communicates with your website seamlessly
+
+### 3. **Enhanced UI** 📱
+- **Tabbed Interface**: Separate tabs for Capture, Leads, and Settings
+- **Lead Management**: View, remove, and organize captured leads
+- **Sync Status**: See which leads have been imported to your website
 
 ## Features
 
