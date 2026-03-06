@@ -1,8 +1,16 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function Sidebar({ open, onToggle }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const menuItems = [
     { label: 'Dashboard', path: '/dashboard', icon: 'M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z' },
@@ -53,11 +61,26 @@ export default function Sidebar({ open, onToggle }) {
       </nav>
 
       <div className="p-4 border-t border-border-subtle">
-        {open && (
+        {open ? (
           <div className="text-xs text-text-muted">
-            <p className="mb-2">Version 1.0</p>
-            <button className="text-accent hover:text-accent-hover text-sm font-semibold">Logout</button>
+            {user && <p className="mb-2 truncate">{user.name || user.email}</p>}
+            <button 
+              onClick={handleLogout}
+              className="text-accent hover:text-accent-hover text-sm font-semibold"
+            >
+              Logout
+            </button>
           </div>
+        ) : (
+          <button 
+            onClick={handleLogout}
+            className="p-2 text-accent hover:text-accent-hover"
+            title="Logout"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
         )}
       </div>
     </div>
