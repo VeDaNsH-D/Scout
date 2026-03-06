@@ -3,26 +3,30 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const os = require("os");
+
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth_routes");
+const leadRoutes = require("./routes/lead_routes");
 
 const app = express();
 
+/* Middleware */
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 8000;
-
 /* MongoDB connection */
 connectDB();
+
+const PORT = process.env.PORT || 8000;
 
 /* Root route */
 app.get("/", (req, res) => {
     res.send("Backend is running 🚀");
 });
 
-/* Auth routes */
+/* Routes */
 app.use("/api/auth", authRoutes);
+app.use("/api/leads", leadRoutes);
 
 /* Start server */
 app.listen(PORT, () => {
