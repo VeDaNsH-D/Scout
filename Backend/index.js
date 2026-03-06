@@ -18,6 +18,7 @@ const workflowCollaboration = require("./sockets/workflowCollaboration");
 const { initWorker } = require("./workers/jobWorker");
 const requestLogger = require("./middleware/request_logger");
 const { notFound, errorHandler } = require("./middleware/error_middleware");
+const chatbotRoutes = require("./routes/chatbot");
 
 const app = express();
 const server = http.createServer(app);
@@ -26,7 +27,7 @@ const server = http.createServer(app);
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
-
+app.use("/api/chatbot", chatbotRoutes);
 /* Validate required environment variables */
 validateEnv();
 
