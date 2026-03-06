@@ -14,6 +14,7 @@ const workflowsRoutes = require("./routes/workflows.routes");
 const workflowRunsRoutes = require("./routes/workflowRuns.routes");
 const messagesRoutes = require("./routes/messages.routes");
 const analyticsRoutes = require("./routes/analytics.routes");
+const analyzeLeadRoutes = require("./routes/analyze_lead.routes");
 const workflowCollaboration = require("./sockets/workflowCollaboration");
 const { initWorker } = require("./workers/jobWorker");
 const requestLogger = require("./middleware/request_logger");
@@ -46,6 +47,7 @@ app.use("/api/leads", leadRoutes);
 app.use("/api/workflows", workflowsRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/analyze-lead", analyzeLeadRoutes);
 
 /* Workflow routes */
 app.use("/api", workflowRunsRoutes);

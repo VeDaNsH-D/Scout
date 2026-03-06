@@ -8,6 +8,7 @@ import LeadUpload from './pages/LeadUpload';
 import CampaignMonitor from './pages/CampaignMonitor';
 import AiGenerator from './pages/AiGenerator';
 import Settings from './pages/Settings';
+import LeadAnalysis from './pages/LeadAnalysis';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import { useAuth } from './context/AuthContext';
@@ -42,6 +43,7 @@ function App() {
       <Route path="/leads" element={<ProtectedRoute><Layout><LeadUpload /></Layout></ProtectedRoute>} />
       <Route path="/campaigns" element={<ProtectedRoute><Layout><CampaignMonitor /></Layout></ProtectedRoute>} />
       <Route path="/ai-generator" element={<ProtectedRoute><Layout><AiGenerator /></Layout></ProtectedRoute>} />
+      <Route path="/lead-analysis" element={<ProtectedRoute><Layout><LeadAnalysis /></Layout></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
