@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export default function Signup() {
+export default function Login() {
   const navigate = useNavigate();
-  const { register, error: authError } = useAuth();
+  const { login, error: authError } = useAuth();
   const [formData, setFormData] = useState({
-    full_name: '',
-    company_name: '',
     email: '',
     password: '',
   });
@@ -24,24 +22,13 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (!formData.full_name.trim() || !formData.company_name.trim() || !formData.email.trim() || !formData.password) {
-      setError('Full name, company name, email, and password are required');
-      return;
-    }
-
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters');
-      return;
-    }
-
     setLoading(true);
 
     try {
-      await register(formData);
+      await login(formData);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -51,9 +38,9 @@ export default function Signup() {
     <div className="min-h-screen flex items-center justify-center bg-bg-primary text-text-primary px-4">
       <div className="w-full max-w-md bg-bg-card border border-border-card rounded-2xl p-8 shadow-xl space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold">Create your account</h1>
+          <h1 className="text-2xl font-bold">Welcome back</h1>
           <p className="text-sm text-text-secondary">
-            Start automating your outreach in a few clicks.
+            Sign in to continue to your dashboard.
           </p>
         </div>
 
@@ -65,38 +52,8 @@ export default function Signup() {
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-text-secondary" htmlFor="full_name">
-              Full name
-            </label>
-            <input
-              id="full_name"
-              type="text"
-              value={formData.full_name}
-              onChange={handleChange}
-              className="w-full rounded-lg border border-border-subtle bg-bg-secondary px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-              placeholder="Ada Lovelace"
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-text-secondary" htmlFor="company_name">
-              Company name
-            </label>
-            <input
-              id="company_name"
-              type="text"
-              value={formData.company_name}
-              onChange={handleChange}
-              className="w-full rounded-lg border border-border-subtle bg-bg-secondary px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-              placeholder="Acme Inc."
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
             <label className="text-sm font-medium text-text-secondary" htmlFor="email">
-              Work email
+              Email
             </label>
             <input
               id="email"
@@ -119,9 +76,8 @@ export default function Signup() {
               value={formData.password}
               onChange={handleChange}
               className="w-full rounded-lg border border-border-subtle bg-bg-secondary px-3 py-2 text-sm outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-              placeholder="At least 8 characters"
+              placeholder="Your password"
               required
-              minLength={8}
             />
           </div>
 
@@ -130,22 +86,17 @@ export default function Signup() {
             disabled={loading}
             className="w-full mt-2 inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-accent text-text-inverse font-semibold text-sm hover:bg-accent-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Creating account...' : 'Sign up'}
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
         <p className="text-sm text-text-muted text-center">
-          Already have an account?{' '}
-          <Link to="/login" className="text-accent hover:text-accent-hover font-semibold">
-            Sign in
+          Don't have an account?{' '}
+          <Link to="/signup" className="text-accent hover:text-accent-hover font-semibold">
+            Sign up
           </Link>
-        </p>
-
-        <p className="text-xs text-text-muted text-center">
-          By continuing you agree to our Terms and acknowledge our Privacy Policy.
         </p>
       </div>
     </div>
   );
 }
-
