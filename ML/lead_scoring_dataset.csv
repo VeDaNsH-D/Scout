@@ -1,0 +1,1001 @@
+role,industry,company_size,growth_rate,seniority,lead_source,reply
+Founder,Healthcare,large,0.11,Senior,ColdList,0
+Founder,Cybersecurity,medium,0.22,Executive,ColdList,0
+Marketing Manager,AI,medium,0.16,Mid,ColdList,1
+Marketing Manager,Fintech,small,0.1,Senior,Inbound,1
+Engineering Manager,Ecommerce,small,0.04,Junior,Conference,1
+Engineering Manager,Fintech,enterprise,0.11,Executive,Inbound,0
+CEO,Fintech,medium,0.15,Mid,LinkedIn,1
+Founder,AI,enterprise,0.02,Junior,ColdList,1
+HR Director,Fintech,large,0.07,Mid,Referral,1
+Marketing Manager,SaaS,large,0.23,Junior,Conference,0
+CEO,Cybersecurity,large,0.2,Executive,Referral,1
+Marketing Manager,Ecommerce,large,0.27,Mid,LinkedIn,0
+Founder,SaaS,large,0.24,Junior,Inbound,1
+Marketing Manager,SaaS,small,0.25,Senior,Inbound,0
+CEO,SaaS,small,0.08,Executive,Inbound,1
+Engineering Manager,Healthcare,small,0.2,Senior,ColdList,0
+Engineering Manager,Ecommerce,small,0.08,Mid,Inbound,1
+Marketing Manager,AI,medium,0.19,Junior,Referral,1
+Engineering Manager,Ecommerce,small,0.09,Executive,Referral,1
+VP Sales,Healthcare,large,0.08,Junior,Inbound,0
+VP Sales,Ecommerce,enterprise,0.22,Senior,Referral,0
+VP Sales,SaaS,large,0.04,Mid,ColdList,0
+CEO,Fintech,medium,0.02,Senior,Inbound,1
+Engineering Manager,Fintech,enterprise,0.29,Mid,LinkedIn,0
+CTO,Healthcare,small,0.04,Mid,Referral,0
+Founder,AI,medium,0.22,Junior,ColdList,0
+HR Director,SaaS,enterprise,0.02,Mid,LinkedIn,0
+CTO,Ecommerce,large,0.01,Senior,Inbound,0
+Marketing Manager,AI,enterprise,0.21,Junior,ColdList,0
+CTO,AI,medium,0.23,Executive,Inbound,1
+Founder,Cybersecurity,enterprise,0.25,Junior,Conference,0
+Marketing Manager,AI,enterprise,0.18,Mid,Inbound,1
+Engineering Manager,SaaS,enterprise,0.01,Executive,LinkedIn,0
+HR Director,Cybersecurity,medium,0.2,Junior,Referral,1
+CEO,Fintech,enterprise,0.26,Junior,Referral,1
+CEO,Cybersecurity,medium,0.15,Mid,Conference,1
+CEO,SaaS,large,0.07,Junior,LinkedIn,1
+Founder,Cybersecurity,large,0.08,Senior,LinkedIn,0
+Founder,Fintech,small,0.09,Senior,ColdList,0
+HR Director,Ecommerce,enterprise,0.3,Junior,Referral,1
+CEO,Cybersecurity,medium,0.1,Senior,LinkedIn,0
+Marketing Manager,Cybersecurity,enterprise,0.09,Junior,Referral,1
+CTO,SaaS,large,0.29,Executive,Referral,1
+CEO,Fintech,enterprise,0.04,Mid,LinkedIn,0
+CTO,SaaS,medium,0.25,Senior,Inbound,0
+CEO,Ecommerce,large,0.06,Senior,Inbound,0
+Marketing Manager,Healthcare,enterprise,0.04,Mid,Referral,0
+Marketing Manager,Fintech,medium,0.2,Mid,ColdList,0
+CTO,Fintech,medium,0.2,Junior,Inbound,1
+HR Director,SaaS,enterprise,0.03,Executive,Referral,1
+Founder,Healthcare,medium,0.14,Junior,Referral,1
+CTO,Fintech,small,0.29,Executive,Inbound,1
+Founder,Fintech,enterprise,0.14,Senior,Referral,1
+Marketing Manager,Healthcare,large,0.27,Junior,Inbound,0
+HR Director,SaaS,large,0.09,Junior,ColdList,0
+VP Sales,SaaS,large,0.04,Junior,ColdList,0
+VP Sales,Cybersecurity,enterprise,0.12,Senior,Conference,0
+Founder,Healthcare,small,0.29,Senior,Referral,1
+VP Sales,Cybersecurity,large,0.15,Executive,LinkedIn,0
+Engineering Manager,Healthcare,large,0.26,Executive,Referral,0
+Engineering Manager,SaaS,small,0.17,Junior,Referral,1
+Founder,SaaS,enterprise,0.25,Executive,Inbound,1
+CTO,SaaS,medium,0.23,Executive,ColdList,0
+HR Director,SaaS,small,0.07,Senior,ColdList,0
+Marketing Manager,Cybersecurity,medium,0.21,Executive,Inbound,1
+Founder,Healthcare,large,0.07,Junior,LinkedIn,0
+Engineering Manager,Healthcare,enterprise,0.19,Mid,Inbound,1
+CEO,Fintech,medium,0.05,Executive,Conference,1
+Founder,Cybersecurity,medium,0.09,Junior,Referral,1
+CEO,Fintech,large,0.15,Senior,Referral,1
+CEO,SaaS,small,0.16,Mid,ColdList,0
+Marketing Manager,SaaS,medium,0.26,Senior,LinkedIn,1
+Marketing Manager,SaaS,small,0.09,Junior,Inbound,1
+CEO,Fintech,enterprise,0.12,Executive,Referral,0
+Founder,Healthcare,enterprise,0.17,Executive,ColdList,0
+Founder,Healthcare,small,0.07,Executive,ColdList,0
+HR Director,Ecommerce,medium,0.26,Junior,LinkedIn,1
+CTO,Fintech,enterprise,0.1,Mid,ColdList,0
+Engineering Manager,Cybersecurity,small,0.19,Junior,LinkedIn,1
+Engineering Manager,Healthcare,small,0.11,Senior,ColdList,0
+VP Sales,Cybersecurity,small,0.13,Executive,Inbound,1
+CTO,Cybersecurity,small,0.14,Junior,Conference,1
+Marketing Manager,Fintech,enterprise,0.21,Mid,Referral,1
+CTO,SaaS,large,0.16,Junior,ColdList,0
+CEO,Fintech,large,0.04,Senior,Referral,0
+CTO,SaaS,enterprise,0.06,Junior,Inbound,1
+Founder,AI,enterprise,0.06,Executive,LinkedIn,0
+Founder,Fintech,enterprise,0.26,Mid,ColdList,0
+Engineering Manager,Fintech,medium,0.24,Junior,LinkedIn,0
+CTO,AI,medium,0.22,Senior,Referral,1
+HR Director,Cybersecurity,small,0.25,Senior,Referral,0
+CEO,Fintech,enterprise,0.08,Mid,LinkedIn,0
+VP Sales,Healthcare,medium,0.22,Mid,LinkedIn,1
+VP Sales,Cybersecurity,small,0.12,Senior,Referral,1
+HR Director,AI,large,0.27,Executive,Referral,0
+Marketing Manager,Fintech,small,0.28,Senior,Inbound,1
+Marketing Manager,Ecommerce,large,0.04,Executive,Inbound,0
+Engineering Manager,Healthcare,small,0.15,Mid,LinkedIn,1
+CTO,Fintech,small,0.11,Junior,Conference,0
+CEO,SaaS,large,0.05,Executive,LinkedIn,1
+CEO,Fintech,small,0.18,Mid,LinkedIn,1
+CTO,Fintech,enterprise,0.11,Executive,ColdList,0
+Engineering Manager,Ecommerce,large,0.24,Executive,ColdList,0
+CTO,Cybersecurity,enterprise,0.15,Executive,Inbound,1
+Engineering Manager,Healthcare,small,0.13,Junior,Conference,0
+CEO,Fintech,small,0.06,Senior,Referral,0
+Founder,Cybersecurity,small,0.03,Senior,Conference,1
+Founder,Healthcare,large,0.1,Senior,ColdList,1
+HR Director,SaaS,small,0.19,Mid,ColdList,0
+Marketing Manager,AI,small,0.15,Junior,Conference,0
+VP Sales,Fintech,large,0.02,Senior,Referral,1
+CEO,Fintech,enterprise,0.24,Senior,Conference,0
+VP Sales,Healthcare,large,0.22,Mid,ColdList,0
+CTO,Healthcare,small,0.15,Junior,LinkedIn,0
+CEO,Cybersecurity,enterprise,0.19,Senior,ColdList,1
+VP Sales,Healthcare,medium,0.07,Executive,Inbound,1
+Marketing Manager,Cybersecurity,enterprise,0.12,Senior,Referral,1
+Founder,Cybersecurity,small,0.18,Mid,Inbound,1
+HR Director,Cybersecurity,enterprise,0.07,Senior,Conference,0
+Engineering Manager,Ecommerce,medium,0.1,Executive,LinkedIn,1
+VP Sales,Cybersecurity,small,0.23,Junior,Referral,1
+Marketing Manager,Cybersecurity,enterprise,0.14,Junior,Conference,1
+VP Sales,Ecommerce,small,0.11,Mid,Referral,1
+CTO,Ecommerce,medium,0.19,Mid,Inbound,1
+CEO,AI,small,0.11,Mid,Referral,1
+VP Sales,Healthcare,enterprise,0.03,Executive,LinkedIn,0
+CEO,Fintech,enterprise,0.25,Mid,ColdList,1
+VP Sales,AI,medium,0.28,Executive,Referral,1
+Marketing Manager,SaaS,medium,0.02,Senior,ColdList,1
+VP Sales,Ecommerce,medium,0.2,Mid,Referral,1
+VP Sales,AI,medium,0.14,Executive,Conference,0
+CEO,AI,medium,0.06,Executive,Referral,0
+Founder,Fintech,large,0.19,Mid,ColdList,0
+HR Director,Cybersecurity,small,0.26,Junior,LinkedIn,0
+VP Sales,Cybersecurity,large,0.02,Junior,ColdList,0
+CEO,Fintech,large,0.01,Junior,Inbound,1
+CTO,Healthcare,medium,0.02,Senior,ColdList,1
+Marketing Manager,Ecommerce,small,0.22,Senior,ColdList,0
+Marketing Manager,AI,large,0.02,Mid,Conference,1
+CEO,Cybersecurity,medium,0.14,Senior,ColdList,1
+HR Director,AI,small,0.12,Senior,ColdList,1
+CTO,AI,large,0.14,Junior,Conference,0
+HR Director,Healthcare,large,0.03,Junior,ColdList,0
+CEO,Ecommerce,large,0.17,Senior,ColdList,0
+Engineering Manager,Fintech,medium,0.07,Senior,ColdList,1
+HR Director,Cybersecurity,enterprise,0.28,Junior,ColdList,0
+CEO,Cybersecurity,large,0.14,Mid,Inbound,0
+Founder,Fintech,medium,0.24,Senior,LinkedIn,1
+CEO,Cybersecurity,large,0.12,Executive,LinkedIn,1
+VP Sales,Ecommerce,enterprise,0.15,Junior,LinkedIn,1
+Founder,Healthcare,medium,0.1,Executive,Inbound,1
+HR Director,Cybersecurity,large,0.06,Senior,Inbound,1
+CEO,Ecommerce,enterprise,0.06,Executive,ColdList,0
+Founder,SaaS,medium,0.12,Mid,Referral,1
+HR Director,Healthcare,small,0.21,Junior,Inbound,1
+CEO,Fintech,small,0.02,Senior,ColdList,0
+CEO,Healthcare,enterprise,0.25,Junior,ColdList,0
+Founder,Ecommerce,small,0.17,Mid,Inbound,1
+Marketing Manager,AI,medium,0.17,Mid,ColdList,0
+Marketing Manager,Healthcare,small,0.15,Executive,Referral,0
+CEO,Ecommerce,small,0.01,Senior,Conference,1
+Marketing Manager,Healthcare,enterprise,0.11,Mid,LinkedIn,0
+CEO,Ecommerce,large,0.18,Executive,Conference,1
+Marketing Manager,SaaS,large,0.17,Senior,ColdList,1
+Founder,SaaS,large,0.01,Junior,Referral,1
+CEO,Cybersecurity,large,0.15,Mid,Conference,1
+CEO,Healthcare,large,0.23,Executive,ColdList,1
+VP Sales,SaaS,small,0.24,Senior,Inbound,0
+CEO,Healthcare,large,0.28,Senior,Inbound,0
+CEO,Fintech,small,0.04,Senior,Inbound,1
+Founder,AI,medium,0.05,Mid,Inbound,1
+Engineering Manager,Ecommerce,small,0.08,Junior,Inbound,1
+CEO,Fintech,small,0.21,Mid,Conference,1
+Marketing Manager,AI,medium,0.25,Senior,LinkedIn,0
+VP Sales,Ecommerce,large,0.17,Mid,Inbound,1
+Marketing Manager,Ecommerce,medium,0.17,Mid,Referral,0
+Marketing Manager,Ecommerce,medium,0.23,Mid,Referral,1
+Founder,SaaS,small,0.16,Executive,Conference,1
+HR Director,Fintech,enterprise,0.25,Senior,Referral,1
+CTO,Healthcare,small,0.19,Senior,ColdList,1
+Marketing Manager,AI,medium,0.11,Senior,Referral,0
+HR Director,Cybersecurity,small,0.21,Junior,LinkedIn,1
+Marketing Manager,Fintech,medium,0.24,Executive,LinkedIn,0
+Marketing Manager,Cybersecurity,enterprise,0.09,Junior,Inbound,1
+CEO,Healthcare,small,0.04,Executive,Inbound,1
+HR Director,Ecommerce,small,0.05,Executive,LinkedIn,0
+VP Sales,AI,medium,0.07,Executive,Inbound,0
+Founder,Ecommerce,medium,0.05,Mid,Inbound,0
+HR Director,Healthcare,medium,0.03,Senior,Inbound,0
+CTO,SaaS,small,0.29,Mid,Referral,1
+CEO,Ecommerce,medium,0.14,Mid,Referral,0
+Founder,SaaS,medium,0.14,Senior,Conference,1
+Marketing Manager,Fintech,enterprise,0.14,Junior,Conference,1
+HR Director,Cybersecurity,large,0.03,Junior,Inbound,0
+Marketing Manager,Fintech,small,0.1,Mid,LinkedIn,1
+CTO,Cybersecurity,medium,0.08,Senior,Conference,0
+HR Director,SaaS,large,0.28,Junior,Referral,0
+HR Director,AI,large,0.1,Junior,Conference,0
+HR Director,Ecommerce,medium,0.17,Mid,ColdList,0
+Engineering Manager,Healthcare,medium,0.2,Junior,Referral,1
+VP Sales,Healthcare,medium,0.02,Executive,Conference,0
+Founder,AI,small,0.27,Mid,LinkedIn,0
+VP Sales,Healthcare,large,0.05,Executive,Conference,0
+VP Sales,Ecommerce,enterprise,0.15,Executive,Referral,0
+Founder,Cybersecurity,medium,0.2,Mid,Inbound,1
+VP Sales,Cybersecurity,large,0.02,Junior,Conference,0
+Engineering Manager,Healthcare,small,0.18,Junior,Inbound,0
+CEO,Fintech,enterprise,0.17,Executive,LinkedIn,0
+CTO,SaaS,medium,0.19,Senior,Inbound,1
+CTO,Fintech,enterprise,0.21,Mid,Referral,1
+Engineering Manager,Cybersecurity,large,0.24,Executive,Conference,0
+VP Sales,AI,small,0.12,Executive,Inbound,0
+HR Director,AI,enterprise,0.2,Senior,ColdList,0
+Engineering Manager,SaaS,small,0.26,Mid,ColdList,0
+CTO,Healthcare,medium,0.16,Junior,Inbound,0
+Founder,Fintech,medium,0.08,Junior,Inbound,1
+Marketing Manager,Fintech,small,0.19,Executive,LinkedIn,0
+Engineering Manager,Healthcare,large,0.13,Executive,LinkedIn,1
+CTO,Healthcare,medium,0.24,Mid,ColdList,1
+Founder,SaaS,medium,0.25,Mid,ColdList,0
+HR Director,AI,medium,0.23,Senior,ColdList,0
+VP Sales,SaaS,enterprise,0.22,Junior,Conference,0
+Marketing Manager,Ecommerce,large,0.25,Senior,ColdList,1
+CTO,Healthcare,medium,0.16,Executive,Conference,1
+Marketing Manager,Cybersecurity,large,0.21,Junior,LinkedIn,1
+Engineering Manager,SaaS,medium,0.2,Senior,Referral,1
+CEO,Cybersecurity,medium,0.23,Junior,ColdList,0
+HR Director,Ecommerce,small,0.17,Senior,Conference,1
+HR Director,Fintech,enterprise,0.03,Junior,Conference,0
+VP Sales,Fintech,medium,0.03,Executive,Conference,1
+Founder,Cybersecurity,small,0.09,Senior,Inbound,1
+CTO,Fintech,small,0.23,Mid,Inbound,0
+VP Sales,Fintech,large,0.13,Mid,Conference,0
+VP Sales,Cybersecurity,large,0.25,Executive,Inbound,1
+CTO,AI,large,0.01,Executive,Conference,0
+Marketing Manager,Cybersecurity,medium,0.16,Executive,LinkedIn,0
+Marketing Manager,AI,enterprise,0.2,Junior,Conference,0
+Founder,Healthcare,small,0.21,Senior,ColdList,0
+HR Director,SaaS,enterprise,0.18,Senior,Conference,1
+Marketing Manager,Healthcare,enterprise,0.11,Junior,ColdList,1
+CEO,Fintech,large,0.1,Executive,Referral,0
+Engineering Manager,Cybersecurity,small,0.07,Senior,ColdList,1
+Marketing Manager,Fintech,large,0.13,Junior,Inbound,0
+HR Director,Cybersecurity,medium,0.18,Junior,LinkedIn,0
+VP Sales,SaaS,large,0.01,Executive,Referral,1
+VP Sales,Ecommerce,small,0.08,Executive,ColdList,0
+Marketing Manager,Cybersecurity,medium,0.12,Mid,Referral,1
+Founder,Fintech,large,0.27,Junior,Conference,0
+HR Director,AI,medium,0.07,Senior,LinkedIn,1
+Engineering Manager,Healthcare,medium,0.2,Junior,Referral,0
+HR Director,Ecommerce,small,0.09,Mid,Referral,0
+HR Director,Healthcare,medium,0.19,Mid,LinkedIn,0
+CTO,AI,small,0.03,Senior,ColdList,1
+Marketing Manager,Fintech,small,0.17,Senior,LinkedIn,0
+Founder,Cybersecurity,medium,0.18,Senior,Referral,1
+Founder,Healthcare,large,0.14,Junior,LinkedIn,0
+Engineering Manager,Cybersecurity,large,0.13,Mid,Inbound,1
+VP Sales,Ecommerce,medium,0.1,Senior,Conference,0
+Founder,Healthcare,small,0.09,Executive,Referral,1
+CTO,Cybersecurity,small,0.25,Senior,Conference,1
+VP Sales,AI,large,0.2,Senior,LinkedIn,0
+Engineering Manager,AI,medium,0.21,Executive,ColdList,0
+Engineering Manager,Fintech,small,0.04,Senior,LinkedIn,0
+VP Sales,Fintech,medium,0.2,Junior,LinkedIn,0
+Marketing Manager,Cybersecurity,large,0.08,Junior,Inbound,0
+Marketing Manager,Fintech,medium,0.27,Senior,Conference,1
+VP Sales,Cybersecurity,large,0.17,Executive,LinkedIn,0
+CTO,AI,medium,0.09,Senior,Inbound,1
+CEO,AI,large,0.14,Executive,Conference,0
+HR Director,Ecommerce,large,0.28,Senior,Inbound,1
+HR Director,Ecommerce,small,0.1,Executive,ColdList,0
+Engineering Manager,AI,medium,0.08,Junior,Conference,1
+Founder,Cybersecurity,medium,0.26,Senior,LinkedIn,1
+CTO,Cybersecurity,medium,0.16,Senior,ColdList,0
+Engineering Manager,Healthcare,enterprise,0.02,Mid,Inbound,1
+Founder,Healthcare,large,0.26,Mid,Inbound,1
+VP Sales,Cybersecurity,enterprise,0.09,Executive,ColdList,1
+VP Sales,SaaS,large,0.02,Mid,Inbound,0
+Marketing Manager,AI,enterprise,0.05,Mid,Inbound,1
+CEO,SaaS,medium,0.14,Junior,ColdList,0
+Marketing Manager,AI,large,0.15,Executive,LinkedIn,0
+Founder,Ecommerce,medium,0.08,Mid,Inbound,1
+Marketing Manager,SaaS,large,0.14,Mid,Inbound,1
+CEO,Fintech,small,0.11,Mid,LinkedIn,1
+CEO,Healthcare,large,0.04,Mid,Conference,1
+CTO,Fintech,medium,0.24,Junior,Referral,1
+Founder,AI,small,0.03,Mid,LinkedIn,1
+CEO,Cybersecurity,enterprise,0.15,Junior,Conference,1
+CTO,Cybersecurity,enterprise,0.17,Executive,Conference,0
+Engineering Manager,AI,small,0.04,Junior,Conference,1
+Engineering Manager,Ecommerce,large,0.24,Junior,Conference,0
+CEO,SaaS,medium,0.17,Junior,Referral,1
+HR Director,SaaS,medium,0.24,Mid,LinkedIn,1
+Engineering Manager,AI,large,0.08,Junior,ColdList,0
+CTO,Cybersecurity,medium,0.05,Junior,Conference,1
+VP Sales,Cybersecurity,enterprise,0.14,Senior,Inbound,1
+CEO,Healthcare,medium,0.2,Junior,Conference,0
+Founder,Cybersecurity,medium,0.17,Executive,Conference,1
+HR Director,Cybersecurity,enterprise,0.13,Junior,Referral,1
+CTO,Cybersecurity,large,0.2,Junior,ColdList,1
+Marketing Manager,SaaS,enterprise,0.24,Executive,LinkedIn,1
+CEO,Healthcare,small,0.14,Executive,Referral,1
+HR Director,SaaS,small,0.3,Mid,LinkedIn,1
+CTO,SaaS,enterprise,0.25,Senior,Inbound,1
+VP Sales,Cybersecurity,enterprise,0.05,Mid,Inbound,1
+Marketing Manager,Healthcare,enterprise,0.27,Executive,Inbound,1
+CEO,SaaS,enterprise,0.03,Junior,Conference,1
+Marketing Manager,Fintech,enterprise,0.06,Mid,Referral,0
+Founder,SaaS,small,0.2,Senior,Conference,1
+Marketing Manager,Ecommerce,enterprise,0.16,Junior,Conference,1
+Engineering Manager,Ecommerce,large,0.05,Senior,LinkedIn,1
+Marketing Manager,Fintech,small,0.25,Senior,Referral,1
+Founder,Healthcare,medium,0.18,Senior,LinkedIn,0
+CTO,Fintech,small,0.03,Executive,Conference,1
+CTO,Fintech,enterprise,0.2,Mid,Inbound,1
+Founder,SaaS,small,0.29,Executive,Inbound,1
+HR Director,AI,enterprise,0.26,Junior,Conference,1
+Engineering Manager,Healthcare,enterprise,0.02,Mid,ColdList,0
+Engineering Manager,Healthcare,medium,0.27,Mid,Referral,1
+CTO,SaaS,large,0.18,Junior,Conference,1
+CTO,AI,large,0.25,Executive,ColdList,0
+Engineering Manager,Healthcare,enterprise,0.2,Executive,LinkedIn,0
+CEO,SaaS,medium,0.08,Junior,LinkedIn,1
+CTO,Cybersecurity,enterprise,0.18,Junior,Referral,1
+CEO,Healthcare,small,0.14,Executive,ColdList,1
+CTO,Ecommerce,large,0.26,Junior,Referral,1
+HR Director,Cybersecurity,enterprise,0.24,Executive,Inbound,0
+Engineering Manager,Cybersecurity,large,0.17,Junior,ColdList,1
+Marketing Manager,Fintech,medium,0.26,Senior,ColdList,0
+VP Sales,Fintech,enterprise,0.17,Junior,LinkedIn,0
+CEO,Fintech,enterprise,0.25,Junior,Referral,0
+Engineering Manager,SaaS,medium,0.16,Mid,Inbound,1
+CTO,Fintech,enterprise,0.19,Mid,LinkedIn,1
+Founder,Healthcare,large,0.07,Junior,Inbound,0
+CTO,Fintech,large,0.07,Mid,ColdList,0
+Engineering Manager,Cybersecurity,large,0.19,Mid,LinkedIn,0
+Founder,Cybersecurity,large,0.29,Senior,LinkedIn,0
+HR Director,AI,large,0.23,Junior,Conference,1
+Marketing Manager,AI,medium,0.17,Junior,Referral,1
+CEO,AI,large,0.04,Junior,LinkedIn,0
+CTO,AI,large,0.19,Senior,ColdList,0
+HR Director,Ecommerce,medium,0.2,Junior,Conference,1
+Engineering Manager,SaaS,small,0.16,Mid,LinkedIn,0
+HR Director,Ecommerce,enterprise,0.09,Junior,LinkedIn,0
+HR Director,Fintech,small,0.18,Junior,Conference,1
+Founder,Cybersecurity,medium,0.13,Executive,ColdList,0
+Founder,Fintech,medium,0.19,Executive,LinkedIn,0
+Engineering Manager,AI,enterprise,0.27,Senior,Inbound,1
+VP Sales,Fintech,medium,0.2,Senior,Inbound,1
+Founder,Healthcare,enterprise,0.06,Senior,Inbound,1
+Marketing Manager,SaaS,large,0.1,Mid,LinkedIn,1
+HR Director,Cybersecurity,medium,0.05,Senior,Inbound,0
+VP Sales,SaaS,enterprise,0.25,Mid,Conference,1
+Engineering Manager,SaaS,enterprise,0.03,Mid,LinkedIn,0
+Marketing Manager,AI,large,0.22,Junior,LinkedIn,1
+VP Sales,Cybersecurity,large,0.12,Senior,Conference,0
+Marketing Manager,AI,large,0.06,Mid,Inbound,1
+VP Sales,Fintech,enterprise,0.23,Junior,LinkedIn,0
+Marketing Manager,Healthcare,medium,0.12,Junior,ColdList,0
+Marketing Manager,Healthcare,small,0.25,Mid,LinkedIn,1
+Engineering Manager,Healthcare,medium,0.28,Executive,Inbound,0
+Engineering Manager,AI,small,0.06,Executive,Referral,1
+Engineering Manager,Fintech,enterprise,0.07,Executive,Conference,1
+Marketing Manager,Ecommerce,small,0.29,Mid,Inbound,0
+CEO,Cybersecurity,medium,0.06,Junior,ColdList,0
+CTO,Ecommerce,medium,0.16,Executive,Referral,1
+Engineering Manager,SaaS,large,0.04,Junior,Conference,1
+CTO,SaaS,small,0.24,Mid,LinkedIn,1
+Founder,Healthcare,medium,0.07,Executive,Conference,0
+VP Sales,Fintech,small,0.14,Executive,Inbound,1
+Founder,Cybersecurity,small,0.22,Senior,LinkedIn,1
+Engineering Manager,Ecommerce,small,0.18,Executive,Referral,1
+Marketing Manager,Healthcare,small,0.22,Executive,LinkedIn,0
+CTO,AI,medium,0.04,Junior,Referral,1
+CTO,AI,medium,0.06,Senior,ColdList,1
+Engineering Manager,Cybersecurity,large,0.02,Junior,Inbound,1
+HR Director,Cybersecurity,medium,0.26,Junior,Referral,1
+Engineering Manager,Fintech,medium,0.12,Senior,Referral,1
+VP Sales,SaaS,large,0.24,Mid,Conference,0
+Founder,Ecommerce,enterprise,0.07,Executive,Inbound,1
+HR Director,Healthcare,large,0.09,Senior,Conference,0
+VP Sales,Fintech,enterprise,0.11,Executive,Referral,1
+Engineering Manager,Fintech,small,0.08,Junior,Conference,1
+Founder,SaaS,large,0.05,Executive,LinkedIn,1
+CEO,Ecommerce,small,0.27,Executive,Inbound,0
+Marketing Manager,Fintech,large,0.29,Senior,ColdList,0
+VP Sales,Fintech,large,0.08,Junior,Inbound,1
+Founder,Healthcare,small,0.18,Senior,ColdList,1
+Founder,Fintech,small,0.04,Junior,ColdList,1
+CEO,SaaS,large,0.06,Senior,LinkedIn,0
+VP Sales,AI,small,0.29,Senior,Inbound,1
+Engineering Manager,Ecommerce,enterprise,0.28,Mid,Inbound,1
+VP Sales,AI,large,0.3,Junior,Inbound,1
+CEO,Cybersecurity,large,0.12,Executive,Conference,1
+Marketing Manager,Healthcare,small,0.02,Executive,LinkedIn,0
+CEO,Cybersecurity,large,0.17,Mid,Conference,1
+Founder,Cybersecurity,enterprise,0.02,Senior,Inbound,0
+HR Director,Ecommerce,small,0.05,Mid,LinkedIn,1
+CEO,Cybersecurity,enterprise,0.14,Junior,Referral,0
+CTO,Healthcare,small,0.02,Senior,Conference,1
+Marketing Manager,Healthcare,small,0.18,Executive,ColdList,0
+Engineering Manager,Cybersecurity,medium,0.03,Mid,Conference,1
+CEO,Ecommerce,large,0.11,Senior,LinkedIn,1
+Marketing Manager,Ecommerce,small,0.18,Junior,LinkedIn,0
+CTO,Ecommerce,medium,0.13,Mid,Inbound,1
+Engineering Manager,Fintech,enterprise,0.19,Junior,Referral,0
+CTO,SaaS,enterprise,0.24,Senior,Conference,0
+Founder,Cybersecurity,large,0.15,Junior,LinkedIn,1
+CTO,AI,small,0.2,Senior,Referral,1
+HR Director,SaaS,enterprise,0.21,Junior,LinkedIn,0
+HR Director,Ecommerce,enterprise,0.13,Senior,ColdList,0
+CTO,Fintech,large,0.1,Junior,Inbound,0
+Engineering Manager,Fintech,medium,0.24,Executive,Conference,0
+Marketing Manager,SaaS,small,0.1,Executive,LinkedIn,1
+VP Sales,Ecommerce,enterprise,0.26,Senior,LinkedIn,0
+CTO,Cybersecurity,enterprise,0.11,Mid,Referral,0
+CEO,Fintech,enterprise,0.21,Mid,ColdList,1
+VP Sales,Cybersecurity,small,0.29,Junior,LinkedIn,1
+Engineering Manager,AI,medium,0.15,Executive,Inbound,1
+HR Director,Fintech,medium,0.27,Mid,Conference,1
+Marketing Manager,Ecommerce,medium,0.04,Executive,LinkedIn,0
+HR Director,SaaS,large,0.03,Junior,Conference,1
+Founder,Healthcare,medium,0.19,Junior,ColdList,1
+Engineering Manager,AI,enterprise,0.05,Mid,Referral,1
+Engineering Manager,Healthcare,medium,0.08,Senior,Referral,0
+CTO,AI,large,0.13,Junior,LinkedIn,1
+Engineering Manager,AI,small,0.25,Executive,Referral,1
+HR Director,Ecommerce,medium,0.07,Junior,Conference,1
+CTO,SaaS,small,0.11,Executive,LinkedIn,1
+Founder,AI,large,0.09,Executive,ColdList,0
+VP Sales,AI,large,0.09,Mid,Referral,1
+Engineering Manager,AI,medium,0.09,Executive,LinkedIn,0
+CTO,Fintech,medium,0.26,Executive,LinkedIn,1
+CEO,Fintech,enterprise,0.24,Executive,LinkedIn,1
+Marketing Manager,AI,medium,0.06,Junior,Referral,0
+VP Sales,Cybersecurity,medium,0.08,Executive,Inbound,1
+HR Director,Cybersecurity,large,0.1,Executive,Inbound,0
+Marketing Manager,SaaS,small,0.25,Executive,ColdList,0
+Founder,AI,enterprise,0.06,Executive,Referral,1
+CTO,SaaS,small,0.07,Executive,Inbound,1
+VP Sales,Healthcare,large,0.08,Executive,ColdList,0
+Engineering Manager,Ecommerce,enterprise,0.16,Mid,Conference,0
+Marketing Manager,SaaS,small,0.08,Executive,LinkedIn,0
+CTO,Healthcare,medium,0.02,Junior,Inbound,0
+Engineering Manager,Healthcare,large,0.07,Senior,Referral,0
+CEO,Healthcare,enterprise,0.12,Mid,LinkedIn,0
+CTO,Ecommerce,enterprise,0.29,Senior,LinkedIn,1
+HR Director,Cybersecurity,enterprise,0.05,Senior,ColdList,0
+Founder,AI,medium,0.09,Junior,LinkedIn,0
+CEO,AI,medium,0.06,Junior,ColdList,0
+HR Director,Cybersecurity,small,0.21,Senior,Conference,0
+CEO,Healthcare,enterprise,0.27,Senior,Referral,0
+Engineering Manager,Healthcare,medium,0.27,Junior,Referral,0
+VP Sales,AI,enterprise,0.27,Mid,ColdList,0
+CEO,Cybersecurity,medium,0.22,Executive,ColdList,0
+VP Sales,Ecommerce,large,0.27,Junior,Inbound,1
+CTO,Cybersecurity,large,0.26,Mid,Conference,0
+VP Sales,Cybersecurity,medium,0.05,Mid,Inbound,1
+CEO,Healthcare,small,0.07,Senior,ColdList,0
+CEO,Fintech,large,0.1,Senior,ColdList,0
+Engineering Manager,Ecommerce,large,0.28,Executive,LinkedIn,0
+CTO,Cybersecurity,large,0.24,Mid,Inbound,0
+Marketing Manager,SaaS,small,0.19,Senior,LinkedIn,0
+CEO,Healthcare,large,0.27,Junior,ColdList,0
+Engineering Manager,SaaS,small,0.14,Executive,ColdList,0
+Marketing Manager,Cybersecurity,medium,0.24,Mid,LinkedIn,1
+HR Director,SaaS,large,0.18,Executive,Conference,0
+HR Director,Cybersecurity,medium,0.14,Executive,ColdList,0
+Founder,Fintech,enterprise,0.24,Senior,Conference,1
+Marketing Manager,Healthcare,small,0.05,Junior,Inbound,0
+HR Director,AI,enterprise,0.12,Junior,Inbound,1
+Engineering Manager,SaaS,enterprise,0.23,Junior,LinkedIn,1
+Engineering Manager,Fintech,enterprise,0.17,Senior,LinkedIn,1
+Marketing Manager,Cybersecurity,large,0.19,Senior,Referral,1
+Marketing Manager,Cybersecurity,small,0.19,Mid,Conference,0
+CTO,Cybersecurity,small,0.19,Mid,Referral,0
+Founder,AI,medium,0.23,Senior,Conference,1
+HR Director,Cybersecurity,large,0.06,Junior,Inbound,1
+CEO,AI,large,0.21,Junior,Referral,1
+Marketing Manager,Fintech,small,0.16,Junior,Conference,0
+CTO,SaaS,medium,0.16,Executive,Conference,0
+VP Sales,Healthcare,large,0.18,Mid,Referral,1
+Engineering Manager,AI,large,0.22,Junior,Inbound,0
+CEO,SaaS,enterprise,0.16,Senior,LinkedIn,1
+CEO,Ecommerce,enterprise,0.26,Mid,Referral,1
+Marketing Manager,Ecommerce,small,0.07,Junior,ColdList,1
+CEO,Cybersecurity,large,0.03,Executive,Inbound,0
+HR Director,Cybersecurity,medium,0.29,Senior,Inbound,1
+VP Sales,Healthcare,enterprise,0.11,Junior,Referral,1
+Founder,SaaS,small,0.21,Senior,ColdList,0
+CTO,SaaS,large,0.22,Mid,Referral,1
+CTO,SaaS,large,0.18,Senior,Inbound,1
+Founder,Healthcare,small,0.28,Mid,Referral,0
+Engineering Manager,AI,small,0.05,Senior,LinkedIn,1
+CEO,Fintech,medium,0.15,Executive,LinkedIn,1
+Engineering Manager,Ecommerce,large,0.1,Senior,Conference,0
+HR Director,SaaS,large,0.07,Executive,Inbound,1
+CEO,AI,medium,0.03,Junior,Referral,0
+CTO,Fintech,enterprise,0.22,Junior,Inbound,1
+CTO,Fintech,large,0.17,Executive,ColdList,1
+Founder,AI,large,0.17,Mid,LinkedIn,0
+Marketing Manager,AI,enterprise,0.21,Junior,Inbound,1
+Founder,SaaS,small,0.3,Mid,Inbound,1
+HR Director,Fintech,medium,0.03,Junior,LinkedIn,1
+Founder,Ecommerce,large,0.25,Executive,ColdList,0
+HR Director,Fintech,large,0.14,Senior,Conference,1
+Engineering Manager,Fintech,small,0.18,Mid,Inbound,0
+CTO,Fintech,large,0.24,Senior,LinkedIn,1
+CEO,Fintech,medium,0.12,Executive,Conference,1
+CEO,SaaS,enterprise,0.19,Junior,LinkedIn,0
+HR Director,SaaS,small,0.3,Executive,Referral,0
+Founder,Fintech,large,0.11,Executive,Conference,0
+Marketing Manager,AI,enterprise,0.22,Mid,Inbound,1
+Engineering Manager,AI,medium,0.28,Executive,Conference,1
+HR Director,Cybersecurity,enterprise,0.01,Senior,LinkedIn,0
+Founder,Cybersecurity,small,0.13,Senior,Conference,1
+VP Sales,Cybersecurity,large,0.11,Executive,Conference,1
+CTO,Healthcare,small,0.13,Junior,Referral,1
+CTO,Ecommerce,small,0.11,Senior,Referral,1
+Founder,Cybersecurity,medium,0.08,Senior,Referral,0
+HR Director,Cybersecurity,large,0.07,Senior,ColdList,0
+Marketing Manager,Cybersecurity,enterprise,0.26,Senior,ColdList,0
+CEO,AI,medium,0.28,Mid,Inbound,1
+VP Sales,Ecommerce,medium,0.3,Senior,Conference,1
+Engineering Manager,Fintech,large,0.05,Mid,Conference,0
+CTO,Ecommerce,enterprise,0.21,Senior,ColdList,0
+Engineering Manager,AI,enterprise,0.17,Junior,Conference,1
+Founder,Ecommerce,small,0.28,Executive,Inbound,1
+HR Director,SaaS,small,0.25,Mid,Referral,1
+CTO,Fintech,large,0.26,Senior,ColdList,1
+HR Director,Healthcare,enterprise,0.3,Executive,Conference,1
+CEO,Healthcare,medium,0.22,Senior,Conference,0
+Engineering Manager,Cybersecurity,small,0.01,Senior,ColdList,1
+Marketing Manager,Healthcare,small,0.12,Executive,Referral,0
+Marketing Manager,Cybersecurity,small,0.1,Junior,Inbound,0
+Engineering Manager,SaaS,small,0.17,Mid,Referral,1
+Founder,Fintech,large,0.29,Junior,LinkedIn,0
+CEO,Healthcare,medium,0.19,Senior,LinkedIn,1
+VP Sales,Cybersecurity,small,0.07,Mid,LinkedIn,1
+HR Director,Fintech,enterprise,0.09,Junior,Conference,0
+VP Sales,Fintech,medium,0.05,Mid,ColdList,0
+CEO,Healthcare,enterprise,0.26,Senior,LinkedIn,0
+VP Sales,AI,medium,0.13,Mid,Conference,0
+Marketing Manager,SaaS,large,0.2,Mid,ColdList,0
+VP Sales,Healthcare,large,0.23,Junior,Inbound,0
+VP Sales,SaaS,large,0.08,Mid,Conference,0
+CTO,Cybersecurity,enterprise,0.11,Mid,Inbound,0
+Engineering Manager,Ecommerce,enterprise,0.11,Executive,Conference,1
+CEO,Fintech,medium,0.01,Mid,ColdList,0
+Engineering Manager,Ecommerce,small,0.14,Executive,Inbound,0
+Marketing Manager,Ecommerce,small,0.29,Executive,Inbound,1
+VP Sales,Cybersecurity,large,0.23,Senior,ColdList,1
+Founder,Ecommerce,small,0.12,Senior,LinkedIn,1
+Engineering Manager,Healthcare,small,0.26,Senior,Conference,1
+CEO,Cybersecurity,medium,0.18,Senior,Conference,1
+VP Sales,Ecommerce,small,0.13,Mid,Conference,1
+HR Director,Ecommerce,medium,0.05,Junior,Inbound,0
+VP Sales,Healthcare,medium,0.11,Executive,ColdList,0
+HR Director,Healthcare,large,0.22,Junior,ColdList,0
+VP Sales,Fintech,enterprise,0.29,Junior,LinkedIn,1
+Founder,AI,medium,0.11,Junior,LinkedIn,0
+VP Sales,Cybersecurity,large,0.12,Senior,Conference,0
+Engineering Manager,Cybersecurity,small,0.2,Executive,Inbound,0
+Founder,SaaS,large,0.27,Mid,Referral,1
+CEO,Ecommerce,medium,0.07,Executive,Conference,0
+CTO,SaaS,medium,0.27,Junior,LinkedIn,1
+CTO,Ecommerce,small,0.23,Executive,Conference,0
+CTO,Fintech,large,0.07,Junior,LinkedIn,1
+HR Director,SaaS,large,0.3,Executive,LinkedIn,1
+VP Sales,Fintech,small,0.26,Executive,Conference,1
+HR Director,Cybersecurity,large,0.27,Senior,ColdList,1
+Founder,Healthcare,large,0.09,Executive,LinkedIn,0
+Marketing Manager,Cybersecurity,medium,0.16,Mid,Conference,0
+CTO,SaaS,enterprise,0.12,Junior,Referral,0
+Marketing Manager,Cybersecurity,enterprise,0.08,Executive,Inbound,0
+CTO,Ecommerce,small,0.06,Senior,LinkedIn,1
+HR Director,Ecommerce,enterprise,0.22,Executive,Referral,1
+HR Director,Healthcare,medium,0.15,Senior,Referral,1
+Founder,AI,enterprise,0.28,Mid,LinkedIn,1
+Engineering Manager,Healthcare,large,0.05,Senior,Inbound,1
+Engineering Manager,Ecommerce,medium,0.02,Junior,Inbound,0
+Marketing Manager,Cybersecurity,enterprise,0.04,Executive,ColdList,0
+Founder,Fintech,enterprise,0.16,Mid,Referral,1
+CTO,Fintech,medium,0.12,Senior,ColdList,1
+CTO,Cybersecurity,small,0.1,Executive,LinkedIn,0
+VP Sales,Fintech,enterprise,0.28,Executive,Referral,0
+Founder,Ecommerce,medium,0.27,Senior,LinkedIn,1
+CTO,Ecommerce,small,0.08,Mid,Referral,0
+Engineering Manager,AI,enterprise,0.15,Junior,LinkedIn,0
+Engineering Manager,SaaS,large,0.19,Senior,Referral,1
+CEO,Cybersecurity,medium,0.04,Senior,ColdList,0
+Founder,Fintech,medium,0.21,Senior,ColdList,1
+HR Director,Ecommerce,enterprise,0.17,Senior,LinkedIn,0
+Founder,SaaS,enterprise,0.16,Junior,Inbound,1
+Founder,Healthcare,large,0.19,Junior,LinkedIn,0
+HR Director,Fintech,large,0.11,Junior,ColdList,0
+Engineering Manager,Fintech,enterprise,0.23,Executive,Inbound,1
+Founder,Cybersecurity,medium,0.28,Mid,LinkedIn,1
+Engineering Manager,Healthcare,large,0.02,Junior,Referral,1
+Marketing Manager,AI,small,0.04,Junior,ColdList,0
+VP Sales,Healthcare,large,0.09,Senior,LinkedIn,0
+VP Sales,Cybersecurity,enterprise,0.27,Senior,LinkedIn,0
+Marketing Manager,SaaS,small,0.1,Junior,LinkedIn,0
+Founder,Healthcare,enterprise,0.27,Mid,ColdList,1
+Engineering Manager,Cybersecurity,small,0.29,Senior,ColdList,0
+HR Director,Cybersecurity,enterprise,0.18,Junior,Conference,0
+VP Sales,Ecommerce,small,0.11,Junior,Referral,1
+CTO,AI,enterprise,0.19,Executive,Inbound,0
+Founder,Ecommerce,small,0.16,Junior,Referral,1
+VP Sales,Healthcare,small,0.17,Executive,Conference,0
+Founder,Healthcare,medium,0.16,Executive,Inbound,1
+Marketing Manager,Ecommerce,medium,0.02,Junior,ColdList,0
+VP Sales,Cybersecurity,large,0.17,Junior,ColdList,0
+HR Director,Fintech,small,0.27,Junior,LinkedIn,1
+CTO,Fintech,medium,0.1,Senior,Inbound,0
+CEO,Healthcare,medium,0.11,Senior,Referral,1
+HR Director,Healthcare,enterprise,0.09,Senior,ColdList,0
+Marketing Manager,SaaS,small,0.21,Executive,ColdList,0
+Engineering Manager,Healthcare,small,0.1,Senior,Referral,1
+VP Sales,Ecommerce,small,0.27,Junior,Conference,0
+Marketing Manager,Ecommerce,enterprise,0.22,Mid,Referral,0
+CEO,SaaS,small,0.17,Junior,LinkedIn,1
+VP Sales,AI,enterprise,0.16,Junior,Conference,1
+HR Director,Cybersecurity,medium,0.14,Executive,Referral,1
+VP Sales,AI,large,0.22,Executive,LinkedIn,0
+CEO,Fintech,medium,0.11,Executive,Inbound,1
+Founder,Healthcare,enterprise,0.22,Mid,Inbound,0
+Engineering Manager,Ecommerce,small,0.23,Mid,Referral,1
+VP Sales,AI,small,0.19,Mid,ColdList,0
+VP Sales,AI,small,0.22,Mid,Conference,1
+VP Sales,SaaS,large,0.22,Senior,Referral,1
+Founder,Healthcare,large,0.26,Junior,Referral,1
+Engineering Manager,SaaS,small,0.02,Junior,Inbound,0
+Engineering Manager,Healthcare,small,0.29,Senior,Conference,0
+VP Sales,Healthcare,small,0.19,Mid,Inbound,1
+CTO,Healthcare,small,0.17,Junior,ColdList,1
+Engineering Manager,SaaS,large,0.15,Junior,Conference,0
+Founder,Healthcare,large,0.24,Senior,LinkedIn,1
+Engineering Manager,AI,large,0.22,Executive,LinkedIn,0
+Marketing Manager,AI,small,0.22,Mid,ColdList,0
+Engineering Manager,AI,medium,0.15,Executive,LinkedIn,0
+VP Sales,AI,enterprise,0.28,Executive,LinkedIn,0
+Marketing Manager,AI,enterprise,0.1,Junior,Referral,1
+Founder,SaaS,enterprise,0.22,Mid,Conference,0
+Founder,Healthcare,small,0.01,Executive,Referral,0
+CTO,Cybersecurity,medium,0.06,Mid,ColdList,0
+HR Director,Ecommerce,large,0.22,Junior,Conference,0
+CTO,SaaS,large,0.07,Mid,Referral,1
+Marketing Manager,Fintech,medium,0.14,Senior,LinkedIn,0
+Marketing Manager,Cybersecurity,enterprise,0.28,Mid,LinkedIn,0
+CEO,Fintech,large,0.19,Mid,Inbound,0
+Founder,Fintech,small,0.13,Senior,LinkedIn,1
+Marketing Manager,Cybersecurity,large,0.28,Senior,Referral,1
+VP Sales,SaaS,enterprise,0.22,Mid,Inbound,1
+Marketing Manager,SaaS,large,0.27,Mid,LinkedIn,1
+Founder,Fintech,enterprise,0.27,Mid,Referral,1
+Marketing Manager,Fintech,enterprise,0.22,Junior,ColdList,0
+CEO,Fintech,enterprise,0.08,Executive,Inbound,1
+Marketing Manager,Cybersecurity,enterprise,0.03,Junior,ColdList,0
+CTO,Ecommerce,large,0.16,Junior,Referral,1
+Marketing Manager,Ecommerce,enterprise,0.03,Senior,ColdList,0
+CEO,SaaS,medium,0.12,Mid,Referral,1
+Founder,Healthcare,large,0.17,Senior,ColdList,0
+VP Sales,Ecommerce,large,0.3,Junior,ColdList,0
+Marketing Manager,AI,medium,0.02,Junior,Referral,1
+CTO,Ecommerce,enterprise,0.05,Junior,ColdList,0
+Engineering Manager,Healthcare,medium,0.03,Mid,Conference,1
+HR Director,AI,medium,0.06,Senior,Inbound,1
+Marketing Manager,Cybersecurity,small,0.22,Senior,LinkedIn,0
+Marketing Manager,Cybersecurity,large,0.05,Senior,LinkedIn,0
+Marketing Manager,Cybersecurity,medium,0.2,Mid,ColdList,0
+CTO,Healthcare,enterprise,0.11,Executive,ColdList,0
+VP Sales,AI,small,0.3,Junior,LinkedIn,1
+Founder,SaaS,enterprise,0.18,Mid,Inbound,0
+Founder,Healthcare,small,0.21,Senior,LinkedIn,0
+HR Director,SaaS,large,0.14,Executive,Conference,1
+Founder,Fintech,small,0.29,Senior,Inbound,1
+VP Sales,AI,enterprise,0.21,Executive,Conference,0
+HR Director,Cybersecurity,enterprise,0.08,Senior,ColdList,0
+Founder,Healthcare,medium,0.17,Junior,LinkedIn,0
+Founder,AI,medium,0.28,Mid,LinkedIn,1
+Engineering Manager,SaaS,large,0.16,Executive,Inbound,0
+Marketing Manager,Fintech,enterprise,0.07,Mid,Referral,1
+CTO,AI,enterprise,0.03,Senior,Inbound,0
+HR Director,Ecommerce,small,0.22,Mid,ColdList,0
+Founder,AI,medium,0.2,Junior,LinkedIn,1
+HR Director,AI,large,0.13,Mid,LinkedIn,0
+VP Sales,Ecommerce,large,0.08,Mid,ColdList,0
+Engineering Manager,SaaS,medium,0.13,Senior,Referral,0
+VP Sales,Ecommerce,medium,0.15,Executive,ColdList,0
+Marketing Manager,Ecommerce,large,0.29,Junior,ColdList,0
+HR Director,Healthcare,small,0.09,Mid,Inbound,1
+CTO,SaaS,medium,0.21,Mid,LinkedIn,0
+VP Sales,SaaS,enterprise,0.11,Junior,LinkedIn,0
+CEO,SaaS,medium,0.25,Junior,LinkedIn,0
+HR Director,Ecommerce,large,0.19,Junior,LinkedIn,0
+CEO,Cybersecurity,small,0.04,Executive,Referral,0
+Founder,Fintech,small,0.11,Senior,Inbound,1
+Marketing Manager,Fintech,enterprise,0.14,Junior,Conference,0
+Founder,Healthcare,large,0.24,Executive,ColdList,0
+CEO,Ecommerce,large,0.13,Junior,Referral,1
+Engineering Manager,Fintech,large,0.11,Executive,Inbound,1
+Engineering Manager,Healthcare,large,0.09,Senior,ColdList,0
+CEO,Cybersecurity,small,0.15,Mid,Inbound,1
+CTO,AI,medium,0.03,Mid,LinkedIn,1
+Marketing Manager,Healthcare,large,0.28,Executive,Conference,0
+Marketing Manager,Fintech,medium,0.02,Mid,LinkedIn,0
+CEO,Cybersecurity,large,0.14,Junior,Inbound,1
+CTO,SaaS,enterprise,0.2,Executive,Referral,0
+CTO,SaaS,large,0.26,Junior,LinkedIn,1
+CEO,Healthcare,medium,0.08,Senior,ColdList,1
+HR Director,Healthcare,small,0.06,Mid,Referral,1
+Founder,AI,small,0.27,Senior,ColdList,0
+Marketing Manager,Healthcare,large,0.27,Mid,LinkedIn,1
+HR Director,Ecommerce,small,0.23,Senior,Conference,0
+Marketing Manager,Fintech,large,0.18,Senior,Inbound,0
+Engineering Manager,Ecommerce,medium,0.25,Mid,Inbound,0
+HR Director,Cybersecurity,medium,0.08,Junior,Inbound,0
+VP Sales,Healthcare,large,0.11,Junior,Conference,1
+HR Director,Healthcare,enterprise,0.2,Senior,Conference,0
+CEO,Ecommerce,enterprise,0.27,Junior,ColdList,1
+HR Director,AI,small,0.19,Junior,Inbound,0
+VP Sales,Cybersecurity,large,0.19,Mid,Conference,1
+VP Sales,AI,large,0.15,Executive,ColdList,0
+CTO,Ecommerce,enterprise,0.11,Senior,Referral,0
+CTO,SaaS,enterprise,0.24,Senior,Inbound,0
+VP Sales,SaaS,small,0.1,Mid,Referral,0
+Founder,Ecommerce,enterprise,0.28,Junior,Conference,1
+Engineering Manager,Ecommerce,enterprise,0.06,Senior,ColdList,1
+Founder,SaaS,small,0.19,Executive,Referral,0
+VP Sales,SaaS,enterprise,0.09,Junior,ColdList,0
+CEO,Healthcare,enterprise,0.29,Junior,Conference,1
+Engineering Manager,SaaS,medium,0.2,Mid,LinkedIn,1
+Engineering Manager,Ecommerce,enterprise,0.27,Senior,ColdList,0
+VP Sales,Ecommerce,enterprise,0.21,Executive,LinkedIn,1
+Founder,Ecommerce,large,0.17,Junior,ColdList,1
+HR Director,Ecommerce,small,0.23,Mid,LinkedIn,0
+CTO,Cybersecurity,small,0.11,Junior,Referral,1
+Founder,SaaS,small,0.23,Mid,LinkedIn,1
+HR Director,SaaS,enterprise,0.14,Senior,ColdList,0
+CTO,AI,large,0.02,Executive,Conference,1
+Engineering Manager,AI,small,0.25,Executive,LinkedIn,0
+CTO,Ecommerce,enterprise,0.24,Executive,Referral,1
+Marketing Manager,Ecommerce,small,0.25,Senior,Inbound,1
+VP Sales,SaaS,medium,0.25,Mid,Referral,1
+VP Sales,SaaS,large,0.14,Mid,LinkedIn,1
+Marketing Manager,Ecommerce,small,0.18,Executive,LinkedIn,0
+CTO,SaaS,enterprise,0.13,Mid,LinkedIn,0
+CTO,Healthcare,large,0.3,Mid,Inbound,1
+HR Director,Healthcare,enterprise,0.09,Senior,Inbound,0
+Engineering Manager,AI,medium,0.19,Mid,Conference,1
+VP Sales,AI,medium,0.06,Junior,Conference,1
+Engineering Manager,AI,enterprise,0.22,Executive,Inbound,1
+VP Sales,Healthcare,small,0.04,Executive,Conference,0
+Engineering Manager,SaaS,enterprise,0.18,Senior,LinkedIn,0
+Engineering Manager,AI,medium,0.09,Executive,Inbound,1
+Marketing Manager,Fintech,large,0.18,Junior,LinkedIn,1
+Founder,SaaS,small,0.09,Junior,Conference,0
+CTO,Healthcare,medium,0.11,Executive,Inbound,1
+CTO,AI,enterprise,0.16,Junior,Referral,0
+CTO,SaaS,large,0.08,Junior,LinkedIn,1
+Founder,SaaS,small,0.25,Executive,Referral,1
+CEO,Ecommerce,enterprise,0.21,Senior,ColdList,1
+Founder,Ecommerce,large,0.2,Executive,ColdList,1
+CTO,SaaS,medium,0.18,Junior,Conference,1
+CTO,AI,medium,0.13,Senior,ColdList,0
+VP Sales,Cybersecurity,enterprise,0.15,Senior,Conference,1
+Engineering Manager,Fintech,medium,0.03,Executive,ColdList,0
+CTO,Fintech,enterprise,0.11,Mid,Referral,0
+VP Sales,Ecommerce,small,0.25,Mid,Inbound,1
+CEO,Fintech,large,0.1,Mid,Referral,1
+VP Sales,SaaS,medium,0.11,Mid,Referral,0
+Founder,Cybersecurity,large,0.19,Executive,ColdList,1
+VP Sales,Healthcare,enterprise,0.1,Senior,Inbound,1
+Engineering Manager,Ecommerce,enterprise,0.12,Mid,Referral,1
+CTO,SaaS,medium,0.16,Mid,LinkedIn,1
+CEO,AI,small,0.25,Executive,Inbound,1
+CEO,SaaS,enterprise,0.3,Executive,Referral,1
+VP Sales,AI,medium,0.1,Executive,LinkedIn,0
+HR Director,Fintech,small,0.27,Mid,Conference,1
+Founder,Cybersecurity,large,0.02,Mid,Inbound,1
+Marketing Manager,SaaS,small,0.09,Mid,Referral,1
+HR Director,Fintech,medium,0.08,Senior,Conference,1
+HR Director,Cybersecurity,small,0.3,Senior,ColdList,0
+Engineering Manager,SaaS,enterprise,0.11,Senior,Inbound,0
+VP Sales,Healthcare,large,0.1,Junior,ColdList,0
+Engineering Manager,Healthcare,large,0.17,Mid,Referral,0
+VP Sales,AI,medium,0.19,Junior,ColdList,0
+HR Director,Cybersecurity,small,0.1,Mid,LinkedIn,0
+HR Director,AI,enterprise,0.13,Junior,Conference,1
+CEO,Ecommerce,medium,0.13,Executive,Conference,1
+Engineering Manager,SaaS,small,0.05,Senior,Conference,1
+CEO,Healthcare,enterprise,0.03,Senior,Conference,1
+Founder,AI,enterprise,0.02,Senior,Inbound,0
+CEO,Ecommerce,large,0.3,Junior,Inbound,0
+CEO,SaaS,medium,0.19,Mid,LinkedIn,0
+Marketing Manager,Cybersecurity,medium,0.08,Mid,Conference,0
+VP Sales,SaaS,large,0.02,Mid,Inbound,0
+Marketing Manager,Cybersecurity,small,0.2,Senior,Inbound,0
+Marketing Manager,Ecommerce,small,0.17,Executive,LinkedIn,0
+VP Sales,SaaS,medium,0.19,Senior,ColdList,1
+CEO,SaaS,small,0.25,Executive,ColdList,1
+Engineering Manager,AI,medium,0.25,Mid,Conference,1
+Engineering Manager,SaaS,enterprise,0.2,Executive,ColdList,0
+CTO,Healthcare,enterprise,0.06,Junior,LinkedIn,0
+CEO,SaaS,enterprise,0.21,Senior,ColdList,0
+VP Sales,Cybersecurity,enterprise,0.01,Mid,LinkedIn,0
+HR Director,AI,medium,0.27,Executive,Referral,1
+Marketing Manager,Ecommerce,enterprise,0.07,Mid,Inbound,1
+Marketing Manager,Ecommerce,medium,0.28,Mid,Conference,1
+Marketing Manager,Cybersecurity,enterprise,0.09,Executive,Inbound,1
+Marketing Manager,Cybersecurity,small,0.22,Executive,ColdList,0
+Engineering Manager,AI,enterprise,0.04,Executive,Conference,0
+VP Sales,AI,enterprise,0.06,Executive,LinkedIn,0
+VP Sales,Ecommerce,medium,0.26,Junior,LinkedIn,1
+HR Director,Ecommerce,medium,0.29,Mid,LinkedIn,0
+HR Director,Fintech,large,0.23,Mid,Conference,0
+Engineering Manager,Ecommerce,large,0.13,Junior,Conference,0
+CTO,AI,large,0.07,Senior,Referral,0
+CTO,AI,medium,0.07,Junior,Conference,0
+Engineering Manager,AI,large,0.04,Executive,Inbound,1
+HR Director,Ecommerce,enterprise,0.12,Senior,ColdList,0
+Founder,Cybersecurity,large,0.21,Executive,LinkedIn,1
+Marketing Manager,Ecommerce,medium,0.15,Senior,Inbound,0
+Marketing Manager,Ecommerce,enterprise,0.28,Mid,Inbound,0
+Founder,AI,small,0.03,Mid,Conference,1
+Engineering Manager,AI,large,0.07,Mid,Conference,1
+Founder,Cybersecurity,enterprise,0.27,Senior,ColdList,1
+HR Director,Fintech,medium,0.19,Junior,Conference,0
+Marketing Manager,SaaS,small,0.24,Junior,Referral,1
+CEO,Fintech,large,0.27,Executive,Referral,1
+CEO,AI,medium,0.19,Mid,Conference,0
+Founder,AI,small,0.16,Senior,Inbound,1
+VP Sales,Fintech,small,0.24,Mid,ColdList,0
+CEO,Cybersecurity,large,0.18,Junior,LinkedIn,0
+Founder,Ecommerce,enterprise,0.01,Mid,Conference,0
+Engineering Manager,Ecommerce,medium,0.23,Mid,LinkedIn,0
+Founder,Fintech,large,0.04,Mid,ColdList,0
+Founder,SaaS,small,0.05,Junior,Referral,1
+VP Sales,Cybersecurity,small,0.28,Senior,Conference,1
+CTO,Cybersecurity,large,0.04,Mid,ColdList,0
+VP Sales,AI,enterprise,0.07,Senior,Inbound,1
+VP Sales,SaaS,medium,0.21,Mid,Inbound,1
+VP Sales,Ecommerce,medium,0.25,Executive,ColdList,0
+VP Sales,Fintech,enterprise,0.12,Junior,Conference,0
+HR Director,Cybersecurity,large,0.27,Executive,Conference,0
+VP Sales,Cybersecurity,large,0.28,Executive,LinkedIn,1
+CTO,Ecommerce,medium,0.08,Junior,Conference,1
+Engineering Manager,Ecommerce,small,0.23,Senior,LinkedIn,1
+Marketing Manager,Healthcare,medium,0.25,Executive,ColdList,0
+HR Director,Cybersecurity,enterprise,0.21,Junior,Conference,0
+CTO,Ecommerce,large,0.04,Mid,Conference,0
+HR Director,Cybersecurity,medium,0.27,Junior,Inbound,1
+Marketing Manager,Ecommerce,small,0.21,Junior,Conference,1
+HR Director,Fintech,enterprise,0.01,Executive,Inbound,1
+Engineering Manager,AI,medium,0.1,Senior,Inbound,1
+HR Director,Ecommerce,small,0.09,Mid,Referral,1
+Engineering Manager,Healthcare,small,0.09,Senior,Referral,1
+Engineering Manager,SaaS,medium,0.21,Executive,Inbound,1
+CTO,Ecommerce,small,0.05,Mid,LinkedIn,1
+Marketing Manager,SaaS,medium,0.26,Junior,ColdList,0
+HR Director,Healthcare,large,0.08,Junior,LinkedIn,1
+CEO,AI,medium,0.26,Senior,Conference,0
+VP Sales,AI,large,0.2,Executive,LinkedIn,0
+HR Director,SaaS,enterprise,0.18,Mid,Inbound,0
+CTO,Ecommerce,large,0.13,Executive,ColdList,0
+CTO,AI,enterprise,0.17,Executive,Conference,0
+HR Director,Cybersecurity,enterprise,0.09,Mid,Conference,1
+VP Sales,SaaS,large,0.18,Junior,Conference,1
+CTO,AI,small,0.2,Senior,Inbound,0
+CTO,Ecommerce,enterprise,0.23,Mid,Inbound,0
+Marketing Manager,Ecommerce,enterprise,0.17,Executive,Referral,0
+VP Sales,Healthcare,medium,0.28,Mid,LinkedIn,0
+CTO,Cybersecurity,large,0.25,Junior,Inbound,0
+HR Director,Cybersecurity,large,0.23,Executive,ColdList,0
+Founder,Ecommerce,large,0.26,Senior,Conference,1
+Founder,AI,enterprise,0.24,Senior,Referral,1
+Founder,SaaS,large,0.08,Mid,Conference,0
+Engineering Manager,AI,medium,0.04,Junior,Inbound,1
+VP Sales,Ecommerce,large,0.12,Mid,LinkedIn,0
+VP Sales,Fintech,small,0.1,Executive,ColdList,0
+CTO,Cybersecurity,medium,0.14,Executive,LinkedIn,1
+Founder,SaaS,large,0.1,Mid,Referral,1
+Engineering Manager,Cybersecurity,small,0.19,Mid,LinkedIn,0
+VP Sales,Fintech,enterprise,0.04,Senior,Referral,1
+Marketing Manager,Fintech,large,0.09,Mid,ColdList,0
+HR Director,AI,large,0.07,Senior,Referral,0
+VP Sales,Fintech,large,0.2,Executive,Inbound,0
+CTO,Cybersecurity,small,0.29,Senior,Referral,1
+CTO,AI,large,0.1,Junior,LinkedIn,0
+Founder,AI,small,0.14,Senior,LinkedIn,1
+Marketing Manager,AI,medium,0.05,Executive,ColdList,0
+Marketing Manager,SaaS,medium,0.11,Mid,Conference,1
+VP Sales,Cybersecurity,small,0.16,Mid,ColdList,1
+CEO,Cybersecurity,medium,0.03,Mid,Conference,1
+Marketing Manager,Cybersecurity,small,0.15,Junior,LinkedIn,1
+Engineering Manager,Ecommerce,medium,0.27,Senior,Conference,0
+Engineering Manager,AI,medium,0.22,Executive,Referral,1
+Engineering Manager,SaaS,medium,0.11,Senior,Conference,1
+Marketing Manager,AI,medium,0.27,Executive,Conference,0
+Marketing Manager,Healthcare,enterprise,0.11,Executive,Conference,0
+CEO,AI,small,0.11,Mid,LinkedIn,0
+HR Director,Fintech,enterprise,0.19,Executive,Conference,0
+HR Director,SaaS,enterprise,0.26,Mid,Referral,1
+CTO,AI,enterprise,0.1,Mid,Inbound,1
+HR Director,SaaS,large,0.26,Mid,LinkedIn,1
+HR Director,Fintech,medium,0.13,Junior,LinkedIn,0
+VP Sales,Fintech,large,0.07,Junior,Referral,0
+Marketing Manager,Healthcare,large,0.07,Mid,ColdList,0
+CEO,Healthcare,enterprise,0.12,Executive,Inbound,1
+Engineering Manager,AI,medium,0.12,Executive,Referral,1
+Engineering Manager,SaaS,small,0.17,Junior,Conference,1
+HR Director,Healthcare,medium,0.04,Mid,Inbound,1
+HR Director,Cybersecurity,medium,0.12,Executive,Referral,1
+VP Sales,Healthcare,medium,0.19,Junior,Conference,0
+CTO,Cybersecurity,large,0.08,Senior,ColdList,0
+Engineering Manager,Cybersecurity,medium,0.21,Senior,Conference,1
+Founder,SaaS,medium,0.05,Executive,Inbound,1
+Founder,Ecommerce,medium,0.07,Junior,LinkedIn,0
+Marketing Manager,AI,enterprise,0.27,Executive,Conference,0
+Founder,Fintech,small,0.12,Senior,ColdList,0
+Engineering Manager,Cybersecurity,medium,0.27,Junior,ColdList,0
+Marketing Manager,Fintech,large,0.23,Senior,ColdList,0
+Marketing Manager,Healthcare,small,0.09,Senior,Referral,1
+Engineering Manager,AI,medium,0.24,Executive,Inbound,1
+Engineering Manager,AI,small,0.25,Senior,Conference,1
+Marketing Manager,AI,medium,0.23,Mid,ColdList,0
+Engineering Manager,AI,small,0.04,Executive,Inbound,0
+Founder,Ecommerce,large,0.24,Junior,Referral,0
+CTO,Cybersecurity,large,0.12,Executive,LinkedIn,0
+Engineering Manager,Cybersecurity,small,0.1,Senior,Referral,0
+CTO,Fintech,large,0.2,Junior,Conference,1
+CTO,AI,small,0.08,Mid,Referral,0
+CTO,Cybersecurity,medium,0.06,Executive,Referral,1
+HR Director,AI,enterprise,0.1,Mid,Conference,1
+Engineering Manager,Healthcare,small,0.26,Junior,Referral,0
+CTO,Fintech,large,0.16,Junior,LinkedIn,1
+HR Director,Cybersecurity,large,0.21,Mid,ColdList,1
+CEO,SaaS,medium,0.02,Executive,ColdList,0
+Engineering Manager,AI,small,0.25,Senior,Inbound,1
+CTO,Fintech,enterprise,0.03,Executive,Inbound,1
+CEO,Ecommerce,large,0.25,Mid,Conference,1
+CTO,SaaS,large,0.22,Mid,Referral,1
+Engineering Manager,Ecommerce,small,0.02,Executive,Inbound,1
+Founder,SaaS,enterprise,0.2,Senior,Conference,1
+VP Sales,SaaS,large,0.24,Junior,Conference,1
+Founder,AI,large,0.08,Senior,Referral,0
+CEO,SaaS,large,0.28,Junior,Inbound,1
+Engineering Manager,Ecommerce,small,0.23,Junior,ColdList,0
+Founder,AI,medium,0.1,Mid,ColdList,0
+CTO,Ecommerce,small,0.05,Senior,Conference,1
+CTO,SaaS,large,0.08,Junior,Conference,1
+HR Director,SaaS,medium,0.17,Senior,Referral,1
+VP Sales,Fintech,large,0.18,Executive,Referral,1
+CEO,SaaS,large,0.09,Senior,ColdList,1
+Founder,AI,large,0.19,Junior,Referral,1
+Marketing Manager,Ecommerce,small,0.17,Executive,Conference,1
+Marketing Manager,SaaS,small,0.24,Senior,Conference,1
+CEO,SaaS,medium,0.29,Mid,Conference,1
+Engineering Manager,AI,small,0.15,Executive,ColdList,0
+Marketing Manager,Cybersecurity,medium,0.15,Mid,LinkedIn,1
+VP Sales,Ecommerce,large,0.26,Junior,Inbound,1
+CTO,SaaS,medium,0.05,Senior,Referral,1
+CTO,Fintech,medium,0.21,Executive,Inbound,1
+Marketing Manager,Cybersecurity,small,0.17,Executive,LinkedIn,0
+CTO,Cybersecurity,large,0.05,Senior,ColdList,0
+VP Sales,Cybersecurity,large,0.29,Mid,Referral,0
+Engineering Manager,Healthcare,medium,0.07,Senior,Inbound,1
+VP Sales,Ecommerce,large,0.17,Senior,LinkedIn,0
+CEO,SaaS,small,0.04,Senior,ColdList,1
+VP Sales,AI,medium,0.24,Junior,Referral,0
+Marketing Manager,AI,enterprise,0.29,Mid,Conference,1
+HR Director,AI,medium,0.21,Junior,Inbound,1
+Engineering Manager,Ecommerce,large,0.27,Mid,ColdList,0
+VP Sales,Healthcare,large,0.27,Executive,Referral,1
+Engineering Manager,Fintech,enterprise,0.27,Mid,ColdList,1
+VP Sales,AI,large,0.02,Mid,Conference,1
+Engineering Manager,Fintech,large,0.11,Mid,Inbound,1
+CEO,AI,large,0.07,Executive,Referral,0
+CTO,AI,small,0.02,Mid,Referral,1
+CTO,Healthcare,large,0.22,Executive,Conference,1
+VP Sales,Ecommerce,large,0.19,Senior,Referral,1
+CTO,Ecommerce,small,0.19,Mid,LinkedIn,1
+Founder,Ecommerce,medium,0.29,Senior,ColdList,0
+Engineering Manager,Healthcare,large,0.24,Junior,Conference,0
+Engineering Manager,Cybersecurity,small,0.05,Mid,Conference,1
+HR Director,Healthcare,medium,0.27,Executive,Inbound,0
+VP Sales,Healthcare,medium,0.04,Mid,Inbound,0
+CTO,Cybersecurity,enterprise,0.27,Junior,Conference,0
+VP Sales,Healthcare,large,0.29,Junior,Referral,0
+HR Director,Cybersecurity,enterprise,0.29,Junior,LinkedIn,1
+CEO,Fintech,medium,0.05,Mid,Inbound,0
+Marketing Manager,AI,large,0.17,Mid,Referral,0
+Engineering Manager,Ecommerce,medium,0.26,Junior,Inbound,1
+Engineering Manager,Healthcare,enterprise,0.05,Executive,Referral,1
+CEO,Healthcare,large,0.21,Senior,ColdList,1
+HR Director,Healthcare,enterprise,0.22,Junior,Conference,0
+VP Sales,Ecommerce,small,0.26,Executive,LinkedIn,0
+CEO,AI,large,0.27,Junior,ColdList,0
+CTO,SaaS,small,0.02,Executive,Conference,1
