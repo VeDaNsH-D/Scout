@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligence Scout</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="capture">🎯 Capture</button>
+            <button class="tab-btn" data-tab="leads">📋 Leads (<span id="leadsCount">0</span>)</button>
+            <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+        </div>
+
+        <!-- CAPTURE TAB -->
+        <div id="capture-tab" class="tab-content active">
+            <div class="header">
+                <h1>🎯 Intelligence Scout</h1>
+                <p class="subtitle">AI-Powered Lead Intelligence</p>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing profile...</p>
+            </div>
+
+            <div id="content" style="display: none;">
+                <!-- Lead Info Section -->
+                <div class="section">
+                    <h3>Lead Profile</h3>
+                    <div class="lead-info">
+                        <div class="info-row">
+                            <span class="label">Name:</span>
+                            <span id="leadName" class="value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Role:</span>
+                            <span id="leadRole" class="value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Company:</span>
+                            <span id="leadCompany" class="value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">LinkedIn URL:</span>
+                            <span id="leadUrl" class="value url-link">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights Section -->
+                <div class="section">
+                    <h3>🧠 AI Recommendation</h3>
+                    <div id="aiInsight" class="insight-box">
+                        <p>Loading AI analysis...</p>
+                    </div>
+                </div>
+
+                <!-- Outreach Path Section -->
+                <div class="section">
+                    <h3>📧 Recommended Path</h3>
+                    <div class="path-selector">
+                        <button class="path-btn active" data-path="technical">
+                            <span class="icon">⚙️</span>
+                            <span>Technical</span>
+                        </button>
+                        <button class="path-btn" data-path="business">
+                            <span class="icon">💼</span>
+                            <span>Business</span>
+                        </button>
+                        <button class="path-btn" data-path="executive">
+                            <span class="icon">👔</span>
+                            <span>Executive</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Human Likelihood Meter -->
+                <div class="section">
+                    <h3>⚠️ Send Timing Check</h3>
+                    <div id="humanLikelihood" class="likelihood-meter">
+                        <div class="meter-bar">
+                            <div id="meterFill" class="meter-fill" style="width: 0%"></div>
+                        </div>
+                        <p id="meterText" class="meter-text">Calculating optimal send time...</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="actions">
+                    <button id="saveBtn" class="btn btn-primary">
+                        💾 Save to Collection
+                    </button>
+                    <button id="enrollBtn" class="btn btn-secondary">
+                        ✨ Send Directly
+                    </button>
+                    <button id="viewDetailsBtn" class="btn btn-secondary-light">
+                        📊 View Full Profile
+                    </button>
+                </div>
+            </div>
+
+            <div id="error" class="error-box" style="display: none;">
+                <p id="errorText">Error loading profile</p>
+                <button class="btn btn-secondary" onclick="location.reload()">Retry</button>
+            </div>
+
+            <div id="success" class="success-box" style="display: none;">
+                <p id="successText">✅ Lead saved!</p>
+                <p class="small">Go to "Leads" tab to manage or sync with your site.</p>
+            </div>
+        </div>
+
+        <!-- LEADS TAB -->
+        <div id="leads-tab" class="tab-content">
+            <div class="header">
+                <h2>📋 Captured Leads</h2>
+                <p class="subtitle" id="leadsStatus">0 leads collected</p>
+            </div>
+
+            <div id="leadsContainer" class="leads-list">
+                <p class="empty-state">No leads captured yet. Go to LinkedIn and click "Save to Collection" on profiles!</p>
+            </div>
+
+            <div id="leadsBulkActions" class="bulk-actions" style="display: none;">
+                <div class="actions">
+                    <button id="syncBtn" class="btn btn-primary">
+                        🔄 Sync to Website
+                    </button>
+                    <button id="clearBtn" class="btn btn-danger">
+                        🗑️ Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settings-tab" class="tab-content">
+            <div class="header">
+                <h2>⚙️ Settings</h2>
+            </div>
+
+            <div class="section">
+                <h3>API Configuration</h3>
+                <div class="setting-item">
+                    <label>Backend URL:</label>
+                    <input type="text" id="apiUrl" class="setting-input" placeholder="http://localhost:8000">
+                </div>
+                <button id="saveSettingsBtn" class="btn btn-primary" style="margin-top: 12px;">Save Settings</button>
+            </div>
+
+            <div class="section">
+                <h3>Feature Toggles</h3>
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="autoCapture" checked>
+                        <span>Auto-capture leads</span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="aiInsights" checked>
+                        <span>Show AI insights</span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="humanTiming" checked>
+                        <span>Human-like timing check</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Data & Privacy</h3>
+                <p class="section-description">All data is stored locally on your computer. Nothing is sent to external servers without your approval.</p>
+                <button id="exportBtn" class="btn btn-secondary" style="margin-top: 12px;">📥 Export Leads</button>
+            </div>
+
+            <div class="section">
+                <h3>About</h3>
+                <p class="section-description">
+                    <strong>Intelligence Scout v1.0</strong><br>
+                    AI-powered lead capture for AuraReach<br>
+                    <small>© 2026 AuraReach</small>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

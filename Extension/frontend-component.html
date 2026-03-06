@@ -1,0 +1,158 @@
+<!-- Add this HTML to your AuraReach website where you want the extension import button -->
+
+<!-- Extension Import Button Component -->
+<div id="aurareach-extension-import" style="display: none;">
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    ">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="font-size: 24px;">🎯</div>
+            <div>
+                <div style="font-weight: 600; font-size: 16px; margin-bottom: 2px;">
+                    Intelligence Scout Connected
+                </div>
+                <div style="font-size: 13px; opacity: 0.9;">
+                    Import captured leads from your browser extension
+                </div>
+            </div>
+        </div>
+        <button id="import-leads-btn" style="
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        ">
+            📥 Import Leads
+        </button>
+    </div>
+</div>
+
+<!-- JavaScript to handle the import functionality -->
+<script>
+// Include the website-bridge.js script first
+// <script src="path/to/website-bridge.js"></script>
+
+// Then add this script
+document.addEventListener('DOMContentLoaded', function() {
+    const importContainer = document.getElementById('aurareach-extension-import');
+    const importBtn = document.getElementById('import-leads-btn');
+
+    // Check if extension is available
+    setTimeout(async () => {
+        try {
+            // Test extension connection
+            await window.extensionData.getLeads();
+            importContainer.style.display = 'block';
+        } catch (error) {
+            console.log('Extension not connected:', error.message);
+            // Extension not available, hide the import button
+        }
+    }, 1000);
+
+    // Handle import button click
+    importBtn.addEventListener('click', async () => {
+        importBtn.disabled = true;
+        importBtn.textContent = '⏳ Importing...';
+
+        try {
+            // Get leads from extension
+            const leads = await window.extensionData.getLeads();
+
+            if (leads.length === 0) {
+                alert('No leads captured in extension!');
+                importBtn.disabled = false;
+                importBtn.textContent = '📥 Import Leads';
+                return;
+            }
+
+            // Send leads to your backend
+            const response = await fetch('/api/sync-leads', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    leads: leads,
+                    timestamp: new Date().toISOString()
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`✅ Successfully imported ${result.syncedCount} leads!`);
+
+                // Clear leads from extension after successful sync
+                await window.extensionData.clearLeads();
+
+                // Refresh the page or update UI
+                location.reload();
+            } else {
+                const error = await response.json();
+                alert(`❌ Import failed: ${error.detail || 'Unknown error'}`);
+            }
+
+        } catch (error) {
+            alert(`❌ Error: ${error.message}`);
+        } finally {
+            importBtn.disabled = false;
+            importBtn.textContent = '📥 Import Leads';
+        }
+    });
+});
+</script>
+
+<!-- Alternative: Simple button version (less intrusive) -->
+<!-- Uncomment this if you prefer a simpler button -->
+<!--
+<div id="aurareach-simple-import" style="display: none; margin: 20px 0;">
+    <button id="simple-import-btn" style="
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    ">
+        🎯 Import from Extension
+    </button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const simpleBtn = document.getElementById('simple-import-btn');
+    const simpleContainer = document.getElementById('aurareach-simple-import');
+
+    setTimeout(async () => {
+        try {
+            await window.extensionData.getLeads();
+            simpleContainer.style.display = 'block';
+        } catch (error) {
+            // Extension not available
+        }
+    }, 1000);
+
+    simpleBtn.addEventListener('click', () => {
+        window.extensionData.showLeadsModal();
+    });
+});
+</script>
+-->
