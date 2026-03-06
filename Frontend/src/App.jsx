@@ -7,6 +7,7 @@ import WorkflowBuilder from './pages/WorkflowBuilder';
 import LeadUpload from './pages/LeadUpload';
 import CampaignMonitor from './pages/CampaignMonitor';
 import AiGenerator from './pages/AiGenerator';
+import LeadAnalyzer from './pages/LeadAnalyzer';
 import Settings from './pages/Settings';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -42,6 +43,7 @@ function App() {
       <Route path="/leads" element={<ProtectedRoute><Layout><LeadUpload /></Layout></ProtectedRoute>} />
       <Route path="/campaigns" element={<ProtectedRoute><Layout><CampaignMonitor /></Layout></ProtectedRoute>} />
       <Route path="/ai-generator" element={<ProtectedRoute><Layout><AiGenerator /></Layout></ProtectedRoute>} />
+      <Route path="/lead-analyzer" element={<ProtectedRoute><Layout><LeadAnalyzer /></Layout></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
