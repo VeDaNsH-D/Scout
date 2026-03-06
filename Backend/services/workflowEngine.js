@@ -30,12 +30,12 @@ class WorkflowEngine {
       for (const leadId of leadIds) {
         // Create workflow run record
         const run = new WorkflowRun({
-          workflowId,
-          leadId,
-          currentStep: startNode.id,
+          workflow_id: workflowId,
+          lead_id: leadId,
+          current_node: startNode.id,
           status: 'running'
         });
-        
+
         await run.save();
         runs.push(run);
 
@@ -85,7 +85,7 @@ class WorkflowEngine {
         return;
       }
 
-      run.currentStep = stepId;
+      run.current_node = stepId;
       await run.save();
 
       // Execute node logic based on type
@@ -93,7 +93,7 @@ class WorkflowEngine {
 
       // Find next node(s) based on edges
       const nextEdges = workflow.edges.filter(e => e.source === stepId);
-      
+
       if (nextEdges.length === 0) {
         console.log(`[WorkflowEngine] Workflow run ${workflowRunId} completed`);
         run.status = 'completed';
@@ -105,10 +105,10 @@ class WorkflowEngine {
       for (const edge of nextEdges) {
         const nextNodeId = edge.target;
         const nextNode = workflow.nodes.find(n => n.id === nextNodeId);
-        
+
         if (nextNode) {
           let delayMs = 0;
-          
+
           if (nextNode.type === 'wait') {
             delayMs = scheduler.parseWaitTime(nextNode.data?.waitTime || '0h');
           }
@@ -141,16 +141,16 @@ class WorkflowEngine {
       case 'email':
         const subject = node.data?.subject || 'No Subject';
         const messageBody = node.data?.body || 'Hello...';
-        
+
         await emailService.sendEmail(lead.email, subject, messageBody);
-        
+
         // Save message record
         await Message.create({
-          leadId: lead._id,
+          lead_id: lead._id,
+          workflow_run_id: run._id,
           channel: 'email',
-          subject,
           content: messageBody,
-          sentAt: new Date()
+          sent_at: new Date()
         });
         break;
 

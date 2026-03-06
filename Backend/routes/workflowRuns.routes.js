@@ -23,7 +23,7 @@ router.post('/workflows/:workflowId/start', async (req, res) => {
       message: 'Workflow started successfully',
       runs: runs.map(run => ({
         id: run._id,
-        leadId: run.leadId,
+        leadId: run.lead_id,
         status: run.status
       }))
     });
@@ -48,8 +48,8 @@ router.get('/workflow-runs/:runId', async (req, res) => {
     }
 
     res.status(200).json({
-      leadId: run.leadId,
-      currentStep: run.currentStep,
+      leadId: run.lead_id,
+      currentStep: run.current_node,
       status: run.status
     });
   } catch (error) {
