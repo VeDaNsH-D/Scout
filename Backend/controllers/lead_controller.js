@@ -7,6 +7,53 @@ const { parseLeadFile } = require("../utils/csvParser")
 
 const ML_BASE_URL = process.env.ML_API_URL || 'http://127.0.0.1:5001/api/ml'
 
+const DEFAULT_EXTENSION_EMAIL_DOMAIN = "aurareach.local"
+
+const normalizeEmail = (email) => {
+    if (!email) return ""
+    return String(email).trim().toLowerCase()
+}
+
+const createDeterministicHash = (value = "") => {
+    let hash = 0
+    for (let i = 0; i < value.length; i += 1) {
+        hash = ((hash << 5) - hash) + value.charCodeAt(i)
+        hash |= 0
+    }
+    return Math.abs(hash).toString(36)
+}
+
+const slugify = (value = "") => String(value)
+    .toLowerCase()
+    .replace(/https?:\/\/(www\.)?/g, "")
+    .replace(/linkedin\.com\/in\//g, "")
+    .replace(/[^a-z0-9]+/g, ".")
+    .replace(/\.+/g, ".")
+    .replace(/^\.|\.$/g, "")
+
+const buildFallbackEmail = ({ name = "", profileUrl = "" }) => {
+    const profileSlug = slugify(profileUrl)
+    const nameSlug = slugify(name)
+    const localSeed = profileSlug || nameSlug || "lead"
+    const localPart = localSeed.slice(0, 40) || "lead"
+    const hash = createDeterministicHash(`${name}|${profileUrl}`)
+    return `autogen.${localPart}.${hash}@${DEFAULT_EXTENSION_EMAIL_DOMAIN}`
+}
+
+const normalizeOrFallbackEmail = ({ email = "", name = "", profileUrl = "" }) => {
+    const normalized = normalizeEmail(email)
+    return normalized || buildFallbackEmail({ name, profileUrl })
+}
+
+const csvEscape = (value) => {
+    if (value == null) return ""
+    const str = String(value)
+    if (/[,"\n]/.test(str)) {
+        return `"${str.replace(/"/g, '""')}"`
+    }
+    return str
+}
+
 /* GET ALL LEADS */
 const getLeads = async (req, res) => {
     try {
@@ -25,6 +72,55 @@ const getLeads = async (req, res) => {
         res.status(500).json({
             message: "Failed to fetch leads"
         })
+    }
+}
+
+/* EXPORT LEADS TO CSV */
+const exportLeadsCsv = async (req, res) => {
+    try {
+        const leads = await Lead.find().sort({ createdAt: -1 }).lean()
+
+        const headers = [
+            "name",
+            "email",
+            "company",
+            "role",
+            "industry",
+            "company_size",
+            "growth_rate",
+            "seniority",
+            "lead_source",
+            "linkedin",
+            "status",
+            "lead_score",
+            "best_send_day",
+            "best_send_hour",
+            "insights",
+            "createdAt",
+            "updatedAt"
+        ]
+
+        const lines = [headers.join(",")]
+
+        for (const lead of leads) {
+            const row = headers.map((header) => {
+                const rawValue = header === "insights"
+                    ? Array.isArray(lead.insights) ? lead.insights.join(" | ") : ""
+                    : lead[header]
+
+                return csvEscape(rawValue)
+            })
+
+            lines.push(row.join(","))
+        }
+
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-")
+        res.setHeader("Content-Type", "text/csv; charset=utf-8")
+        res.setHeader("Content-Disposition", `attachment; filename="leads-${timestamp}.csv"`)
+        res.send(lines.join("\n"))
+    } catch (err) {
+        console.error("Export leads CSV failed:", err)
+        res.status(500).json({ message: "Failed to export leads", error: err.message })
     }
 }
 
@@ -199,10 +295,12 @@ const enrollLead = async (req, res) => {
             return res.status(400).json({ message: "Lead name is required" })
         }
 
-        // Check for duplicate by LinkedIn URL or email
+        const normalizedEmail = normalizeOrFallbackEmail({ name, email, profileUrl })
+
+        // Check for duplicate by LinkedIn URL or normalized email
         const query = []
         if (profileUrl) query.push({ linkedin: profileUrl })
-        if (email) query.push({ email: email.toLowerCase() })
+        if (normalizedEmail) query.push({ email: normalizedEmail })
 
         if (query.length > 0) {
             const existing = await Lead.findOne({ $or: query })
@@ -217,7 +315,7 @@ const enrollLead = async (req, res) => {
 
         const lead = await Lead.create({
             name,
-            email: email || "",
+            email: normalizedEmail,
             company: company || "",
             role: role || "",
             linkedin: profileUrl || "",
@@ -519,17 +617,28 @@ const syncLeads = async (req, res) => {
 
         let synced = 0
         let duplicates = 0
+        let skippedInvalid = 0
         const insertedLeads = []
 
         for (const item of leads) {
-            const name = item.name || ""
-            const email = (item.email || "").toLowerCase()
-            const profileUrl = item.profileUrl || item.linkedin || ""
+            const name = (item.name || "").trim()
+            const profileUrl = (item.profileUrl || item.linkedin || "").trim()
 
-            // Check for duplicate by LinkedIn URL or email
+            if (!name && !profileUrl && !item.email) {
+                skippedInvalid += 1
+                continue
+            }
+
+            const normalizedEmail = normalizeOrFallbackEmail({
+                name,
+                email: item.email,
+                profileUrl
+            })
+
+            // Check for duplicate by LinkedIn URL or normalized email
             const query = []
             if (profileUrl) query.push({ linkedin: profileUrl })
-            if (email) query.push({ email })
+            if (normalizedEmail) query.push({ email: normalizedEmail })
 
             if (query.length > 0) {
                 const existing = await Lead.findOne({ $or: query })
@@ -541,7 +650,7 @@ const syncLeads = async (req, res) => {
 
             const lead = await Lead.create({
                 name,
-                email: email || "",
+                email: normalizedEmail,
                 company: item.company || "",
                 role: item.role || "",
                 linkedin: profileUrl,
@@ -557,6 +666,7 @@ const syncLeads = async (req, res) => {
             message: `Synced ${synced} lead(s)`,
             syncedCount: synced,
             duplicates,
+            skippedInvalid,
             leads: insertedLeads
         })
     } catch (err) {
@@ -568,6 +678,7 @@ const syncLeads = async (req, res) => {
 module.exports = {
     uploadLeads,
     getLeads,
+    exportLeadsCsv,
     getLeadById,
     deleteLead,
     enrollLead,

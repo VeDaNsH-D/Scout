@@ -7,6 +7,7 @@ const { validateObjectId } = require("../middleware/validation_middleware")
 const {
     uploadLeads,
     getLeads,
+    exportLeadsCsv,
     getLeadById,
     deleteLead,
     getLeadInsights,
@@ -33,6 +34,7 @@ router.post("/upload", upload.single("file"), uploadLeads)
 
 /* Lead management */
 router.get("/", getLeads)
+router.get("/export", exportLeadsCsv)
 router.get("/:id", validateObjectId("id"), getLeadById)
 router.delete("/:id", validateObjectId("id"), deleteLead)
 
