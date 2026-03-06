@@ -1,11 +1,49 @@
 const { Queue } = require('bullmq');
+const Redis = require('ioredis');
 
-const connection = {
-  host: process.env.REDIS_HOST || 'localhost',
-  port: process.env.REDIS_PORT || 6379,
-  // username: process.env.REDIS_USERNAME,
-  // password: process.env.REDIS_PASSWORD
+// Configure Redis connection
+let connection;
+if (process.env.REDIS_URL) {
+  // If a URL is provided, ioredis accepts the URL string as the first argument
+  // and the options object as the second argument.
+  connection = new Redis(process.env.REDIS_URL, { maxRetriesPerRequest: null });
+} else {
+  const connectionOptions = {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+    maxRetriesPerRequest: null,
+  };
+  if (process.env.REDIS_USERNAME) {
+    connectionOptions.username = process.env.REDIS_USERNAME;
+  }
+  if (process.env.REDIS_PASSWORD) {
+    connectionOptions.password = process.env.REDIS_PASSWORD;
+  }
+  connection = new Redis(connectionOptions);
+}
+
+connection.on('error', (err) => {
+  console.error('[Redis] ❌ Connection error:', err.message);
+});
+
+connection.on('connect', () => {
+  console.log('[Redis] ✅ Connected successfully.');
+});
+
+// Function to explicitly check Redis connection
+const checkRedisConnection = async () => {
+  try {
+    const result = await connection.ping();
+    if (result !== 'PONG') {
+      throw new Error('Unexpected response from Redis ping');
+    }
+    return true;
+  } catch (err) {
+    console.error('[Redis] ❌ Ping failed:', err.message);
+    throw err;
+  }
 };
+
 
 const workflowQueue = new Queue('workflow-jobs', { connection });
 
@@ -66,5 +104,6 @@ class Scheduler {
 module.exports = {
   scheduler: new Scheduler(),
   workflowQueue,
-  connection
+  connection,
+  checkRedisConnection
 };

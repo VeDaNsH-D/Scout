@@ -20,6 +20,7 @@ const requestLogger = require("./middleware/request_logger");
 const { notFound, errorHandler } = require("./middleware/error_middleware");
 const chatbotRoutes = require("./routes/chatbot");
 const { enrollLead } = require("./controllers/lead_controller");
+const { checkRedisConnection } = require("./services/scheduler");
 
 const app = express();
 const server = http.createServer(app);
@@ -38,6 +39,11 @@ validateEnv();
 
 /* MongoDB connection */
 connectDB();
+
+/* Check Redis connection */
+checkRedisConnection().catch(err => {
+    console.warn("[Server] ⚠️ Redis connection failed. Workflow scheduling and queues may not work properly until Redis is running.");
+});
 
 const PORT = process.env.PORT || 8000;
 
