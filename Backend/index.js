@@ -10,6 +10,7 @@ const connectDB = require("./config/db");
 const { validateEnv } = require("./config/env");
 const authRoutes = require("./routes/auth_routes");
 const leadRoutes = require("./routes/lead_routes");
+const mlRoutes = require("./routes/ml_routes");
 const workflowsRoutes = require("./routes/workflows.routes");
 const workflowRunsRoutes = require("./routes/workflowRuns.routes");
 const messagesRoutes = require("./routes/messages.routes");
