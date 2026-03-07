@@ -1,47 +1,48 @@
 <svg width="1200" height="700" viewBox="0 0 1200 700" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="130" y1="90" x2="1090" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#2A1406"/>
-      <stop offset="1" stop-color="#120703"/>
+    <linearGradient id="bg" x1="140" y1="90" x2="1090" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#301605"/>
+      <stop offset="0.56" stop-color="#180B04"/>
+      <stop offset="1" stop-color="#100703"/>
     </linearGradient>
-    <linearGradient id="dial" x1="450" y1="190" x2="770" y2="510" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFE2B2"/>
-      <stop offset="1" stop-color="#FF7A22"/>
+    <linearGradient id="dial" x1="430" y1="170" x2="780" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE4B6"/>
+      <stop offset="1" stop-color="#FF7D25"/>
     </linearGradient>
-    <linearGradient id="track" x1="180" y1="560" x2="1020" y2="560" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFDCAB"/>
-      <stop offset="1" stop-color="#FF8330"/>
+    <linearGradient id="track" x1="224" y1="560" x2="976" y2="560" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE0AC"/>
+      <stop offset="1" stop-color="#FF8530"/>
     </linearGradient>
   </defs>
 
   <rect width="1200" height="700" fill="url(#bg)"/>
 
-  <rect x="170" y="110" width="860" height="480" rx="30" fill="#2B1407" stroke="#FBD29D" stroke-opacity="0.28"/>
+  <rect x="166" y="108" width="868" height="484" rx="34" fill="#2A1406" stroke="#FBD29D" stroke-opacity="0.28" stroke-width="2"/>
 
-  <circle cx="600" cy="320" r="150" fill="#231004" stroke="#FFD8A8" stroke-opacity="0.36" stroke-width="2"/>
-  <circle cx="600" cy="320" r="108" fill="url(#dial)" fill-opacity="0.86"/>
-  <circle cx="600" cy="320" r="62" fill="#1B0D04" fill-opacity="0.65"/>
+  <circle cx="600" cy="320" r="156" fill="#241104" stroke="#FFD8A8" stroke-opacity="0.36" stroke-width="2"/>
+  <circle cx="600" cy="320" r="112" fill="url(#dial)" fill-opacity="0.9"/>
+  <circle cx="600" cy="320" r="64" fill="#1B0D04" fill-opacity="0.68"/>
 
-  <path d="M600 320L668 250" stroke="#FFF0D6" stroke-width="7" stroke-linecap="round"/>
-  <circle cx="668" cy="250" r="10" fill="#FFE6BD"/>
+  <path d="M600 320L694 236" stroke="#FFF0D6" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="694" cy="236" r="10" fill="#FFE7BF"/>
 
-  <path d="M310 220H430" stroke="#FFD7A5" stroke-opacity="0.45" stroke-width="12" stroke-linecap="round"/>
-  <path d="M310 250H470" stroke="#FFB765" stroke-opacity="0.7" stroke-width="12" stroke-linecap="round"/>
-  <path d="M310 280H390" stroke="#FF8D36" stroke-opacity="0.75" stroke-width="12" stroke-linecap="round"/>
+  <path d="M318 216H444" stroke="#FFD7A5" stroke-opacity="0.42" stroke-width="12" stroke-linecap="round"/>
+  <path d="M318 246H484" stroke="#FFB865" stroke-opacity="0.72" stroke-width="12" stroke-linecap="round"/>
+  <path d="M318 276H404" stroke="#FF8F38" stroke-opacity="0.8" stroke-width="12" stroke-linecap="round"/>
 
-  <path d="M770 220H890" stroke="#FFD7A5" stroke-opacity="0.45" stroke-width="12" stroke-linecap="round"/>
-  <path d="M730 250H890" stroke="#FFB765" stroke-opacity="0.7" stroke-width="12" stroke-linecap="round"/>
-  <path d="M810 280H890" stroke="#FF8D36" stroke-opacity="0.75" stroke-width="12" stroke-linecap="round"/>
+  <path d="M756 216H882" stroke="#FFD7A5" stroke-opacity="0.42" stroke-width="12" stroke-linecap="round"/>
+  <path d="M716 246H882" stroke="#FFB865" stroke-opacity="0.72" stroke-width="12" stroke-linecap="round"/>
+  <path d="M796 276H882" stroke="#FF8F38" stroke-opacity="0.8" stroke-width="12" stroke-linecap="round"/>
 
-  <line x1="230" y1="520" x2="970" y2="520" stroke="#FFD9A8" stroke-opacity="0.26" stroke-width="2"/>
-  <line x1="230" y1="560" x2="970" y2="560" stroke="url(#track)" stroke-width="8" stroke-linecap="round"/>
+  <line x1="224" y1="520" x2="976" y2="520" stroke="#FFD9A8" stroke-opacity="0.26" stroke-width="2"/>
+  <line x1="224" y1="560" x2="976" y2="560" stroke="url(#track)" stroke-width="8" stroke-linecap="round"/>
 
-  <circle cx="400" cy="560" r="16" fill="#FFE7C2"/>
-  <circle cx="600" cy="560" r="16" fill="#FFC779"/>
-  <circle cx="820" cy="560" r="16" fill="#FF8E38"/>
+  <circle cx="408" cy="560" r="16" fill="#FFE8C4"/>
+  <circle cx="600" cy="560" r="16" fill="#FFC97C"/>
+  <circle cx="820" cy="560" r="16" fill="#FF8F39"/>
 
-  <rect x="230" y="450" width="170" height="50" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
-  <rect x="422" y="450" width="170" height="50" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
-  <rect x="614" y="450" width="170" height="50" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
-  <rect x="806" y="450" width="170" height="50" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
+  <rect x="226" y="448" width="170" height="52" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
+  <rect x="420" y="448" width="170" height="52" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
+  <rect x="614" y="448" width="170" height="52" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
+  <rect x="808" y="448" width="170" height="52" rx="14" fill="#2A1407" stroke="#FFD39B" stroke-opacity="0.3"/>
 </svg>

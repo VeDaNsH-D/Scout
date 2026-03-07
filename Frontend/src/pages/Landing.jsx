@@ -6,7 +6,6 @@ import {
   Bot,
   CircleCheck,
   Gauge,
-  Play,
   Radar,
   ShieldCheck,
   Sparkles,
@@ -112,8 +111,7 @@ const testimonials = [
 const footerNav = ['About', 'Service', 'Tools', 'Contact'];
 const heroVisual = '/landing/scout-hero-illustration.svg';
 const aboutVisual = '/landing/scout-about-orb-illustration.svg';
-const featureVisual = '/landing/scout-feature-orb-illustration.svg';
-const workflowVisual = '/landing/scout-workflow-banner.svg';
+const featureVisual = '/landing/scout-feature-logo.svg';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -346,7 +344,12 @@ function Landing() {
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.9, delay: 0.08 }}
               >
-                <img src={featureVisual} alt="Scout AI feature visual" className="venti-orb-image" loading="lazy" />
+                <img
+                  src={featureVisual}
+                  alt="Scout AI feature visual"
+                  className="venti-orb-image venti-feature-logo-image"
+                  loading="lazy"
+                />
               </motion.div>
 
               <div className="venti-why-list">
@@ -403,13 +406,6 @@ function Landing() {
               </motion.article>
             ))}
           </div>
-        </section>
-
-        <section className="venti-wave" aria-label="Product story video teaser">
-          <img src={workflowVisual} alt="Scout workflow visual" className="venti-wave-image" loading="lazy" />
-          <button type="button" className="venti-play-btn" aria-label="Play overview video">
-            <Play size={30} fill="currentColor" />
-          </button>
         </section>
 
         <section className="venti-shell venti-testimonials">
