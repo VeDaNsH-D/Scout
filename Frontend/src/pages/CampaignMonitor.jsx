@@ -79,8 +79,8 @@ export default function CampaignMonitor() {
         leads: analytics.totalLeads || 0,
         sent: analytics.emailsSent || 0,
         opened: analytics.replies || 0,
-        rate: analytics.totalLeads > 0 
-          ? `${((analytics.replies / analytics.totalLeads) * 100).toFixed(1)}%` 
+        rate: analytics.responseRate != null
+          ? `${Number(analytics.responseRate).toFixed(1)}%`
           : '0%',
       };
     }
