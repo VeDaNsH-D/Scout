@@ -228,7 +228,7 @@ export default function LeadAnalyzer() {
                 <div className="bg-bg-card border border-border-card rounded-xl p-6">
                   <h3 className="text-sm text-text-secondary mb-2">Optimal Send Time</h3>
                   <p className="text-2xl font-bold text-text-primary mb-1">
-                    {result.best_send_day}s
+                    {result.best_send_day}
                   </p>
                   <p className="text-xl text-accent font-semibold">
                     {result.best_send_hour}:00

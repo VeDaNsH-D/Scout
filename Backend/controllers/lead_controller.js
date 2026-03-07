@@ -409,25 +409,23 @@ const getLeadInsights = async (req, res) => {
             console.error("Failed to get insights from ML:", err.message)
         }
 
-        let best_send_day = lead.best_send_day
-        let best_send_hour = lead.best_send_hour
-        if (!best_send_day) {
-            try {
-                const timeRes = await fetch(`${ML_BASE_URL}/best-send-time`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        lead_features: {
-                            ...leadFeatures,
-                            lead_score
-                        }
-                    })
+        let best_send_day = lead.best_send_day || "Tuesday"
+        let best_send_hour = lead.best_send_hour != null ? lead.best_send_hour : 10
+        try {
+            const timeRes = await fetch(`${ML_BASE_URL}/best-send-time`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    lead_features: {
+                        ...leadFeatures,
+                        lead_score
+                    }
                 })
-                const timeData = await timeRes.json()
-                best_send_day = timeData.best_send_day || "Tuesday"
-                best_send_hour = timeData.best_send_hour != null ? timeData.best_send_hour : 10
-            } catch { /* use defaults */ }
-        }
+            })
+            const timeData = await timeRes.json()
+            best_send_day = timeData.best_send_day || best_send_day
+            best_send_hour = timeData.best_send_hour != null ? timeData.best_send_hour : best_send_hour
+        } catch { /* keep stored/default values */ }
 
         // Update lead with latest ML data
         lead.lead_score = lead_score
@@ -479,8 +477,28 @@ const generateLeadWorkflow = async (req, res) => {
             } catch { lead_score = 0.5 }
         }
 
-        const best_send_day = lead.best_send_day || "Tuesday"
-        const best_send_hour = lead.best_send_hour != null ? lead.best_send_hour : 10
+        let best_send_day = lead.best_send_day || "Tuesday"
+        let best_send_hour = lead.best_send_hour != null ? lead.best_send_hour : 10
+        try {
+            const timeRes = await fetch(`${ML_BASE_URL}/best-send-time`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    lead_features: {
+                        ...leadFeatures,
+                        lead_score
+                    }
+                })
+            })
+            const timeData = await timeRes.json()
+            best_send_day = timeData.best_send_day || best_send_day
+            best_send_hour = timeData.best_send_hour != null ? timeData.best_send_hour : best_send_hour
+            lead.best_send_day = best_send_day
+            lead.best_send_hour = best_send_hour
+            await lead.save()
+        } catch (err) {
+            console.error("Failed to refresh send time from ML:", err.message)
+        }
         const insights = lead.insights || []
 
         // Call ML workflow strategy endpoint
