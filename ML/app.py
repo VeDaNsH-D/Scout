@@ -73,13 +73,17 @@ if send_time_feature_columns:
         send_time_dataset = pd.read_csv("send_time_dataset.csv")
         for field in ["role", "industry", "company_size", "lead_source", "timezone_region"]:
             if field in send_time_dataset.columns and not send_time_dataset[field].dropna().empty:
-                send_time_defaults[field] = str(send_time_dataset[field].mode().iloc[0])
+                send_time_defaults[field] = str(
+                    send_time_dataset[field].mode().iloc[0])
         if "past_open_rate" in send_time_dataset.columns:
-            send_time_defaults["past_open_rate"] = float(send_time_dataset["past_open_rate"].median())
+            send_time_defaults["past_open_rate"] = float(
+                send_time_dataset["past_open_rate"].median())
         if "past_reply_rate" in send_time_dataset.columns:
-            send_time_defaults["past_reply_rate"] = float(send_time_dataset["past_reply_rate"].median())
+            send_time_defaults["past_reply_rate"] = float(
+                send_time_dataset["past_reply_rate"].median())
     except Exception as e:
-        print(f"Warning: could not compute send-time defaults from dataset: {e}")
+        print(
+            f"Warning: could not compute send-time defaults from dataset: {e}")
 
 
 # Load dataset stats for insights
@@ -175,7 +179,8 @@ def predict_best_send_time(lead_features):
         return default_value
 
     base_lead = dict(lead_features or {})
-    lead_score = parse_float(base_lead.get("lead_score", base_lead.get("score", 0.5)), 0.5)
+    lead_score = parse_float(base_lead.get(
+        "lead_score", base_lead.get("score", 0.5)), 0.5)
     growth_rate = parse_float(base_lead.get("growth_rate", 0.0), 0.0)
 
     seniority_raw = str(base_lead.get("seniority", "")).lower()
@@ -187,16 +192,20 @@ def predict_best_send_time(lead_features):
     elif "mid" in seniority_raw:
         seniority_bonus = 0.02
 
-    default_open = clamp(0.12 + (0.65 * lead_score) + (0.35 * growth_rate) + seniority_bonus)
-    default_reply = clamp(0.03 + (0.45 * lead_score) + (0.20 * growth_rate) + (seniority_bonus * 0.5))
+    default_open = clamp(0.12 + (0.65 * lead_score) +
+                         (0.35 * growth_rate) + seniority_bonus)
+    default_reply = clamp(0.03 + (0.45 * lead_score) +
+                          (0.20 * growth_rate) + (seniority_bonus * 0.5))
 
     base_lead["timezone_region"] = match_known_category(
         base_lead.get("timezone_region") or infer_timezone_region(base_lead),
         "timezone_region",
         send_time_defaults["timezone_region"],
     )
-    base_lead["role"] = match_known_category(base_lead.get("role"), "role", send_time_defaults["role"])
-    base_lead["industry"] = match_known_category(base_lead.get("industry"), "industry", send_time_defaults["industry"])
+    base_lead["role"] = match_known_category(
+        base_lead.get("role"), "role", send_time_defaults["role"])
+    base_lead["industry"] = match_known_category(base_lead.get(
+        "industry"), "industry", send_time_defaults["industry"])
     base_lead["company_size"] = match_known_category(
         str(base_lead.get("company_size", "")).lower(),
         "company_size",
@@ -208,13 +217,16 @@ def predict_best_send_time(lead_features):
         send_time_defaults["lead_source"],
     )
     base_lead["past_open_rate"] = clamp(
-        parse_float(base_lead.get("past_open_rate", default_open), default_open)
+        parse_float(base_lead.get("past_open_rate",
+                    default_open), default_open)
     )
     base_lead["past_reply_rate"] = clamp(
-        parse_float(base_lead.get("past_reply_rate", default_reply), default_reply)
+        parse_float(base_lead.get("past_reply_rate",
+                    default_reply), default_reply)
     )
     base_lead["email_opened"] = 1 if parse_int(
-        base_lead.get("email_opened", 1 if base_lead["past_open_rate"] >= 0.45 else 0), 0
+        base_lead.get("email_opened",
+                      1 if base_lead["past_open_rate"] >= 0.45 else 0), 0
     ) > 0 else 0
 
     for key in ["growth_rate", "seniority", "company_name", "score"]:
@@ -229,7 +241,8 @@ def predict_best_send_time(lead_features):
             candidates.append(candidate)
 
     candidate_df = pd.DataFrame(candidates)
-    encoded = pd.get_dummies(candidate_df, columns=CATEGORICAL_COLUMNS, dtype=int)
+    encoded = pd.get_dummies(
+        candidate_df, columns=CATEGORICAL_COLUMNS, dtype=int)
     aligned = encoded.reindex(columns=send_time_feature_columns, fill_value=0)
     probs = send_time_model.predict_proba(aligned)[:, 1]
 
@@ -340,34 +353,64 @@ def get_insights():
 
         prompt += "\nReturn the response ONLY as a JSON string containing a single array of strings with 3-5 concise, actionable insight sentences. Do NOT use markdown code blocks. Just the raw JSON array. Example: [\"Insight 1\", \"Insight 2\"]"
 
-        response = client.models.generate_content(
-            model="gemini-flash-latest",
-            contents=prompt
-        )
-
-        text = response.text.strip()
-        if text.startswith("```json"):
-            text = text[7:]
-        if text.startswith("```"):
-            text = text[3:]
-        if text.endswith("```"):
-            text = text[:-3]
-        text = text.strip()
-
         try:
-            insights_array = json.loads(text)
-            if isinstance(insights_array, dict):
-                # Fallback if it returned the previous object format
-                insights_array = []
-                for val in insights_array.values():
-                    if isinstance(val, list):
-                        insights_array.extend(val)
-                    elif isinstance(val, str):
-                        insights_array.append(val)
-        except:
-            insights_array = [text]  # Fallback if JSON parsing fails
+            response = client.models.generate_content(
+                model="gemini-flash-latest",
+                contents=prompt
+            )
 
-        return jsonify({"insights": insights_array[:5]})
+            text = response.text.strip()
+            if text.startswith("```json"):
+                text = text[7:]
+            if text.startswith("```"):
+                text = text[3:]
+            if text.endswith("```"):
+                text = text[:-3]
+            text = text.strip()
+
+            try:
+                insights_array = json.loads(text)
+                if isinstance(insights_array, dict):
+                    # Fallback if it returned the previous object format
+                    insights_array = []
+                    for val in insights_array.values():
+                        if isinstance(val, list):
+                            insights_array.extend(val)
+                        elif isinstance(val, str):
+                            insights_array.append(val)
+            except:
+                insights_array = [text]  # Fallback if JSON parsing fails
+
+            return jsonify({"insights": insights_array[:5]})
+        except Exception as llm_err:
+            print(
+                f"LLM insights generation failed, using score-based fallback: {llm_err}")
+
+        # Fallback to score-based insights when LLM fails
+        role = lead_features.get("role", "Professional")
+        industry = lead_features.get("industry", "")
+        if score >= 0.7:
+            insights = [
+                f"High-value lead — {role} in {industry} shows strong engagement potential",
+                "Prioritize immediate outreach with a personalized approach",
+                "Use industry-specific case studies to build credibility",
+                "Schedule a follow-up within 24-48 hours"
+            ]
+        elif score >= 0.4:
+            insights = [
+                f"Moderate-potential lead — {role} in {industry} may need nurturing",
+                "Consider personalizing the subject line with industry relevance",
+                "Follow up after 2-3 days with additional value",
+                "Share relevant content to build trust"
+            ]
+        else:
+            insights = [
+                f"Lower-priority lead — {role} in {industry} requires a longer nurture cycle",
+                "Use educational content to build awareness",
+                "Consider a drip campaign with longer intervals",
+                "Re-evaluate engagement after initial touchpoints"
+            ]
+        return jsonify({"insights": insights})
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500

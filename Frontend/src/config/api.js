@@ -39,6 +39,7 @@ export const API_ENDPOINTS = {
   // Analytics
   ANALYTICS: {
     CAMPAIGN: '/api/analytics/campaign',
+    CHART_DATA: '/api/analytics/chart-data',
   },
   // Messages
   MESSAGES: {

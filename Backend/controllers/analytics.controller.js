@@ -13,15 +13,31 @@ const getCampaignAnalytics = async (req, res, next) => {
 
         const workflowRunFilter = workflowId ? { workflow_id: workflowId } : {};
 
+        // Date boundaries for trend calculations
+        const now = new Date();
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterdayStart = new Date(todayStart);
+        yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+
         const [
             totalLeads,
             emailsSent,
             repliedLeads,
             convertedLeads,
+            newLeads,
+            contactedLeads,
             runningRuns,
             completedRuns,
             failedRuns,
-            averageScoreResult
+            averageScoreResult,
+            leadsToday,
+            leadsYesterday,
+            emailsToday,
+            emailsYesterday,
+            repliesToday,
+            repliesYesterday,
+            conversionsToday,
+            conversionsYesterday
         ] = await Promise.all([
             Lead.countDocuments(),
             Message.countDocuments({
@@ -34,6 +50,8 @@ const getCampaignAnalytics = async (req, res, next) => {
             }),
             Lead.countDocuments({ status: "replied" }),
             Lead.countDocuments({ status: "converted" }),
+            Lead.countDocuments({ status: "new" }),
+            Lead.countDocuments({ status: "contacted" }),
             WorkflowRun.countDocuments({ ...workflowRunFilter, status: "running" }),
             WorkflowRun.countDocuments({ ...workflowRunFilter, status: "completed" }),
             WorkflowRun.countDocuments({ ...workflowRunFilter, status: "failed" }),
@@ -49,7 +67,27 @@ const getCampaignAnalytics = async (req, res, next) => {
                         avgLeadScore: { $avg: "$lead_score" }
                     }
                 }
-            ])
+            ]),
+            // Trend: leads today vs yesterday
+            Lead.countDocuments({ createdAt: { $gte: todayStart } }),
+            Lead.countDocuments({ createdAt: { $gte: yesterdayStart, $lt: todayStart } }),
+            // Trend: emails today vs yesterday
+            Message.countDocuments({
+                channel: "email", status: "sent",
+                $or: [{ direction: "outgoing" }, { direction: { $exists: false } }],
+                sent_at: { $gte: todayStart }
+            }),
+            Message.countDocuments({
+                channel: "email", status: "sent",
+                $or: [{ direction: "outgoing" }, { direction: { $exists: false } }],
+                sent_at: { $gte: yesterdayStart, $lt: todayStart }
+            }),
+            // Trend: replies today vs yesterday
+            Lead.countDocuments({ status: "replied", last_replied_at: { $gte: todayStart } }),
+            Lead.countDocuments({ status: "replied", last_replied_at: { $gte: yesterdayStart, $lt: todayStart } }),
+            // Trend: conversions today vs yesterday
+            Lead.countDocuments({ status: "converted", updatedAt: { $gte: todayStart } }),
+            Lead.countDocuments({ status: "converted", updatedAt: { $gte: yesterdayStart, $lt: todayStart } })
         ]);
 
         const averageLeadScore = Number(averageScoreResult?.[0]?.avgLeadScore || 0);
@@ -57,6 +95,21 @@ const getCampaignAnalytics = async (req, res, next) => {
         const responseRate = emailsSent > 0
             ? Number(((repliedLeads / emailsSent) * 100).toFixed(1))
             : 0;
+
+        // Calculate trend percentages (today vs yesterday)
+        const calcTrend = (today, yesterday) => {
+            if (yesterday === 0 && today === 0) return { pct: 0, up: true };
+            if (yesterday === 0) return { pct: 100, up: true };
+            const pct = Math.round(((today - yesterday) / yesterday) * 100);
+            return { pct, up: pct >= 0 };
+        };
+
+        const trends = {
+            leads: calcTrend(leadsToday, leadsYesterday),
+            emails: calcTrend(emailsToday, emailsYesterday),
+            replies: calcTrend(repliesToday, repliesYesterday),
+            conversions: calcTrend(conversionsToday, conversionsYesterday),
+        };
 
         const analyticsData = {
             totalLeads,
@@ -66,11 +119,18 @@ const getCampaignAnalytics = async (req, res, next) => {
             responseRate,
             averageLeadScore,
             averageLeadScorePct,
+            leadPipeline: {
+                new: newLeads,
+                contacted: contactedLeads,
+                replied: repliedLeads,
+                converted: convertedLeads
+            },
             workflowRuns: {
                 running: runningRuns,
                 completed: completedRuns,
                 failed: failedRuns
-            }
+            },
+            trends
         };
 
         // Index analytics snapshot into RAG
@@ -84,6 +144,76 @@ const getCampaignAnalytics = async (req, res, next) => {
     }
 };
 
+/**
+ * GET /api/analytics/chart-data
+ * Returns daily leads created and emails engaged for the last 7 days.
+ */
+const getChartData = async (req, res, next) => {
+    try {
+        const now = new Date();
+        const sevenDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        const [leadsPerDay, engagedPerDay] = await Promise.all([
+            Lead.aggregate([
+                { $match: { createdAt: { $gte: sevenDaysAgo } } },
+                {
+                    $group: {
+                        _id: {
+                            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+                        },
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { _id: 1 } }
+            ]),
+            Message.aggregate([
+                {
+                    $match: {
+                        sent_at: { $gte: sevenDaysAgo },
+                        channel: "email",
+                        status: "sent"
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            $dateToString: { format: "%Y-%m-%d", date: "$sent_at" }
+                        },
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { _id: 1 } }
+            ])
+        ]);
+
+        const leadsMap = {};
+        for (const item of leadsPerDay) leadsMap[item._id] = item.count;
+
+        const engagedMap = {};
+        for (const item of engagedPerDay) engagedMap[item._id] = item.count;
+
+        const chartData = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(sevenDaysAgo);
+            d.setDate(d.getDate() + i);
+            const key = d.toISOString().slice(0, 10);
+            chartData.push({
+                day: dayNames[d.getDay()],
+                date: key,
+                leads: leadsMap[key] || 0,
+                engaged: engagedMap[key] || 0
+            });
+        }
+
+        return res.status(200).json(chartData);
+    } catch (error) {
+        return next(error);
+    }
+};
+
 module.exports = {
-    getCampaignAnalytics
+    getCampaignAnalytics,
+    getChartData
 };

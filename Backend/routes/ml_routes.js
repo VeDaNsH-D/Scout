@@ -26,6 +26,9 @@ router.post('/analyze-lead', async (req, res, next) => {
             lead_score = scoreData.lead_score || 0;
         } catch (error) {
             console.error('[ML Orchestrator] Failed to get lead score:', error.message);
+            return res.status(503).json({
+                error: 'ML service is not running. Start the Flask server (python3 ML/app.py) on port 5001.'
+            });
         }
 
         // 2. Call Insight Engine
