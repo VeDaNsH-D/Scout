@@ -18,13 +18,19 @@ const messageSchema = new mongoose.Schema(
             default: "email"
         },
 
+        direction: {
+            type: String,
+            enum: ["outgoing", "incoming"],
+            default: "outgoing"
+        },
+
         content: {
             type: String
         },
 
         status: {
             type: String,
-            enum: ["sent", "failed"],
+            enum: ["sent", "failed", "received"],
             default: "sent"
         },
 

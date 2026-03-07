@@ -89,6 +89,13 @@ class WorkflowEngine {
         throw new Error('Workflow or Lead not found during execution');
       }
 
+      if (lead.status === 'replied' || lead.status === 'converted') {
+        console.log(`[WorkflowEngine] Stopping run ${workflowRunId} for lead ${lead.email}: lead is ${lead.status}`);
+        run.status = 'completed';
+        await run.save();
+        return;
+      }
+
       const currentNode = workflow.nodes.find(n => n.id === stepId);
       if (!currentNode) {
         run.status = 'completed';
@@ -192,10 +199,13 @@ class WorkflowEngine {
               lead_id: lead._id,
               workflow_run_id: run._id,
               channel: 'email',
+              direction: 'outgoing',
               content: messageBody,
               sent_at: new Date(),
               status: result.success ? 'sent' : 'failed',
             });
+
+            await this._markLeadContacted(lead, result.success);
 
             break;
           }
@@ -237,10 +247,13 @@ class WorkflowEngine {
             lead_id: lead._id,
             workflow_run_id: run._id,
             channel: 'email',
+            direction: 'outgoing',
             content: messageBody,
             sent_at: new Date(),
             status: result.success ? 'sent' : 'failed',
           });
+
+          await this._markLeadContacted(lead, result.success);
         }
         break;
 
@@ -291,6 +304,15 @@ class WorkflowEngine {
       pain_point: nodeConfig.pain_point || 'improving efficiency and outcomes',
       goal: nodeConfig.goal || 'a short introductory call',
     };
+  }
+
+  async _markLeadContacted(lead, emailSent) {
+    if (!emailSent || !lead || lead.status !== 'new') {
+      return;
+    }
+
+    lead.status = 'contacted';
+    await lead.save();
   }
 }
 

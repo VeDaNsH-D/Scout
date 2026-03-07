@@ -147,6 +147,7 @@ export default function Dashboard() {
         { label: 'Total Leads', value: 2483, trend: '+12% today', trendUp: true },
         { label: 'Emails Sent', value: 1620, trend: '+8% today', trendUp: true },
         { label: 'Replies', value: 401, trend: '+5% today', trendUp: true },
+        { label: 'Lead Score %', value: 64, suffix: '%', trend: '+2% today', trendUp: true },
         { label: 'Conversions', value: 93, trend: '-2% today', trendUp: false },
       ];
     }
@@ -154,6 +155,13 @@ export default function Dashboard() {
       { label: 'Total Leads', value: analytics.totalLeads || 0, trend: '+12% today', trendUp: true },
       { label: 'Emails Sent', value: analytics.emailsSent || 0, trend: '+8% today', trendUp: true },
       { label: 'Replies', value: analytics.replies || 0, trend: '+5% today', trendUp: true },
+      {
+        label: 'Lead Score %',
+        value: Math.round(analytics.averageLeadScorePct || 0),
+        suffix: '%',
+        trend: analytics.replies > 0 ? '+reply feedback applied' : 'No reply feedback yet',
+        trendUp: analytics.replies > 0,
+      },
       {
         label: 'Conversions',
         value: analytics.conversions || 0,

@@ -19,22 +19,52 @@ const getCampaignAnalytics = async (req, res, next) => {
             convertedLeads,
             runningRuns,
             completedRuns,
-            failedRuns
+            failedRuns,
+            averageScoreResult
         ] = await Promise.all([
             Lead.countDocuments(),
-            Message.countDocuments({ channel: "email", status: "sent" }),
+            Message.countDocuments({
+                channel: "email",
+                status: "sent",
+                $or: [
+                    { direction: "outgoing" },
+                    { direction: { $exists: false } }
+                ]
+            }),
             Lead.countDocuments({ status: "replied" }),
             Lead.countDocuments({ status: "converted" }),
             WorkflowRun.countDocuments({ ...workflowRunFilter, status: "running" }),
             WorkflowRun.countDocuments({ ...workflowRunFilter, status: "completed" }),
-            WorkflowRun.countDocuments({ ...workflowRunFilter, status: "failed" })
+            WorkflowRun.countDocuments({ ...workflowRunFilter, status: "failed" }),
+            Lead.aggregate([
+                {
+                    $match: {
+                        lead_score: { $ne: null }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        avgLeadScore: { $avg: "$lead_score" }
+                    }
+                }
+            ])
         ]);
+
+        const averageLeadScore = Number(averageScoreResult?.[0]?.avgLeadScore || 0);
+        const averageLeadScorePct = Number((averageLeadScore * 100).toFixed(1));
+        const responseRate = emailsSent > 0
+            ? Number(((repliedLeads / emailsSent) * 100).toFixed(1))
+            : 0;
 
         return res.status(200).json({
             totalLeads,
             emailsSent,
             replies: repliedLeads,
             conversions: convertedLeads,
+            responseRate,
+            averageLeadScore,
+            averageLeadScorePct,
             workflowRuns: {
                 running: runningRuns,
                 completed: completedRuns,
