@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence Scout</title>
+    <title>Scout</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Tabs Navigation -->
         <div class="tabs">
-            <button class="tab-btn active" data-tab="capture">🎯 Capture</button>
-            <button class="tab-btn" data-tab="leads">📋 Leads (<span id="leadsCount">0</span>)</button>
-            <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+            <button class="tab-btn active" data-tab="capture"><svg class="icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="6" />
+                    <circle cx="12" cy="12" r="2" />
+                </svg> Capture</button>
+            <button class="tab-btn" data-tab="leads"><svg class="icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg> Leads (<span id="leadsCount">0</span>)</button>
+            <button class="tab-btn" data-tab="settings"><svg class="icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg> Settings</button>
         </div>
 
         <!-- CAPTURE TAB -->
         <div id="capture-tab" class="tab-content active">
             <div class="header">
-                <h1>🎯 Intelligence Scout</h1>
+                <h1>Scout</h1>
                 <p class="subtitle">AI-Powered Lead Intelligence</p>
             </div>
 
@@ -53,7 +71,13 @@
 
                 <!-- AI Insights Section -->
                 <div class="section">
-                    <h3>🧠 AI Recommendation</h3>
+                    <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12 2a8 8 0 0 0-8 8c0 3.37 2.69 5.9 4.5 8h7c1.81-2.1 4.5-4.63 4.5-8a8 8 0 0 0-8-8z" />
+                            <path d="M10 22h4" />
+                            <path d="M10 18h4" />
+                        </svg> AI Recommendation</h3>
                     <div id="aiInsight" class="insight-box">
                         <p>Loading AI analysis...</p>
                     </div>
@@ -61,18 +85,34 @@
 
                 <!-- Outreach Path Section -->
                 <div class="section">
-                    <h3>📧 Recommended Path</h3>
+                    <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+                        </svg> Recommended Path</h3>
                     <div class="path-selector">
                         <button class="path-btn active" data-path="technical">
-                            <span class="icon">⚙️</span>
+                            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="16 18 22 12 16 6" />
+                                    <polyline points="8 6 2 12 8 18" />
+                                </svg></span>
                             <span>Technical</span>
                         </button>
                         <button class="path-btn" data-path="business">
-                            <span class="icon">💼</span>
+                            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                                </svg></span>
                             <span>Business</span>
                         </button>
                         <button class="path-btn" data-path="executive">
-                            <span class="icon">👔</span>
+                            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg></span>
                             <span>Executive</span>
                         </button>
                     </div>
@@ -80,7 +120,11 @@
 
                 <!-- Human Likelihood Meter -->
                 <div class="section">
-                    <h3>⚠️ Send Timing Check</h3>
+                    <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg> Send Timing Check</h3>
                     <div id="humanLikelihood" class="likelihood-meter">
                         <div class="meter-bar">
                             <div id="meterFill" class="meter-fill" style="width: 0%"></div>
@@ -92,13 +136,26 @@
                 <!-- Action Buttons -->
                 <div class="actions">
                     <button id="saveBtn" class="btn btn-primary">
-                        💾 Save to Collection
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg> Save to Collection
                     </button>
                     <button id="enrollBtn" class="btn btn-secondary">
-                        ✨ Send Directly
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg> Send Directly
                     </button>
                     <button id="viewDetailsBtn" class="btn btn-secondary-light">
-                        📊 View Full Profile
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                        </svg> View Full Profile
                     </button>
                 </div>
             </div>
@@ -109,7 +166,11 @@
             </div>
 
             <div id="success" class="success-box" style="display: none;">
-                <p id="successText">✅ Lead saved!</p>
+                <p id="successText"><svg class="icon icon-success" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg> Lead saved!</p>
                 <p class="small">Go to "Leads" tab to manage or sync with your site.</p>
             </div>
         </div>
@@ -117,21 +178,37 @@
         <!-- LEADS TAB -->
         <div id="leads-tab" class="tab-content">
             <div class="header">
-                <h2>📋 Captured Leads</h2>
+                <h2><svg class="icon icon-heading" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg> Captured Leads</h2>
                 <p class="subtitle" id="leadsStatus">0 leads collected</p>
             </div>
 
             <div id="leadsContainer" class="leads-list">
-                <p class="empty-state">No leads captured yet. Go to LinkedIn and click "Save to Collection" on profiles!</p>
+                <p class="empty-state">No leads captured yet. Go to LinkedIn and click "Save to Collection" on profiles!
+                </p>
             </div>
 
             <div id="leadsBulkActions" class="bulk-actions" style="display: none;">
                 <div class="actions">
                     <button id="syncBtn" class="btn btn-primary">
-                        🔄 Sync to Website
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10" />
+                            <polyline points="1 20 1 14 7 14" />
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                        </svg> Sync to Website
                     </button>
                     <button id="clearBtn" class="btn btn-danger">
-                        🗑️ Clear All
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg> Clear All
                     </button>
                 </div>
             </div>
@@ -140,7 +217,12 @@
         <!-- SETTINGS TAB -->
         <div id="settings-tab" class="tab-content">
             <div class="header">
-                <h2>⚙️ Settings</h2>
+                <h2><svg class="icon icon-heading" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg> Settings</h2>
             </div>
 
             <div class="section">
@@ -176,8 +258,15 @@
 
             <div class="section">
                 <h3>Data & Privacy</h3>
-                <p class="section-description">All data is stored locally on your computer. Nothing is sent to external servers without your approval.</p>
-                <button id="exportBtn" class="btn btn-secondary" style="margin-top: 12px;">📥 Export Leads</button>
+                <p class="section-description">All data is stored locally on your computer. Nothing is sent to external
+                    servers without your approval.</p>
+                <button id="exportBtn" class="btn btn-secondary" style="margin-top: 12px;"><svg class="icon"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg> Export Leads</button>
             </div>
 
             <div class="section">
@@ -193,4 +282,5 @@
 
     <script src="popup.js"></script>
 </body>
+
 </html>

@@ -163,7 +163,7 @@ document.getElementById('saveBtn')?.addEventListener('click', async () => {
     leads.push(lead);
     await chrome.storage.local.set({ [STORAGE_KEYS.LEADS]: leads });
     updateLeadsCount(leads.length);
-    showSuccess('✅ Lead saved to collection!');
+    showSuccess('Lead saved to collection!');
 });
 
 document.getElementById('enrollBtn')?.addEventListener('click', () => {
@@ -172,7 +172,7 @@ document.getElementById('enrollBtn')?.addEventListener('click', () => {
 
     chrome.runtime.sendMessage({ action: 'enrollLead', leadData: lead }, (response) => {
         if (response && response.success) {
-            showSuccess('✅ Lead sent to Scout!');
+            showSuccess('Lead sent to Scout!');
         } else {
             showError('Failed to enrol lead. Check backend connection.');
         }
@@ -251,7 +251,7 @@ document.getElementById('syncBtn')?.addEventListener('click', async () => {
         if (!resp.ok) throw new Error('Sync failed');
         await chrome.storage.local.set({ [STORAGE_KEYS.LEADS]: [] });
         renderLeads();
-        showSuccess('✅ Leads synced to website!');
+        showSuccess('Leads synced to website!');
     } catch (e) {
         showError('Sync failed: ' + e.message);
     }
@@ -291,7 +291,7 @@ document.getElementById('saveSettingsBtn')?.addEventListener('click', async () =
         humanLikeDelay: document.getElementById('humanTiming')?.checked ?? true,
     };
     await chrome.storage.sync.set({ [STORAGE_KEYS.SETTINGS]: settings });
-    showSuccess('✅ Settings saved!');
+    showSuccess('Settings saved!');
 });
 
 document.getElementById('exportBtn')?.addEventListener('click', async () => {
