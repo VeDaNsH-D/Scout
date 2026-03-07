@@ -274,7 +274,12 @@ const uploadLeads = async (req, res) => {
                     const timeRes = await fetch(`${ML_BASE_URL}/best-send-time`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ lead_features: leadFeatures })
+                        body: JSON.stringify({
+                            lead_features: {
+                                ...leadFeatures,
+                                lead_score: lead.lead_score
+                            }
+                        })
                     })
                     const timeData = await timeRes.json()
                     lead.best_send_day = timeData.best_send_day || null
@@ -411,7 +416,12 @@ const getLeadInsights = async (req, res) => {
                 const timeRes = await fetch(`${ML_BASE_URL}/best-send-time`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ lead_features: leadFeatures })
+                    body: JSON.stringify({
+                        lead_features: {
+                            ...leadFeatures,
+                            lead_score
+                        }
+                    })
                 })
                 const timeData = await timeRes.json()
                 best_send_day = timeData.best_send_day || "Tuesday"

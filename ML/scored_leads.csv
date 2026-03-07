@@ -1,51 +1,51 @@
-role,industry,company_size,growth_rate,seniority,lead_source,lead_score
-CEO,SaaS,small,0.26,Senior,Referral,0.8445025248666098
-Founder,Fintech,enterprise,0.26,Mid,Inbound,0.7737159255025409
-Founder,Healthcare,medium,0.25,Junior,Inbound,0.7304411877097203
-Marketing Manager,SaaS,small,0.17,Executive,Inbound,0.7219498713639518
-Founder,Cybersecurity,medium,0.18,Junior,Conference,0.701075545874323
-CEO,Cybersecurity,enterprise,0.03,Mid,Referral,0.6705723034717332
-Marketing Manager,AI,small,0.13,Senior,Referral,0.6582633564231608
-Founder,Fintech,medium,0.22,Mid,LinkedIn,0.6385263104800286
-CEO,AI,large,0.11,Executive,Inbound,0.6287464061387557
-VP Sales,SaaS,large,0.06,Junior,Inbound,0.6280757126540676
-Engineering Manager,Healthcare,medium,0.27,Senior,Referral,0.6259160604708418
-HR Director,Fintech,medium,0.14,Junior,Referral,0.6179484241201781
-Marketing Manager,Fintech,medium,0.19,Junior,Referral,0.6133197618548162
-HR Director,AI,small,0.23,Junior,Conference,0.5884738016876585
-CTO,Cybersecurity,large,0.22,Senior,Referral,0.5782789197040099
-VP Sales,AI,small,0.21,Executive,Conference,0.5658308734478186
-Engineering Manager,SaaS,large,0.24,Executive,Conference,0.5565739998871586
-CTO,AI,enterprise,0.27,Mid,Conference,0.5444097922919691
-CTO,Healthcare,small,0.08,Mid,Conference,0.5381674068046657
-Marketing Manager,Healthcare,small,0.2,Executive,Referral,0.5338779924780929
-HR Director,AI,large,0.29,Mid,Conference,0.5242772190460941
-HR Director,AI,large,0.01,Mid,Referral,0.5234385949786553
-CEO,Healthcare,medium,0.06,Mid,LinkedIn,0.49233865768904067
-Marketing Manager,Fintech,small,0.14,Senior,LinkedIn,0.4902710020366162
-VP Sales,Healthcare,enterprise,0.26,Mid,Conference,0.4783664740596339
-HR Director,SaaS,enterprise,0.03,Mid,LinkedIn,0.46123823032980305
-Marketing Manager,AI,large,0.29,Junior,Conference,0.46079214878983
-VP Sales,Fintech,medium,0.02,Senior,LinkedIn,0.460567382450435
-VP Sales,Healthcare,small,0.01,Executive,Conference,0.4572529404341461
-CEO,Cybersecurity,enterprise,0.17,Executive,LinkedIn,0.44351002053282784
-Founder,SaaS,enterprise,0.02,Mid,ColdList,0.418613856124356
-HR Director,Fintech,medium,0.17,Executive,LinkedIn,0.4127015946294824
-CTO,Cybersecurity,large,0.29,Mid,LinkedIn,0.39738672315931667
-CTO,AI,small,0.06,Executive,LinkedIn,0.3971877083568597
-Founder,Cybersecurity,enterprise,0.19,Senior,ColdList,0.36850036148628507
-Founder,SaaS,large,0.23,Executive,ColdList,0.3679893495559612
-Marketing Manager,Healthcare,large,0.08,Junior,Conference,0.35397942155532036
-HR Director,Healthcare,enterprise,0.27,Senior,LinkedIn,0.3511411554247065
-Founder,Cybersecurity,large,0.29,Junior,ColdList,0.31604150187996216
-Marketing Manager,Ecommerce,large,0.08,Junior,LinkedIn,0.29712394943743836
-Marketing Manager,Fintech,medium,0.11,Senior,ColdList,0.2848723746379923
-Founder,Healthcare,enterprise,0.3,Junior,ColdList,0.2750680651932165
-VP Sales,SaaS,large,0.14,Junior,ColdList,0.2480369659745706
-CEO,Fintech,large,0.02,Executive,ColdList,0.2351947981287013
-CTO,Fintech,enterprise,0.08,Senior,ColdList,0.23217875192796544
-VP Sales,Ecommerce,medium,0.09,Executive,ColdList,0.22750285936908976
-Marketing Manager,Fintech,large,0.14,Mid,ColdList,0.20992326008986356
-Marketing Manager,Fintech,large,0.06,Senior,ColdList,0.202608422179271
-CTO,AI,large,0.01,Mid,ColdList,0.19149429025367887
-HR Director,Healthcare,large,0.14,Mid,ColdList,0.16745695763308502
+name,email,company,role,industry,company_size,growth_rate,seniority,lead_source,lead_score
+John Thomas,john.thomas@thomas.com,Thomas Inc.,Founder,AI,small,0.14,Senior,Inbound,0.8159386515017544
+Mary Smith,mary.smith@smith.com,Smith Solutions,Founder,AI,small,0.06,Mid,Inbound,0.8026627098464012
+William Miller,william.miller@miller.com,Miller LLC,CEO,Ecommerce,small,0.19,Mid,Referral,0.7725067344132889
+Richard Davis,richard.davis@davis.com,Davis Group,CEO,Ecommerce,small,0.12,Junior,Inbound,0.7574769702678944
+Joseph Taylor,joseph.taylor@taylor.com,Taylor LLC,HR Director,SaaS,medium,0.04,Mid,Inbound,0.7497402016017906
+Barbara Martinez,barbara.martinez@martinez.com,Martinez Corp,HR Director,SaaS,medium,0.21,Junior,Inbound,0.7392754502608674
+Jennifer Smith,jennifer.smith@smith.com,Smith Solutions,CEO,Fintech,medium,0.21,Senior,Conference,0.7299863014965379
+Joseph Williams,joseph.williams@williams.com,Williams Technologies,Marketing Manager,SaaS,enterprise,0.23,Mid,Inbound,0.7075941420747262
+James Smith,james.smith@smith.com,Smith Solutions,VP Sales,SaaS,large,0.25,Senior,Referral,0.6739987497043554
+Jennifer Miller,jennifer.miller@miller.com,Miller Corp,HR Director,Fintech,medium,0.28,Executive,Inbound,0.6622095680622702
+David Rodriguez,david.rodriguez@rodriguez.com,Rodriguez Systems,Marketing Manager,SaaS,small,0.3,Executive,Conference,0.6609338314744277
+Michael Garcia,michael.garcia@garcia.com,Garcia Group,Engineering Manager,Ecommerce,small,0.18,Senior,Conference,0.6443138323084275
+Susan Martin,susan.martin@martin.com,Martin Group,Engineering Manager,AI,large,0.3,Senior,Inbound,0.6389476799427527
+David Jackson,david.jackson@jackson.com,Jackson Corp,CTO,Fintech,medium,0.19,Executive,Referral,0.6056157513805007
+Jennifer Lopez,jennifer.lopez@lopez.com,Lopez Solutions,CTO,Ecommerce,medium,0.14,Junior,Referral,0.6041033824817786
+Richard Thomas,richard.thomas@thomas.com,Thomas LLC,CEO,Cybersecurity,large,0.04,Mid,Conference,0.5970185796024822
+Mary Martinez,mary.martinez@martinez.com,Martinez Group,CEO,Cybersecurity,enterprise,0.14,Junior,Conference,0.5941888000595887
+Mary Taylor,mary.taylor@taylor.com,Taylor Group,Engineering Manager,SaaS,small,0.09,Mid,LinkedIn,0.5862454266753574
+James Anderson,james.anderson@anderson.com,Anderson Corp,CEO,Ecommerce,medium,0.12,Senior,LinkedIn,0.5800045200965994
+James Williams,james.williams@williams.com,Williams LLC,CTO,Ecommerce,large,0.07,Mid,Inbound,0.5788417181738096
+Patricia Hernandez,patricia.hernandez@hernandez.com,Hernandez Solutions,Marketing Manager,Healthcare,small,0.07,Mid,Referral,0.5776184108002241
+Jennifer Smith,jennifer.smith@smith.com,Smith LLC,VP Sales,Fintech,small,0.16,Executive,Conference,0.571981581063829
+David Taylor,david.taylor@taylor.com,Taylor Technologies,CTO,Healthcare,medium,0.1,Junior,Inbound,0.5679946247410166
+Richard Gonzalez,richard.gonzalez@gonzalez.com,Gonzalez Corp,Engineering Manager,AI,enterprise,0.27,Executive,Referral,0.5436562512042314
+James Johnson,james.johnson@johnson.com,Johnson Solutions,CTO,Healthcare,enterprise,0.29,Senior,Referral,0.5418273604614843
+David Miller,david.miller@miller.com,Miller Technologies,CTO,Fintech,medium,0.06,Executive,Conference,0.5243008572861126
+William Jones,william.jones@jones.com,Jones Technologies,VP Sales,AI,large,0.13,Executive,Inbound,0.5222321578384137
+Susan Smith,susan.smith@smith.com,Smith Inc.,Marketing Manager,Ecommerce,large,0.27,Senior,Conference,0.512994999327774
+Richard Jackson,richard.jackson@jackson.com,Jackson Corp,CTO,Healthcare,enterprise,0.16,Mid,Referral,0.5101979843565361
+Jessica Williams,jessica.williams@williams.com,Williams Corp,Engineering Manager,Ecommerce,large,0.12,Mid,Conference,0.5052511377063797
+Robert Thomas,robert.thomas@thomas.com,Thomas Solutions,CTO,Ecommerce,enterprise,0.03,Senior,Conference,0.5033931126461649
+Elizabeth Moore,elizabeth.moore@moore.com,Moore LLC,HR Director,Healthcare,enterprise,0.08,Senior,Referral,0.4998295018503288
+Sarah Martin,sarah.martin@martin.com,Martin Group,HR Director,Cybersecurity,large,0.09,Junior,Referral,0.49952176959317923
+Thomas Jones,thomas.jones@jones.com,Jones LLC,CTO,Healthcare,enterprise,0.08,Mid,Referral,0.4938581416313372
+David Johnson,david.johnson@johnson.com,Johnson Inc.,Engineering Manager,SaaS,enterprise,0.07,Senior,LinkedIn,0.48746560746640155
+Barbara Taylor,barbara.taylor@taylor.com,Taylor LLC,Engineering Manager,SaaS,small,0.28,Senior,ColdList,0.4407876555490201
+Jennifer Moore,jennifer.moore@moore.com,Moore Group,Founder,Ecommerce,large,0.02,Junior,LinkedIn,0.43727776300049487
+Susan Davis,susan.davis@davis.com,Davis Inc.,Marketing Manager,Healthcare,medium,0.04,Mid,LinkedIn,0.3601474355288394
+Joseph Hernandez,joseph.hernandez@hernandez.com,Hernandez Technologies,Marketing Manager,AI,enterprise,0.11,Executive,LinkedIn,0.30227022561119116
+Sarah Rodriguez,sarah.rodriguez@rodriguez.com,Rodriguez Corp,CTO,Healthcare,enterprise,0.26,Junior,LinkedIn,0.3015329412067774
+Richard Rodriguez,richard.rodriguez@rodriguez.com,Rodriguez LLC,VP Sales,SaaS,large,0.11,Senior,ColdList,0.285158894626388
+Karen Lopez,karen.lopez@lopez.com,Lopez Group,Marketing Manager,Fintech,small,0.23,Junior,ColdList,0.28042552073436744
+Elizabeth Gonzalez,elizabeth.gonzalez@gonzalez.com,Gonzalez Corp,CTO,Cybersecurity,medium,0.04,Senior,ColdList,0.27817853676048093
+Susan Gonzalez,susan.gonzalez@gonzalez.com,Gonzalez Systems,HR Director,SaaS,large,0.21,Junior,ColdList,0.2563480550049835
+Susan Jones,susan.jones@jones.com,Jones Technologies,Engineering Manager,Fintech,large,0.28,Senior,ColdList,0.25387435652066215
+Jennifer Martin,jennifer.martin@martin.com,Martin Systems,Founder,Healthcare,enterprise,0.14,Junior,ColdList,0.24977892191336962
+David Smith,david.smith@smith.com,Smith Inc.,Marketing Manager,Fintech,enterprise,0.26,Senior,ColdList,0.24858239889680775
+Mary Rodriguez,mary.rodriguez@rodriguez.com,Rodriguez Technologies,VP Sales,Cybersecurity,medium,0.2,Executive,ColdList,0.24775081579225489
+James Rodriguez,james.rodriguez@rodriguez.com,Rodriguez Solutions,HR Director,Ecommerce,large,0.28,Senior,ColdList,0.23416287541383904
+Jessica Davis,jessica.davis@davis.com,Davis Group,CTO,AI,large,0.29,Mid,ColdList,0.229427296075071

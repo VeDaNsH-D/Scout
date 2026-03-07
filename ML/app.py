@@ -57,6 +57,30 @@ except Exception as e:
     send_time_model = None
     send_time_feature_columns = None
 
+send_time_defaults = {
+    "role": "Founder",
+    "industry": "SaaS",
+    "company_size": "medium",
+    "lead_source": "Inbound",
+    "timezone_region": "US",
+    "past_open_rate": 0.5,
+    "past_reply_rate": 0.1,
+    "email_opened": 0
+}
+
+if send_time_feature_columns:
+    try:
+        send_time_dataset = pd.read_csv("send_time_dataset.csv")
+        for field in ["role", "industry", "company_size", "lead_source", "timezone_region"]:
+            if field in send_time_dataset.columns and not send_time_dataset[field].dropna().empty:
+                send_time_defaults[field] = str(send_time_dataset[field].mode().iloc[0])
+        if "past_open_rate" in send_time_dataset.columns:
+            send_time_defaults["past_open_rate"] = float(send_time_dataset["past_open_rate"].median())
+        if "past_reply_rate" in send_time_dataset.columns:
+            send_time_defaults["past_reply_rate"] = float(send_time_dataset["past_reply_rate"].median())
+    except Exception as e:
+        print(f"Warning: could not compute send-time defaults from dataset: {e}")
+
 
 # Load dataset stats for insights
 try:
@@ -103,45 +127,121 @@ def predict_best_send_time(lead_features):
     CATEGORICAL_COLUMNS = ["role", "industry", "company_size",
                            "lead_source", "day_of_week", "timezone_region"]
 
-    best_day = None
-    best_hour = None
-    best_probability = -1.0
+    def clamp(value, low=0.0, high=1.0):
+        return max(low, min(high, value))
 
-    # Ensure required fields exist
-    base_lead = dict(lead_features)
-    if "timezone_region" not in base_lead:
-        base_lead["timezone_region"] = "US"
-    if "past_open_rate" not in base_lead:
-        base_lead["past_open_rate"] = 0.5
-    if "past_reply_rate" not in base_lead:
-        base_lead["past_reply_rate"] = 0.1
-    if "email_opened" not in base_lead:
-        base_lead["email_opened"] = 0
+    def parse_float(value, default):
+        try:
+            return float(value)
+        except Exception:
+            return float(default)
 
-    # Remove fields that the send time model doesn't use
-    for key in ["growth_rate", "seniority"]:
+    def parse_int(value, default):
+        try:
+            return int(float(value))
+        except Exception:
+            return int(default)
+
+    def infer_timezone_region(data):
+        raw = str(
+            data.get("timezone_region")
+            or data.get("timezone")
+            or data.get("country")
+            or data.get("location")
+            or ""
+        ).lower()
+        if any(x in raw for x in ["india", "singapore", "tokyo", "japan", "asia", "ist", "gmt+5", "gmt+8"]):
+            return "Asia"
+        if any(x in raw for x in ["uk", "london", "berlin", "paris", "europe", "cet", "gmt+1", "gmt+2"]):
+            return "Europe"
+        return "US"
+
+    def match_known_category(value, prefix, default_value):
+        if not send_time_feature_columns:
+            return default_value
+        known = []
+        for col in send_time_feature_columns:
+            token = f"{prefix}_"
+            if col.startswith(token):
+                known.append(col[len(token):])
+        if not known:
+            return default_value
+        value_str = str(value or "").strip()
+        if not value_str:
+            return default_value
+        for candidate in known:
+            if candidate.lower() == value_str.lower():
+                return candidate
+        return default_value
+
+    base_lead = dict(lead_features or {})
+    lead_score = parse_float(base_lead.get("lead_score", base_lead.get("score", 0.5)), 0.5)
+    growth_rate = parse_float(base_lead.get("growth_rate", 0.0), 0.0)
+
+    seniority_raw = str(base_lead.get("seniority", "")).lower()
+    seniority_bonus = 0.0
+    if "executive" in seniority_raw:
+        seniority_bonus = 0.08
+    elif "senior" in seniority_raw:
+        seniority_bonus = 0.05
+    elif "mid" in seniority_raw:
+        seniority_bonus = 0.02
+
+    default_open = clamp(0.12 + (0.65 * lead_score) + (0.35 * growth_rate) + seniority_bonus)
+    default_reply = clamp(0.03 + (0.45 * lead_score) + (0.20 * growth_rate) + (seniority_bonus * 0.5))
+
+    base_lead["timezone_region"] = match_known_category(
+        base_lead.get("timezone_region") or infer_timezone_region(base_lead),
+        "timezone_region",
+        send_time_defaults["timezone_region"],
+    )
+    base_lead["role"] = match_known_category(base_lead.get("role"), "role", send_time_defaults["role"])
+    base_lead["industry"] = match_known_category(base_lead.get("industry"), "industry", send_time_defaults["industry"])
+    base_lead["company_size"] = match_known_category(
+        str(base_lead.get("company_size", "")).lower(),
+        "company_size",
+        send_time_defaults["company_size"],
+    )
+    base_lead["lead_source"] = match_known_category(
+        base_lead.get("lead_source"),
+        "lead_source",
+        send_time_defaults["lead_source"],
+    )
+    base_lead["past_open_rate"] = clamp(
+        parse_float(base_lead.get("past_open_rate", default_open), default_open)
+    )
+    base_lead["past_reply_rate"] = clamp(
+        parse_float(base_lead.get("past_reply_rate", default_reply), default_reply)
+    )
+    base_lead["email_opened"] = 1 if parse_int(
+        base_lead.get("email_opened", 1 if base_lead["past_open_rate"] >= 0.45 else 0), 0
+    ) > 0 else 0
+
+    for key in ["growth_rate", "seniority", "company_name", "score"]:
         base_lead.pop(key, None)
 
+    candidates = []
     for day in DAYS:
         for hour in HOURS:
             candidate = dict(base_lead)
             candidate["day_of_week"] = day
             candidate["send_hour"] = hour
+            candidates.append(candidate)
 
-            candidate_df = pd.DataFrame([candidate])
-            encoded = pd.get_dummies(
-                candidate_df, columns=CATEGORICAL_COLUMNS, dtype=int)
-            aligned = encoded.reindex(
-                columns=send_time_feature_columns, fill_value=0)
+    candidate_df = pd.DataFrame(candidates)
+    encoded = pd.get_dummies(candidate_df, columns=CATEGORICAL_COLUMNS, dtype=int)
+    aligned = encoded.reindex(columns=send_time_feature_columns, fill_value=0)
+    probs = send_time_model.predict_proba(aligned)[:, 1]
 
-            prob = send_time_model.predict_proba(aligned)[0, 1]
+    best_index = int(probs.argmax())
+    best_row = candidate_df.iloc[best_index]
+    best_probability = float(probs[best_index])
 
-            if prob > best_probability:
-                best_probability = prob
-                best_day = day
-                best_hour = hour
-
-    return {"best_send_day": best_day, "best_send_hour": int(best_hour)}
+    return {
+        "best_send_day": str(best_row["day_of_week"]),
+        "best_send_hour": int(best_row["send_hour"]),
+        "predicted_reply_probability": round(best_probability, 4),
+    }
 
 # =========================================================
 # API ENDPOINTS

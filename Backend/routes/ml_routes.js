@@ -49,11 +49,16 @@ router.post('/analyze-lead', async (req, res, next) => {
             const timeRes = await fetch(`${ML_BASE_URL}/best-send-time`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ lead_features })
+                body: JSON.stringify({
+                    lead_features: {
+                        ...lead_features,
+                        lead_score
+                    }
+                })
             });
             const timeData = await timeRes.json();
             best_send_day = timeData.best_send_day || best_send_day;
-            best_send_hour = timeData.best_send_hour || best_send_hour;
+            best_send_hour = timeData.best_send_hour != null ? timeData.best_send_hour : best_send_hour;
         } catch (error) {
             console.error('[ML Orchestrator] Failed to get best send time:', error.message);
         }
