@@ -34,6 +34,16 @@ const messageSchema = new mongoose.Schema(
             default: "sent"
         },
 
+        messageId: {
+            type: String,
+            default: null
+        },
+
+        inReplyTo: {
+            type: String,
+            default: null
+        },
+
         sent_at: {
             type: Date,
             default: Date.now

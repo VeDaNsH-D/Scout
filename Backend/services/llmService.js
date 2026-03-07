@@ -254,4 +254,93 @@ Make it specific, curiosity-driving, and NOT spammy. No generic phrases like "Qu
     }
 }
 
-module.exports = { generateResponse, generateEmail, buildEmailPrompt, fallbackEmail, EMAIL_TYPES };
+/**
+ * Generate a contextual reply email based on the lead's response
+ * @param {Object} lead - Lead document
+ * @param {string} replyText - The text of the lead's reply
+ * @param {Object} campaignContext - Campaign context info
+ * @returns {{ body: string }}
+ */
+async function generateReplyEmail(lead, replyText, campaignContext) {
+    const firstName = lead.name ? lead.name.split(' ')[0] : '';
+    const greeting = firstName ? `Hi ${firstName},` : `Hi there,`;
+
+    const prompt = `You are responding to a reply from a B2B lead. The lead replied to our outreach email. Write a thoughtful, personalized follow-up that continues the conversation naturally.
+
+-------------------------
+ABOUT THE LEAD
+-------------------------
+Name: ${firstName || "(not available)"}
+Role: ${lead.role || "Unknown"}
+Company: ${lead.company || "Unknown"}
+Industry: ${lead.industry || "Unknown"}
+
+-------------------------
+WHAT WE OFFER
+-------------------------
+Team/Sender: ${campaignContext.team_name || "Our Team"}
+Product: ${campaignContext.product_name || "Our Product"}
+What it does: ${campaignContext.product_description || "A platform to help businesses grow"}
+Goal: ${campaignContext.goal || "continuing the conversation"}
+
+-------------------------
+THE LEAD'S REPLY
+-------------------------
+${replyText}
+
+-------------------------
+RULES
+-------------------------
+- ${firstName ? `Address them as "${firstName}"` : "Do NOT use any name — start directly"}
+- Directly acknowledge what they said in their reply
+- If they asked a question, answer it helpfully
+- If they showed interest, propose a concrete next step (e.g., a call time)
+- If they seem hesitant, be understanding and offer more info without being pushy
+- 80-150 words maximum
+- Write like a real human, conversational tone
+- One clear call-to-action
+- Sign off with just a first name (use "Best" or "Cheers")
+- Return ONLY the email body text — no subject line, no labels, no markdown`;
+
+    try {
+        const completion = await groq.chat.completions.create({
+            model: "llama-3.1-8b-instant",
+            messages: [
+                {
+                    role: "system",
+                    content: `You are a skilled B2B sales rep who writes natural, helpful reply emails. You read the lead's response carefully and craft a reply that moves the conversation forward. Your replies feel personal and human, never scripted or generic.
+
+Return ONLY the email body text. No subject line, no labels, no markdown.`
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            temperature: 0.6,
+            max_tokens: 400,
+        });
+
+        const body = (completion.choices[0].message.content || "").trim();
+        if (!body) {
+            return {
+                body: `${greeting}\n\nThank you for getting back to us! I'd love to continue our conversation and answer any questions you might have about ${campaignContext.product_name || 'our solution'}.\n\nWould you be open to a quick call this week?\n\nCheers`
+            };
+        }
+
+        const cleanBody = body
+            .replace(/^(Subject|Re|Email|Body)\s*[:：].*\n?/gim, '')
+            .replace(/\*\*/g, '')
+            .replace(/^#+\s*/gm, '')
+            .trim();
+
+        return { body: cleanBody };
+    } catch (error) {
+        console.error("[LLMService] Reply email generation failed:", error.message);
+        return {
+            body: `${greeting}\n\nThank you for getting back to us! I'd love to continue our conversation and answer any questions you might have about ${campaignContext.product_name || 'our solution'}.\n\nWould you be open to a quick call this week?\n\nCheers`
+        };
+    }
+}
+
+module.exports = { generateResponse, generateEmail, generateReplyEmail, buildEmailPrompt, fallbackEmail, EMAIL_TYPES };

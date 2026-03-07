@@ -73,6 +73,11 @@ console.log("[Server] ✅ Socket.IO initialized for real-time collaboration");
 const worker = initWorker();
 console.log("[Server] ✅ Job worker initialized for workflow execution");
 
+/* Schedule periodic reply checking (every 5 minutes) */
+const { scheduler } = require("./services/scheduler");
+scheduler.scheduleReplyChecking(5 * 60 * 1000);
+console.log("[Server] ✅ Email reply tracking scheduled");
+
 /* Start server */
 const httpServer = server.listen(PORT, () => {
 

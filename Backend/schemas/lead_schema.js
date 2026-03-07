@@ -65,6 +65,11 @@ const leadSchema = new mongoose.Schema(
             type: String,
             enum: ["new", "contacted", "replied", "converted"],
             default: "new"
+        },
+
+        last_replied_at: {
+            type: Date,
+            default: null
         }
     },
     {

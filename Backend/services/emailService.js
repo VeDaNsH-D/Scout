@@ -11,30 +11,30 @@ class EmailService {
 
     const transportConfig = smtpHost
       ? {
-          host: smtpHost,
-          port: smtpPort,
-          secure: smtpPort === 465,
-          auth: {
-            user: smtpUser,
-            pass: smtpPass,
-          },
-        }
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      }
       : {
-          service: 'gmail',
-          auth: {
-            user: smtpUser,
-            pass: smtpPass,
-          },
-        };
+        service: 'gmail',
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      };
 
     this.transporter = nodemailer.createTransport(transportConfig);
   }
 
-  async sendEmail(to, subject, message) {
+  async sendEmail(to, subject, message, inReplyTo = null) {
     try {
       console.log(`[EmailService] 📧 Sending email to: ${to}`);
       console.log(`[EmailService] 📝 Subject: ${subject}`);
-      
+
       const mailOptions = {
         from: process.env.SMTP_USER || 'no-reply@example.com',
         to: to,
@@ -42,13 +42,17 @@ class EmailService {
         text: message
       };
 
+      if (inReplyTo) {
+        mailOptions.inReplyTo = inReplyTo;
+        mailOptions.references = [inReplyTo];
+      }
+
       const info = await this.transporter.sendMail(mailOptions);
       console.log(`[EmailService] Email sent successfully to ${to}, Message ID: ${info.messageId}`);
-      
+
       return { success: true, messageId: info.messageId };
     } catch (error) {
       console.error(`[EmailService] Failed to send email to ${to}:`, error.message);
-      // We don't throw error to prevent crashing workflow execution just because email failed (e.g. invalid mock credentials)
       return { success: false, error: error.message };
     }
   }

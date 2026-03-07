@@ -203,6 +203,7 @@ class WorkflowEngine {
               content: messageBody,
               sent_at: new Date(),
               status: result.success ? 'sent' : 'failed',
+              messageId: result.messageId || null,
             });
 
             await this._markLeadContacted(lead, result.success);
@@ -251,6 +252,7 @@ class WorkflowEngine {
             content: messageBody,
             sent_at: new Date(),
             status: result.success ? 'sent' : 'failed',
+            messageId: result.messageId || null,
           });
 
           await this._markLeadContacted(lead, result.success);

@@ -50,6 +50,36 @@ class Scheduler {
   }
 
   /**
+   * Schedule a repeating job to check for email replies
+   * @param {number} intervalMs - Interval in milliseconds (default: 5 minutes)
+   */
+  async scheduleReplyChecking(intervalMs = 5 * 60 * 1000) {
+    try {
+      // Remove any existing repeatable job first
+      const repeatables = await workflowQueue.getRepeatableJobs();
+      for (const job of repeatables) {
+        if (job.name === 'check-replies') {
+          await workflowQueue.removeRepeatableByKey(job.key);
+        }
+      }
+
+      await workflowQueue.add(
+        'check-replies',
+        {},
+        {
+          repeat: { every: intervalMs },
+          removeOnComplete: true,
+          removeOnFail: false,
+        }
+      );
+
+      console.log(`[Scheduler] 📬 Reply checking scheduled every ${intervalMs / 1000}s`);
+    } catch (error) {
+      console.error('[Scheduler] Error scheduling reply checking:', error);
+    }
+  }
+
+  /**
    * Parse wait time strings like "48h", "1d", "30m" into milliseconds
    * @param {string} waitString - The time string (e.g., "48h")
    * @returns {number} Milliseconds
