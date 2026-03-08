@@ -5,6 +5,7 @@ import {
   ArrowRight,
   Bot,
   CircleCheck,
+  Download,
   Gauge,
   Radar,
   ShieldCheck,
@@ -448,6 +449,34 @@ function Landing() {
               </motion.article>
             ))}
           </div>
+        </section>
+
+        <section className="venti-shell venti-extension">
+          <motion.div
+            className="venti-extension-card"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="venti-extension-glow" aria-hidden="true" />
+            <div className="venti-extension-content">
+              <span className="venti-extension-badge">Browser Extension</span>
+              <h2>Supercharge Your Browser</h2>
+              <p>
+                Capture leads, trigger workflows, and access Scout's AI — all without leaving your current tab.
+              </p>
+              <a
+                href="/extension/intelligence-scout-extension.zip"
+                download
+                className="venti-extension-btn"
+              >
+                <Download size={18} />
+                Try Our Browser Extension
+              </a>
+            </div>
+          </motion.div>
         </section>
       </main>
 

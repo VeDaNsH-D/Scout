@@ -948,7 +948,108 @@
   padding: 0.32rem 0.56rem;
 }
 
+/* ── Extension CTA Section ── */
+.venti-extension {
+  padding: 5rem 0 3rem;
+}
+
+.venti-extension-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.8rem;
+  border: 1px solid rgba(255, 180, 80, 0.18);
+  background: linear-gradient(160deg, rgba(87, 44, 12, 0.55), rgba(24, 13, 7, 0.85));
+  backdrop-filter: blur(16px);
+  padding: 3.5rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.4);
+}
+
+.venti-extension-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(255, 138, 42, 0.18), transparent 60%),
+    radial-gradient(ellipse at 70% 50%, rgba(255, 193, 94, 0.12), transparent 60%);
+  z-index: 0;
+}
+
+.venti-extension-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.venti-extension-badge {
+  display: inline-block;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--venti-text-main);
+  background: rgba(255, 138, 42, 0.18);
+  border: 1px solid rgba(255, 180, 80, 0.25);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+}
+
+.venti-extension-content h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.12;
+  background: linear-gradient(120deg, #ffe8bf, #ffce82, #ff8f38);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.venti-extension-content p {
+  max-width: 38ch;
+  color: var(--venti-text-soft);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.venti-extension-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 999px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0c0702;
+  background: linear-gradient(125deg, #ffe2ad, #ffbf6a, #ff7a18);
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow:
+    0 4px 18px rgba(255, 138, 42, 0.35),
+    0 0 0 1px rgba(255, 200, 120, 0.2);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.venti-extension-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 8px 28px rgba(255, 138, 42, 0.45),
+    0 0 0 1px rgba(255, 200, 120, 0.35);
+}
+
+.venti-extension-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
 @keyframes venti-float {
+
   0%,
   100% {
     transform: translateY(0px) rotate(-8deg);
@@ -960,6 +1061,7 @@
 }
 
 @keyframes venti-pulse {
+
   0%,
   100% {
     transform: scale(1);
