@@ -5,12 +5,29 @@ const Message = require('../schemas/message_schema');
 const emailService = require('./emailService');
 const { generateEmail } = require('./llmService');
 const { scheduler } = require('./scheduler');
-
+const { uploadJSONToFilecoin } = require('./filecoinService');
 /**
  * Workflow Engine Service
  * Responsibilities: read workflow nodes, execute actions, handle conditions, move to next step
  */
 class WorkflowEngine {
+  async _uploadCompletionLog(run, logData) {
+    if (run.filecoinCID) {
+      return;
+    }
+
+    try {
+      const cid = await uploadJSONToFilecoin(logData);
+      if (cid) {
+        run.filecoinCID = cid;
+        await run.save();
+        console.log(`[Filecoin] CID generated for run ${logData.workflowRunId}: ${cid}`);
+      }
+    } catch (err) {
+      console.error('[WorkflowEngine] Filecoin upload failed:', err.message);
+    }
+  }
+
   /**
    * Initializes a workflow run for multiple leads
    * @param {string} workflowId 
@@ -91,6 +108,16 @@ class WorkflowEngine {
 
       if (lead.status === 'replied' || lead.status === 'converted') {
         console.log(`[WorkflowEngine] Stopping run ${workflowRunId} for lead ${lead.email}: lead is ${lead.status}`);
+        await this._uploadCompletionLog(run, {
+          workflowRunId,
+          workflowId,
+          leadId,
+          reason: lead.status,
+          status: 'completed',
+          source: 'Scout Workflow Engine',
+          timestamp: new Date()
+        });
+
         run.status = 'completed';
         await run.save();
         return;
@@ -98,6 +125,16 @@ class WorkflowEngine {
 
       const currentNode = workflow.nodes.find(n => n.id === stepId);
       if (!currentNode) {
+        await this._uploadCompletionLog(run, {
+          workflowRunId,
+          workflowId,
+          leadId,
+          lastStep: stepId,
+          status: 'completed',
+          source: 'Scout Workflow Engine',
+          timestamp: new Date()
+        });
+
         run.status = 'completed';
         await run.save();
         return;
@@ -114,6 +151,16 @@ class WorkflowEngine {
 
       if (nextEdges.length === 0) {
         console.log(`[WorkflowEngine] Workflow run ${workflowRunId} completed`);
+        await this._uploadCompletionLog(run, {
+          workflowRunId,
+          workflowId,
+          leadId,
+          lastStep: stepId,
+          status: 'completed',
+          source: 'Scout Workflow Engine',
+          timestamp: new Date()
+        });
+
         run.status = 'completed';
         await run.save();
         return;

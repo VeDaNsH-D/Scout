@@ -1,4 +1,4 @@
-const requiredEnvVars = ["MONGO_URI", "JWT_SECRET"];
+const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "LIGHTHOUSE_API_KEY"];
 
 const validateEnv = () => {
     const missing = requiredEnvVars.filter((key) => !process.env[key]);

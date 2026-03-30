@@ -31,6 +31,9 @@ const workflowRunSchema = new mongoose.Schema(
 
         completed_at: {
             type: Date
+        },
+        filecoinCID: {
+            type: String
         }
     }
 );

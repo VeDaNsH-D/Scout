@@ -90,7 +90,8 @@ const getCampaignAnalytics = async (req, res, next) => {
             repliesToday,
             repliesYesterday,
             conversionsToday,
-            conversionsYesterday
+            conversionsYesterday,
+            recentWorkflowRuns
         ] = await Promise.all([
             Lead.countDocuments(leadScopeFilter),
             Message.countDocuments(sentEmailFilter),
@@ -131,7 +132,12 @@ const getCampaignAnalytics = async (req, res, next) => {
             Lead.countDocuments({ status: "replied", last_replied_at: { $gte: yesterdayStart, $lt: todayStart } }),
             // Trend: conversions today vs yesterday
             Lead.countDocuments({ status: "converted", updatedAt: { $gte: todayStart } }),
-            Lead.countDocuments({ status: "converted", updatedAt: { $gte: yesterdayStart, $lt: todayStart } })
+            Lead.countDocuments({ status: "converted", updatedAt: { $gte: yesterdayStart, $lt: todayStart } }),
+            WorkflowRun.find(workflowRunFilter)
+                .select("_id lead_id status current_node filecoinCID started_at completed_at")
+                .sort({ started_at: -1 })
+                .limit(10)
+                .lean()
         ]);
 
         const averageLeadScore = Number(averageScoreResult?.[0]?.avgLeadScore || 0);
@@ -172,7 +178,16 @@ const getCampaignAnalytics = async (req, res, next) => {
             workflowRuns: {
                 running: runningRuns,
                 completed: completedRuns,
-                failed: failedRuns
+                failed: failedRuns,
+                recentRuns: recentWorkflowRuns.map((run) => ({
+                    id: run._id,
+                    leadId: run.lead_id,
+                    status: run.status,
+                    currentNode: run.current_node,
+                    startedAt: run.started_at,
+                    completedAt: run.completed_at,
+                    filecoinCID: run.filecoinCID || null
+                }))
             },
             trends
         };

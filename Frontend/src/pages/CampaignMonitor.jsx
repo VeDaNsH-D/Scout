@@ -5,6 +5,7 @@ import { mockCampaigns } from '../utils/mockData';
 
 const getWorkflowId = (workflow) => workflow?._id || workflow?.id || null;
 const isMongoObjectId = (value) => /^[a-f\d]{24}$/i.test(String(value || ''));
+const getFilecoinURL = (cid) => `https://gateway.lighthouse.storage/ipfs/${cid}`;
 const toCsvLine = (values) =>
   values
     .map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`)
@@ -134,6 +135,7 @@ export default function CampaignMonitor() {
   };
 
   const metrics = selectedWorkflow ? getMetrics() : { leads: 0, sent: 0, opened: 0, rate: '0%' };
+  const recentRuns = analytics?.workflowRuns?.recentRuns || [];
 
   const handleDownloadReport = () => {
     if (!selectedWorkflow) {
@@ -197,7 +199,7 @@ export default function CampaignMonitor() {
           <h1 className="text-3xl font-bold text-text-primary mb-2">Campaign Monitor</h1>
           <p className="text-text-secondary">Track and manage your outreach campaigns</p>
         </div>
-        <button 
+        <button
           onClick={() => window.location.href = '/workflows'}
           className="px-6 py-2 bg-accent hover:bg-accent-hover text-text-inverse font-semibold rounded-lg transition"
         >
@@ -228,11 +230,10 @@ export default function CampaignMonitor() {
                 <button
                   key={getWorkflowId(workflow)}
                   onClick={() => setSelectedWorkflow(workflow)}
-                  className={`w-full text-left p-4 border-b border-border-subtle transition ${
-                    selectedWorkflow && getWorkflowId(selectedWorkflow) === getWorkflowId(workflow)
+                  className={`w-full text-left p-4 border-b border-border-subtle transition ${selectedWorkflow && getWorkflowId(selectedWorkflow) === getWorkflowId(workflow)
                       ? 'bg-accent-soft border-l-4 border-l-accent'
                       : 'hover:bg-bg-card-hover'
-                  }`}
+                    }`}
                 >
                   <p className="font-semibold text-text-primary text-sm">{workflow.name}</p>
                   <div className="flex items-center justify-between mt-2">
@@ -264,8 +265,8 @@ export default function CampaignMonitor() {
                   <div>
                     <h2 className="text-2xl font-bold text-text-primary">{selectedWorkflow.name}</h2>
                     <p className="text-text-secondary text-sm mt-1">
-                      Created: {selectedWorkflow.createdAt 
-                        ? new Date(selectedWorkflow.createdAt).toLocaleDateString() 
+                      Created: {selectedWorkflow.createdAt
+                        ? new Date(selectedWorkflow.createdAt).toLocaleDateString()
                         : selectedWorkflow.created || 'N/A'}
                     </p>
                   </div>
@@ -352,9 +353,45 @@ export default function CampaignMonitor() {
                 </div>
               </div>
 
+              {/* Filecoin Run Logs */}
+              <div className="glass-panel glass-panel-hover rounded-2xl p-6">
+                <h3 className="text-sm font-semibold text-text-secondary mb-4">Workflow Run Logs (Filecoin)</h3>
+
+                {recentRuns.length === 0 ? (
+                  <p className="text-xs text-text-muted">No workflow runs available yet.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {recentRuns.map((run) => (
+                      <div
+                        key={run.id}
+                        className="flex items-center justify-between p-2 bg-bg-card-hover rounded text-xs"
+                      >
+                        <div className="text-text-secondary">
+                          <span className="font-semibold text-text-primary">{run.status}</span>
+                          <span className="ml-2 text-text-muted">Run {String(run.id).slice(-6)}</span>
+                        </div>
+
+                        {run.filecoinCID ? (
+                          <a
+                            href={getFilecoinURL(run.filecoinCID)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-accent hover:text-accent-hover font-semibold"
+                          >
+                            View on Filecoin
+                          </a>
+                        ) : (
+                          <span className="text-text-muted">CID unavailable</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Actions */}
               <div className="flex gap-3">
-                <button 
+                <button
                   onClick={() => window.location.href = `/workflows?id=${getWorkflowId(selectedWorkflow)}`}
                   className="flex-1 px-4 py-2 bg-bg-card-hover hover:bg-border-strong text-text-primary font-semibold rounded-lg transition border border-border-card"
                 >
@@ -366,7 +403,7 @@ export default function CampaignMonitor() {
                 >
                   Download Report
                 </button>
-                <button 
+                <button
                   onClick={async () => {
                     try {
                       await workflowsService.create({

@@ -24,7 +24,8 @@ router.post('/workflows/:workflowId/start', async (req, res) => {
       runs: runs.map(run => ({
         id: run._id,
         leadId: run.lead_id,
-        status: run.status
+        status: run.status,
+        filecoinCID: run.filecoinCID || null
       }))
     });
   } catch (error) {
@@ -50,7 +51,8 @@ router.get('/workflow-runs/:runId', async (req, res) => {
     res.status(200).json({
       leadId: run.lead_id,
       currentStep: run.current_node,
-      status: run.status
+      status: run.status,
+      filecoinCID: run.filecoinCID || null
     });
   } catch (error) {
     console.error(`[Routes] Error fetching workflow run:`, error.message);
