@@ -16,7 +16,10 @@ CATEGORICAL_COLUMNS = [
     "industry",
     "company_size",
     "lead_source",
+    "seniority",
+    "timing_segment",
     "day_of_week",
+    "send_hour",
     "timezone_region",
 ]
 
@@ -113,6 +116,14 @@ def align_features(input_df, feature_columns):
     return aligned
 
 
+def build_timing_segment(lead_features):
+    return (
+        f"{lead_features.get('role', '')}|"
+        f"{lead_features.get('lead_source', '')}|"
+        f"{lead_features.get('timezone_region', '')}"
+    )
+
+
 def predict_best_send_time(lead_features, model, feature_columns):
     best_day = None
     best_hour = None
@@ -121,6 +132,7 @@ def predict_best_send_time(lead_features, model, feature_columns):
     for day in DAYS:
         for hour in HOURS:
             candidate = dict(lead_features)
+            candidate["timing_segment"] = build_timing_segment(candidate)
             candidate["day_of_week"] = day
             candidate["send_hour"] = hour
 
@@ -184,9 +196,10 @@ def main():
         "industry": "SaaS",
         "company_size": "medium",
         "lead_source": "Referral",
+        "seniority": "executive",
+        "growth_rate": 0.72,
+        "lead_score": 0.81,
         "timezone_region": "US",
-        "past_open_rate": 0.62,
-        "past_reply_rate": 0.28,
     }
 
     best_time = predict_best_send_time(sample_lead, best_model, feature_columns)

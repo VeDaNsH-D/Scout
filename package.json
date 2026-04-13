@@ -4,7 +4,7 @@
   "private": true,
   "description": "Automation script to start frontend, backend, ML service, Redis, and ngrok together",
   "scripts": {
-    "dev": "concurrently \"cd Backend && npm run dev\" \"cd Frontend && npm run dev\" \"cd ML && python3 app.py\" \"cd Backend && redis-server\" \"cd Backend && ngrok http 8000\""
+   "dev": "concurrently \"cd Backend && npm run dev\" \"cd Frontend && npm run dev\" \"cd ML && python app.py\" \"cd Backend && redis-server\" \"cd Backend && ngrok http 8000\""
   },
   "dependencies": {
     "concurrently": "^9.2.1"

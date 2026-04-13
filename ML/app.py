@@ -62,25 +62,25 @@ send_time_defaults = {
     "industry": "SaaS",
     "company_size": "medium",
     "lead_source": "Inbound",
+    "seniority": "mid",
     "timezone_region": "US",
-    "past_open_rate": 0.5,
-    "past_reply_rate": 0.1,
-    "email_opened": 0
+    "growth_rate": 0.5,
+    "lead_score": 0.5,
 }
 
 if send_time_feature_columns:
     try:
         send_time_dataset = pd.read_csv("send_time_dataset.csv")
-        for field in ["role", "industry", "company_size", "lead_source", "timezone_region"]:
+        for field in ["role", "industry", "company_size", "lead_source", "seniority", "timezone_region"]:
             if field in send_time_dataset.columns and not send_time_dataset[field].dropna().empty:
                 send_time_defaults[field] = str(
                     send_time_dataset[field].mode().iloc[0])
-        if "past_open_rate" in send_time_dataset.columns:
-            send_time_defaults["past_open_rate"] = float(
-                send_time_dataset["past_open_rate"].median())
-        if "past_reply_rate" in send_time_dataset.columns:
-            send_time_defaults["past_reply_rate"] = float(
-                send_time_dataset["past_reply_rate"].median())
+        if "growth_rate" in send_time_dataset.columns:
+            send_time_defaults["growth_rate"] = float(
+                send_time_dataset["growth_rate"].median())
+        if "lead_score" in send_time_dataset.columns:
+            send_time_defaults["lead_score"] = float(
+                send_time_dataset["lead_score"].median())
     except Exception as e:
         print(
             f"Warning: could not compute send-time defaults from dataset: {e}")
@@ -129,7 +129,7 @@ def predict_best_send_time(lead_features):
             "Thursday", "Friday", "Saturday", "Sunday"]
     HOURS = list(range(24))
     CATEGORICAL_COLUMNS = ["role", "industry", "company_size",
-                           "lead_source", "day_of_week", "timezone_region"]
+                           "lead_source", "seniority", "timing_segment", "day_of_week", "send_hour", "timezone_region"]
 
     def clamp(value, low=0.0, high=1.0):
         return max(low, min(high, value))
@@ -178,24 +178,17 @@ def predict_best_send_time(lead_features):
                 return candidate
         return default_value
 
+    def build_timing_segment(data):
+        return (
+            f"{data.get('role', '')}|"
+            f"{data.get('lead_source', '')}|"
+            f"{data.get('timezone_region', '')}"
+        )
+
     base_lead = dict(lead_features or {})
-    lead_score = parse_float(base_lead.get(
-        "lead_score", base_lead.get("score", 0.5)), 0.5)
+    lead_score = clamp(parse_float(base_lead.get(
+        "lead_score", base_lead.get("score", send_time_defaults["lead_score"])), send_time_defaults["lead_score"]))
     growth_rate = parse_float(base_lead.get("growth_rate", 0.0), 0.0)
-
-    seniority_raw = str(base_lead.get("seniority", "")).lower()
-    seniority_bonus = 0.0
-    if "executive" in seniority_raw:
-        seniority_bonus = 0.08
-    elif "senior" in seniority_raw:
-        seniority_bonus = 0.05
-    elif "mid" in seniority_raw:
-        seniority_bonus = 0.02
-
-    default_open = clamp(0.12 + (0.65 * lead_score) +
-                         (0.35 * growth_rate) + seniority_bonus)
-    default_reply = clamp(0.03 + (0.45 * lead_score) +
-                          (0.20 * growth_rate) + (seniority_bonus * 0.5))
 
     base_lead["timezone_region"] = match_known_category(
         base_lead.get("timezone_region") or infer_timezone_region(base_lead),
@@ -216,20 +209,19 @@ def predict_best_send_time(lead_features):
         "lead_source",
         send_time_defaults["lead_source"],
     )
-    base_lead["past_open_rate"] = clamp(
-        parse_float(base_lead.get("past_open_rate",
-                    default_open), default_open)
+    base_lead["seniority"] = match_known_category(
+        base_lead.get("seniority"),
+        "seniority",
+        send_time_defaults["seniority"],
     )
-    base_lead["past_reply_rate"] = clamp(
-        parse_float(base_lead.get("past_reply_rate",
-                    default_reply), default_reply)
+    base_lead["growth_rate"] = clamp(
+        parse_float(base_lead.get("growth_rate",
+                    send_time_defaults["growth_rate"]), send_time_defaults["growth_rate"])
     )
-    base_lead["email_opened"] = 1 if parse_int(
-        base_lead.get("email_opened",
-                      1 if base_lead["past_open_rate"] >= 0.45 else 0), 0
-    ) > 0 else 0
+    base_lead["lead_score"] = lead_score
+    base_lead["timing_segment"] = build_timing_segment(base_lead)
 
-    for key in ["growth_rate", "seniority", "company_name", "score"]:
+    for key in ["company_name", "score"]:
         base_lead.pop(key, None)
 
     candidates = []

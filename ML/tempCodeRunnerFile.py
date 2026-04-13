@@ -1,1 +1,1 @@
-gemini-flash-latest
+mid
