@@ -40,20 +40,30 @@ Scout resolves these operational inefficiencies by integrating five foundational
 
 ## Platform Interface
 
-### Analytics and Monitoring Dashboard
-Real-time campaign analytics, conversion performance, lead scoring distribution, and Filecoin decentralized log verification status.
+### Landing Page & Growth Platform
+Modern dark-mode interface designed for high-velocity growth teams, showcasing autonomous outreach orchestration, AI personalization at scale, and high-converting campaign workflows.
 
-![Scout Dashboard Overview](docs/images/dashboard-preview.jpg)
+![Scout Landing Interface](docs/images/landing-page.png)
+
+### AI Command Center & Live Analytics
+Centralized command deck delivering real-time operational intelligence—monitoring active leads, email dispatch throughput, reply volume, predictive lead scoring feedback, response rates, and live activity feeds.
+
+![Scout AI Command Center](docs/images/dashboard-preview.png)
 
 ### Visual Node-Based Workflow Builder
-Interactive DAG canvas with customizable triggers, ML score evaluation filters, LLM generation blocks, delay nodes, SMTP dispatchers, and Filecoin anchoring.
+Interactive DAG canvas with drag-and-drop triggers, machine learning scoring filters, LLM generation nodes, scheduled delay logic, CRM sync, and direct one-click workflow execution.
 
-![Scout Workflow Canvas](docs/images/workflow-builder.jpg)
+![Scout Workflow Canvas](docs/images/workflow-builder.png)
 
-### Intelligence Scout Chrome Extension
-One-click LinkedIn profile capture, AI outreach path categorization (Technical, Business, Executive), and human-behavior send-timing safety meter.
+### Lead Management & Bulk Ingestion Pipeline
+High-throughput lead ingestion interface featuring drag-and-drop CSV uploads, automated email verification, database synchronization, and template formatting tools.
 
-![Scout Chrome Extension](docs/images/chrome-extension.jpg)
+![Scout Lead Upload Pipeline](docs/images/lead-upload.png)
+
+### Contextual AI Chatbot & Knowledge Assistant
+RAG-enabled conversational assistant powered by Llama 3, providing real-time guidance on lead statuses, outreach workflows, campaign execution steps, and cited documentation.
+
+![Scout AI Chatbot Assistant](docs/images/ai-chatbot.png)
 
 ---
 
